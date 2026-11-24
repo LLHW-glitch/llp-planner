@@ -2511,7 +2511,6 @@ function vSetup(){
   const tog=(f,on,label)=>`<label class="tog"><input type="checkbox" class="chk" data-k="settings" data-f="${f}" ${on?'checked':''} data-rr> ${label}</label>`;
   const c2=`<div class="col"><div class="blk"><p class="lbl">Daily extras</p><div class="toggles">${tog('journal',s.journal,'Journal page with a daily prompt')}${tog('reminders',s.reminders,'Reminders with calendar links')}${tog('mood',s.mood,'Mood of the day')}${tog('reading',s.reading,'Reading tracker')}${tog('big',s.big,'Larger text')}</div></div>
     <div class="blk"><p class="lbl">Add-ons <span class="hint">Shown under the + icon at the top</span></p><div class="toggles">${ADDONS.map(a=>tog('addons.'+a.id,s.addons[a.id],a.name)).join('')}</div></div>
-    ${pdfBlock()}
     <div class="blk grow scroll"><p class="lbl">Habits I want to track</p>${checklist('settings','habits',{min:1,numbered:true,ph:'A habit'})}</div></div>`;
   return page(head,'minmax(0,1fr) minmax(0,1.2fr)', c1+c2);
 }
@@ -2865,7 +2864,6 @@ async function supaBoot(){
     onSnapshot:(cb,err)=>{ let t=null; const load=async()=>{ const {data,error}=await SB.from('planner_docs').select('doc_key,data').eq('year',YEAR).is('deleted_at',null); if(error){ err&&err(error); return; } cb({docs:(data||[]).map(r=>({id:r.doc_key,data:()=>r.data}))}); };
       load(); SB.channel('docs-'+SBUID).on('postgres_changes',{event:'*',schema:'public',table:'planner_docs',filter:'user_id=eq.'+SBUID},()=>{ clearTimeout(t); t=setTimeout(load,500); }).subscribe(); } };
   signedIn=true; startSync();
-  pdfLoad(); SB.channel('pdf-'+SBUID).on('postgres_changes',{event:'*',schema:'public',table:'pdf_jobs',filter:'user_id=eq.'+SBUID},()=>pdfLoad()).subscribe();
 }
 window.llpSignOut=async()=>{
   // save anything still waiting, sign out on this device, clear this account's copy from the browser, then show the sign-in screen
