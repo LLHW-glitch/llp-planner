@@ -9,3 +9,6 @@ pdf/fb.html
 pdf/job-*.json
 pdf-builder/masters/
 __pycache__/
+pdf/assets/master-*.pdf
+pdf/assets/svgpages/
+pdf/*.splice.json
