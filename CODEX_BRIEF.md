@@ -14,6 +14,10 @@ You are taking over a finished front end and moving it to production hosting. **
 - **App adapter:** already built into `app/index.html`. When `window.LLP_SUPA` is set, the app uses magic-link sign-in, the code screen, `apply_patch` for saves, realtime for other devices, and Storage for photos. Without it, it falls back to the original `window.claude` storage. So sections 3 and 4 below describe what exists, not a to-do list.
 - **PDF export:** `pdf/gen-v2.js` fills the printed layout from a customer's documents (see section 8).
 
+- **Sign in:** email and password, with "Email me a sign-in link" for first time and forgotten passwords. After the first sign in (and code), customers are asked once to create a password (they can skip). Settings has Change password and Sign out.
+- **PDF download (working, tested 24 Nov):** Settings button calls the `request-pdf` edge function, which queues a row in `pdf_jobs` (migration 0002) and wakes the GitHub Actions workflow `pdf-worker.yml`. `pdf/worker.js` builds the PDF with `gen-v2.js`, stores it in the private `pdf-exports` bucket (kept 8 days) and emails a 7 day link. Secrets: GitHub `SUPABASE_SERVICE_ROLE_KEY` (added), `SMTP_HOST/PORT/USER/PASS` (not yet); Supabase edge secret `GH_DISPATCH_TOKEN` (added). A full year takes about 1.5 minutes.
+- **Email templates:** `supabase/email-templates/` (sign in, welcome) and `pdf/emails/pdf-ready.html`. Supabase only allows custom templates once custom SMTP is set, and the email provider is still being chosen.
+
 ### Still to do before launch (in order)
 1. End-to-end test on the live site: sign in, redeem a test code, tick and type, refresh, open on a second device.
 2. Custom SMTP for auth emails (for example Resend). The built-in Supabase email only sends a few emails an hour.

@@ -1079,6 +1079,9 @@ a.mh{text-decoration:none;color:inherit;display:flex}a.mh:hover{background:var(-
 .pdfrow{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.pdfrow .pill[disabled]{opacity:.6;cursor:default}.pdfst a{color:var(--line);font-weight:600}
 .pdfspin{display:inline-block;width:11px;height:11px;border:2px solid var(--light);border-top-color:var(--line);border-radius:50%;margin-right:6px;vertical-align:-1px;animation:pdfsp 1s linear infinite}@keyframes pdfsp{to{transform:rotate(360deg)}}
 @media (max-width:980px){.wdmood{grid-template-columns:1fr}.wdmood .vgrid{height:auto;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:none!important}}
+
+.gpw{position:relative;display:flex}.gpw input{flex:1;padding-right:58px!important}.gshow{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:none;color:var(--muted);font:inherit;font-size:12px;cursor:pointer;padding:4px 6px}
+#gform{display:flex;flex-direction:column;gap:10px}
 </style>
 
 <div class="app">
@@ -2495,7 +2498,7 @@ function vSetup(){
   const s=set(); doc('settings');
   if(!docs.settings.habits || !Object.keys(docs.settings.habits).length){ docs.settings.habits = DEFAULTS.habits.map(x=>({...x})); saveList('settings','habits',{}); }
   const hours=Array.from({length:24},(_,i)=>i);
-  const head=`<div class="ph"><h1>Make it yours</h1><span class="sub">Change these any time. Your pages update straight away and nothing you've written is lost.</span><div class="nav">${SB?'<button class="pill" onclick="llpSignOut()">Sign out</button>':''}<a class="pill solid" href="#year">Go to my planner</a></div></div>`;
+  const head=`<div class="ph"><h1>Make it yours</h1><span class="sub">Change these any time. Your pages update straight away and nothing you've written is lost.</span><div class="nav">${SB?'<button class="pill" onclick="llpChangePw()">Change password</button><button class="pill" onclick="llpSignOut()">Sign out</button>':''}<a class="pill solid" href="#year">Go to my planner</a></div></div>`;
   const c1=`<div class="col"><div class="field"><label for="s-name">Your name</label><input type="text" id="s-name" data-k="settings" data-f="name" value="${esc(s.name)}" placeholder="Shown at the top of your planner"></div>
     <div class="field"><label>Week starts on</label><div class="seg">${[[1,'Monday'],[0,'Sunday']].map(([v,n])=>`<button class="${s.ws===v?'on':''}" data-set="settings|ws|${v}">${n}</button>`).join('')}</div></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="field"><label for="s-from">Day starts at</label><select id="s-from" data-k="settings" data-f="from" data-num>${hours.map(x=>`<option value="${x}" ${s.from===x?'selected':''}>${label12(x*60)}</option>`).join('')}</select></div>
@@ -2820,8 +2823,28 @@ function startSync(){
 /* ---------- Supabase (live site) ---------- */
 
 function gate(html){ let g=document.getElementById('gate'); if(!g){ g=document.createElement('div'); g.id='gate'; document.body.appendChild(g); } g.innerHTML=`<div class="gcard"><b class="gbrand">Live Love Planners</b>${html}</div>`; return g; }
-function gateSignIn(){ const g=gate(`<h2>Sign in to your planner</h2><p>Enter your email and we'll send you a link. No password needed.</p><form id="gform"><input id="gemail" type="email" required placeholder="you@email.com" autocomplete="email"><button class="pill solid" type="submit">Send my link</button></form><p class="gmsg" id="gmsg"></p>`);
-  g.querySelector('#gform').addEventListener('submit',async e=>{ e.preventDefault(); const m=g.querySelector('#gmsg'), em=g.querySelector('#gemail').value.trim(); m.textContent='Sending...'; const {error}=await SB.auth.signInWithOtp({email:em,options:{emailRedirectTo:location.origin+location.pathname}}); m.textContent=error?'That didn\'t work: '+error.message:'Check your email for your sign-in link. You can close this tab.'; }); }
+function gateSignIn(mode){ const link=mode==='link';
+  const g=gate(link?`<h2>Get a sign-in link</h2><p>Enter your email and we'll send you a link. Use this the first time, or if you've forgotten your password.</p><form id="gform"><input id="gemail" type="email" required placeholder="you@email.com" autocomplete="email"><button class="pill solid" type="submit">Send my link</button></form><p class="gmsg" id="gmsg"></p><p class="gsmall"><a href="#" id="gswap">Sign in with my password instead</a></p>`
+    :`<h2>Sign in to your planner</h2><form id="gform"><input id="gemail" type="email" required placeholder="you@email.com" autocomplete="email"><div class="gpw"><input id="gpass" type="password" required placeholder="Password" autocomplete="current-password"><button type="button" class="gshow" aria-label="Show password">Show</button></div><button class="pill solid" type="submit">Sign in</button></form><p class="gmsg" id="gmsg"></p><p class="gsmall">First time here, or forgotten your password?<br><a href="#" id="gswap">Email me a sign-in link</a></p>`);
+  g.querySelector('#gswap').addEventListener('click',e=>{ e.preventDefault(); gateSignIn(link?'pw':'link'); });
+  const sh=g.querySelector('.gshow'); if(sh) sh.addEventListener('click',()=>{ const i=g.querySelector('#gpass'); i.type=i.type==='password'?'text':'password'; sh.textContent=i.type==='password'?'Show':'Hide'; });
+  g.querySelector('#gform').addEventListener('submit',async e=>{ e.preventDefault(); const m=g.querySelector('#gmsg'), em=g.querySelector('#gemail').value.trim();
+    if(link){ m.textContent='Sending...'; const {error}=await SB.auth.signInWithOtp({email:em,options:{emailRedirectTo:location.origin+location.pathname}}); m.textContent=error?'That didn\'t work: '+error.message:'Check your email for your sign-in link. You can close this tab.'; return; }
+    m.textContent='Signing in...'; const {error}=await SB.auth.signInWithPassword({email:em,password:g.querySelector('#gpass').value});
+    if(error){ m.textContent=/invalid/i.test(error.message)?'That email and password don\'t match. Try again, or get a sign-in link below.':'That didn\'t work: '+error.message; return; }
+    location.reload(); }); }
+/* create or change a password (shown once after the first sign in, and from Settings) */
+function gatePassword(done,change){
+  const g=gate(`<h2>${change?'Change your password':'Create your password'}</h2><p>${change?'Choose a new password for signing in.':'So you can sign in quickly next time, even from your phone\'s home screen.'}</p><form id="gform"><div class="gpw"><input id="gp1" type="password" required minlength="8" placeholder="New password (8+ characters)" autocomplete="new-password"><button type="button" class="gshow" aria-label="Show password">Show</button></div><input id="gp2" type="password" required minlength="8" placeholder="Type it again" autocomplete="new-password"><button class="pill solid" type="submit">${change?'Save my new password':'Save and open my planner'}</button></form><p class="gmsg" id="gmsg"></p><p class="gsmall"><a href="#" id="gskip">${change?'Cancel':'Skip for now'}</a></p>`);
+  const sh=g.querySelector('.gshow'); sh.addEventListener('click',()=>{ const t=g.querySelector('#gp1').type==='password'?'text':'password'; g.querySelector('#gp1').type=t; g.querySelector('#gp2').type=t; sh.textContent=t==='password'?'Show':'Hide'; });
+  const close=()=>{ g.remove(); done&&done(); };
+  g.querySelector('#gskip').addEventListener('click',e=>{ e.preventDefault(); if(!change) try{ localStorage.setItem('llp-pwskip:'+SBUID,'1'); }catch(_){} close(); });
+  g.querySelector('#gform').addEventListener('submit',async e=>{ e.preventDefault(); const m=g.querySelector('#gmsg'), a=g.querySelector('#gp1').value, b=g.querySelector('#gp2').value;
+    if(a.length<8){ m.textContent='Please use at least 8 characters.'; return; } if(a!==b){ m.textContent='Those two passwords don\'t match.'; return; }
+    m.textContent='Saving...'; const {error}=await SB.auth.updateUser({password:a,data:{pw_set:true}});
+    if(error){ m.textContent=/same/i.test(error.message)?'That\'s already your password, so nothing to change.':'That didn\'t work: '+error.message; return; }
+    m.textContent=change?'Saved. Use your new password next time.':'Saved! Opening your planner...'; setTimeout(close,700); }); }
+window.llpChangePw=()=>{ if(SB) gatePassword(null,true); };
 function gateCode(){ const g=gate(`<h2>Unlock your 2027 planner</h2><p>Enter the access code from your order email.</p><form id="gform"><input id="gcode" required placeholder="LLP27-XXXX-XXXX" autocomplete="off" style="text-transform:uppercase"><button class="pill solid" type="submit">Unlock</button></form><p class="gmsg" id="gmsg"></p><p class="gsmall">Don't have a code? <a href="https://liveloveplanners.com" target="_blank" rel="noopener">Get the 2027 planner</a> · <a href="#" id="gout">Sign out</a></p>`);
   g.querySelector('#gout').addEventListener('click',async e=>{ e.preventDefault(); await SB.auth.signOut(); location.reload(); });
   g.querySelector('#gform').addEventListener('submit',async e=>{ e.preventDefault(); const m=g.querySelector('#gmsg'); m.textContent='Checking...'; const {error}=await SB.rpc('redeem_code',{p_code:g.querySelector('#gcode').value}); if(error){ m.textContent=error.message.replace(/^.*?: /,''); return; } m.textContent='Unlocked! Opening your planner...'; setTimeout(()=>location.reload(),600); }); }
@@ -2835,6 +2858,8 @@ async function supaBoot(){
   const {data:ents,error:ee}=await SB.from('entitlements').select('year');
   if(ee){ status('Could not load, check your connection', true); return; }
   if(!(ents||[]).some(x=>x.year===YEAR)){ gateCode(); return; }
+  let skipPw=false; try{ skipPw=!!localStorage.getItem('llp-pwskip:'+SBUID); }catch(_){}
+  if(!(session.user.user_metadata||{}).pw_set&&!skipPw){ status('Almost there'); await new Promise(r=>gatePassword(r)); }
   const patch=async(k,f)=>{ const {error}=await SB.rpc('apply_patch',{p_year:YEAR,p_doc:k,p_patch:f}); if(error) throw error; };
   coll={ doc:k=>({ update:f=>patch(k,f), set:f=>patch(k,f) }),
     onSnapshot:(cb,err)=>{ let t=null; const load=async()=>{ const {data,error}=await SB.from('planner_docs').select('doc_key,data').eq('year',YEAR).is('deleted_at',null); if(error){ err&&err(error); return; } cb({docs:(data||[]).map(r=>({id:r.doc_key,data:()=>r.data}))}); };
