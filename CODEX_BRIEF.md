@@ -2,6 +2,28 @@
 
 You are taking over a finished front end and moving it to production hosting. **Do not redesign anything.** The design, layouts, templates, stickers and widgets are approved. Your job is the hosting, database, logins, access codes and data safety.
 
+## 0. Where things stand (updated 24 November 2026)
+
+### Live now
+- **Site:** https://llp-planner-app.vercel.app (Vercel project `llp-planner-app`, deploys automatically from `main`, root directory `app`).
+- **Repo:** `LLHW-glitch/llp-planner` on GitHub.
+- **Database:** Supabase project **LLP Planner**, ref `hanqpldjcegadyrrxzvw`, region London, free plan.
+  - Everything in `supabase/migrations/0001_planner_core.sql` is applied: `planner_docs`, `planner_docs_history`, `access_codes`, `entitlements`, the `apply_patch` and `redeem_code` functions, row level security, realtime and the private `user-uploads` bucket.
+  - Test codes `LLP27-TEST-0001` to `LLP27-TEST-0010` exist for 2027.
+  - Auth URL settings point at the live site: Site URL `https://llp-planner-app.vercel.app`, redirect `https://llp-planner-app.vercel.app/**`.
+- **App adapter:** already built into `app/index.html`. When `window.LLP_SUPA` is set, the app uses magic-link sign-in, the code screen, `apply_patch` for saves, realtime for other devices, and Storage for photos. Without it, it falls back to the original `window.claude` storage. So sections 3 and 4 below describe what exists, not a to-do list.
+- **PDF export:** `pdf/gen-v2.js` fills the printed layout from a customer's documents (see section 8).
+
+### Still to do before launch (in order)
+1. End-to-end test on the live site: sign in, redeem a test code, tick and type, refresh, open on a second device.
+2. Custom SMTP for auth emails (for example Resend). The built-in Supabase email only sends a few emails an hour.
+3. Shopify order to access code: an order-paid webhook into a Supabase edge function that creates a code, emails it and verifies the Shopify HMAC.
+4. Upgrade Supabase to Pro (point-in-time backups) and Vercel to Pro. Add billing alerts on both.
+5. Staging. **Not created yet.** The free Supabase plan allows two active projects and both slots are in use ("LLP Planner" and "Live a Healthy Me"). Once on Pro, create "LLP Planner Staging", apply the same migration, and point a Vercel preview branch at it.
+6. Nightly independent backup (GitHub Action running `pg_dump` to outside storage). It needs the database connection string as a GitHub secret, which Christina must add herself.
+7. Move the base64 images out of `index.html` into files (section 5).
+8. Custom domain `app.liveloveplanners.com`, renewal banner from 1 December, and a PDF download button (section 8).
+
 ## 1. What this product is
 
 A pay-once online 2027 digital planner at `app.liveloveplanners.com`.
@@ -17,7 +39,7 @@ A pay-once online 2027 digital planner at `app.liveloveplanners.com`.
 | File | What it is |
 |---|---|
 | `index.html` | The whole app, about 4.7MB. A single page that renders every view from JavaScript. |
-| `gen.js` | PDF generator (Node and Playwright) that builds the printed planner layout. It is not wired to customer data yet. |
+| `gen.js` / `gen-v2.js` | PDF generator (Node and Playwright). `gen-v2.js` fills the printed layout from customer data. |
 | `mock.js` | A fake version of the current database API, used for local testing. |
 | `tests/*.js` | Playwright scripts used during the build. Reuse them for regression checks. |
 
@@ -168,7 +190,16 @@ Keep reading old data URLs so nothing breaks.
   - `app.liveloveplanners.com` points to production;
   - `staging.app.liveloveplanners.com` (or a Vercel preview) points to the staging Supabase project.
 
-**PDF export (next phase).** `gen.js` builds the planner layout with Playwright. It will need to run as a server function or a background job, read the user's documents and fill them in. It should also apply their colourway (`settings.tone`) and day layout (`settings.dayLayout`, which is `d1` or `d2`), and draw their stickers from the `stickers` doc using `x`/`y`/`w`/`r` as percentages of the page. This is not built yet.
+**PDF export.** `pdf/gen-v2.js` is built and tested with mock data (`pdf/test-data/`). `pdf/gen.js` is the earlier blank-only version, kept for reference.
+- Run: `node gen-v2.js '{"name":"jan","months":[0],"data":"test-data/mock-docs.json","app":"../app/index.html"}'`. It needs Playwright, the fonts in `node_modules/@fontsource` (figtree, forum, dancing-script) and the `assets/` folder of page artwork, which lives on Christina's Mac in the build folder (not in the repo yet).
+- `data` is a JSON file of `{ docKey: flatFields }`, exactly what `planner_docs.data` holds for one user and year. To export a customer, select their rows and write them out in that shape.
+- It opens the app headlessly with that data, so recurring tasks, brain dump items, calendar entries, habits and settings are worked out by the app's own code. It adds one line to the end of the app script to reach those helpers; the app file is not changed.
+- Filled pages: Index (custom sections list the customer's own pages), monthly calendar (entries in each day), dashboard (focus, goals, important dates, habit grids), finances (income, bills, spending, savings and totals), weekly (day notes, priorities, to do, habit ticks, reminders), weekly review, and daily pages.
+- Colourway comes from `settings.tone` (all 11, including Arctic outlines, Midnight dark tabs and Afterdark dark pages). Day layout comes from `settings.dayLayout`: D2 swaps in intention, must-dos, meals (from the weekly meal planner), water and mood (from monthly wellness), movement, gratitude and "just for me".
+- Stickers are photographed from the app as the customer sees them and placed using `x`/`y`/`w`/`r` as percentages of the paper. Stickers on template pages are skipped because the printed layout has no template pages yet.
+- Not filled yet: the monthly reflection page (the app has no monthly reflection; quarter reviews cover it), the dashboard "Top projects" and "To do" lists, sinking funds and debt tables (the app keeps these in templates), and template pages generally.
+- Sunday-start customers get the correct entries, but the printed weeks still run Monday to Sunday.
+- Production idea: run it as a background job (not a Vercel function, it needs a full Chromium and takes about 8 seconds a month), store the PDF in Storage and email a signed link.
 
 ## 9. Things that must keep working (test on staging)
 
