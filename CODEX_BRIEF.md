@@ -54,6 +54,7 @@ Example keys:
 - `settings`, `year`, `q1` to `q4`, `m1` to `m12`
 - `d20270105` (a day), `w20270104` (a week)
 - `hb202701` (habits), `money1`, `wellness1`, `meals20270104`
+- `ref1` to `ref12` (monthly reflection: `rate`, `hi.0-2`, `chal`, `less`, `s.a0-7` life wheel scores, `int.start/cont/stop`)
 - `recipes`, `recur`, `brain`, `stickers`, `pages`
 - `tpl-<id>` and `pg-<id>` (templates and copies of them)
 - image docs such as `vb-year-0`, `recipe-img-<id>` and `stw-<id>`
@@ -197,7 +198,8 @@ Keep reading old data URLs so nothing breaks.
 - Filled pages: Index (custom sections list the customer's own pages), monthly calendar (entries in each day), dashboard (focus, goals, important dates, habit grids), finances (income, bills, spending, savings and totals), weekly (day notes, priorities, to do, habit ticks, reminders), weekly review, and daily pages.
 - Colourway comes from `settings.tone` (all 11, including Arctic outlines, Midnight dark tabs and Afterdark dark pages). Day layout comes from `settings.dayLayout`: D2 swaps in intention, must-dos, meals (from the weekly meal planner), water and mood (from monthly wellness), movement, gratitude and "just for me".
 - Stickers are photographed from the app as the customer sees them and placed using `x`/`y`/`w`/`r` as percentages of the paper. Stickers on template pages are skipped because the printed layout has no template pages yet.
-- Not filled yet: the monthly reflection page (the app has no monthly reflection; quarter reviews cover it), the dashboard "Top projects" and "To do" lists, sinking funds and debt tables (the app keeps these in templates), and template pages generally.
+- The monthly reflection page fills from `ref{month}`, including the life wheel.
+- Not filled yet: the dashboard "Top projects" and "To do" lists, sinking funds and debt tables (the app keeps these in templates), and template pages generally.
 - Sunday-start customers get the correct entries, but the printed weeks still run Monday to Sunday.
 - Production idea: run it as a background job (not a Vercel function, it needs a full Chromium and takes about 8 seconds a month), store the PDF in Storage and email a signed link.
 
