@@ -984,7 +984,7 @@ input[data-date]{cursor:pointer}
 .pctop{display:flex;gap:16px;align-items:flex-end;flex:none;margin-top:10px;flex-wrap:wrap}.pcamt{display:flex;flex-direction:column;font-size:11.5px;color:var(--muted)}.pcamt input{border:0;border-bottom:1px solid var(--rule);background:none;font:inherit;font-size:15px;padding:3px 0;width:130px;color:var(--ink);outline:0}.pcamt.big input{font-family:var(--display);font-size:26px;width:170px}
 .pctiles{display:flex;gap:8px;margin-left:auto}.pctiles div{border-radius:14px;background:var(--fill);padding:6px 14px;display:flex;flex-direction:column}.pctiles span{font-size:11px;color:var(--muted)}.pctiles b{font-family:var(--display);font-weight:400;font-size:20px}.pctiles .ok{background:var(--light)}.pctiles .neg b{color:var(--warn)}
 .nsgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;align-content:start}.nsh{font-size:11px;color:var(--muted);text-align:center;font-weight:600}
-.nsd{aspect-ratio:1;max-height:62px;border-radius:50%;border:1.5px dashed color-mix(in srgb,var(--line) 50%,transparent);background:var(--paper);position:relative;cursor:pointer;display:grid;place-items:center;padding:0;transition:transform .15s}.nsd:hover{transform:scale(1.06)}.nsd b{font-size:13px;color:var(--muted);font-weight:500}
+.nsd{aspect-ratio:1;width:min(100%,62px);justify-self:center;border-radius:50%;border:1.5px dashed color-mix(in srgb,var(--line) 50%,transparent);background:var(--paper);position:relative;cursor:pointer;display:grid;place-items:center;padding:0;transition:transform .15s}.nsd:hover{transform:scale(1.06)}.nsd b{font-size:13px;color:var(--muted);font-weight:500}
 .nsd.on{background:var(--light);border:1.5px solid var(--line)}.nsd.on b{position:absolute;bottom:4px;font-size:10px;color:var(--line)}.nsd i{font-style:normal;color:#e07a95;font-size:22px}
 .nsbig{border-radius:18px;background:radial-gradient(circle at 30% 20%,var(--light),var(--fill));padding:16px;text-align:center;flex:none}.nsbig b{font-family:var(--display);font-weight:400;font-size:54px;line-height:1;color:var(--line);display:block}.nsbig span{font-size:13px;color:var(--muted)}
 .fggrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;flex:none}.fgc{border:1px solid var(--rule);border-radius:16px;padding:10px 14px 12px;background:linear-gradient(160deg,var(--fill),var(--paper) 55%);font-size:15px}
@@ -1042,6 +1042,37 @@ input[data-date]{cursor:pointer}
 .gbrand{font-family:var(--script);font-size:24px;color:var(--line);font-weight:400}.gcard h2{font-family:var(--display);font-weight:400;font-size:28px;margin:0}.gcard p{margin:0;color:var(--muted);font-size:14px}
 .gcard form{display:flex;flex-direction:column;gap:10px;margin-top:6px}.gcard input{border:1px solid var(--rule);border-radius:12px;padding:11px 14px;font:inherit;font-size:15px;text-align:center}.gcard .pill{padding:10px;font-size:15px;justify-content:center;text-align:center}
 .gmsg{min-height:20px;color:var(--ink)!important}.gsmall{font-size:12.5px!important}
+
+.lblic{float:right;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--fill);margin-top:-3px}
+.lblic svg{width:14px;height:14px;fill:none;stroke:var(--line);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.lblic:hover{background:var(--light)}
+a.mh{text-decoration:none;color:inherit;display:flex}a.mh:hover{background:var(--light)}
+.rdcard{display:flex;gap:12px;align-items:center;background:var(--fill);border-radius:12px;padding:9px 12px}
+.rdcov{flex:none;width:38px;height:54px;border-radius:4px 7px 7px 4px;background:var(--paper) center/cover;display:grid;place-items:center;box-shadow:inset 3px 0 0 color-mix(in srgb,var(--line) 35%,transparent),0 2px 5px rgba(0,0,0,.08)}
+.rdcov svg{width:20px;height:20px;fill:none;stroke:var(--line);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.rdinfo{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.rdt{font-family:var(--display);font-weight:400;font-size:16px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rda{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rdbar{display:block;height:5px;border-radius:9px;background:var(--paper);overflow:hidden;margin:2px 0}.rdbar i{display:block;height:100%;background:var(--line);border-radius:9px}
+.rdrow{display:flex;align-items:baseline;gap:6px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.rdpg{width:40px;border:0;border-bottom:1.5px solid var(--line);background:transparent;font:inherit;font-size:14px;color:var(--ink);text-align:center;padding:0 0 1px;outline:none}
+.rdrow em{font-style:normal;margin-left:auto;color:var(--line);font-size:11.5px}
+.line.rdin{background:transparent}
+.vcard{grid-column:4;grid-row:1 / span 2;border-radius:18px;border:1px solid var(--rule);background:radial-gradient(120% 80% at 50% 30%,var(--light),var(--paper) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:18px;text-decoration:none;color:var(--ink);min-height:0;overflow:hidden;transition:transform .2s}
+.vcard:hover{transform:translateY(-2px)}
+.vart{width:100%;flex:1;min-height:0;max-height:330px}
+.vl{fill:none;stroke:var(--line);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}.vl .vd{stroke-dasharray:1 6;stroke-width:1.6;opacity:.8}.vl .vf{fill:var(--line);stroke:none}
+.vlab{font-family:var(--script);font-size:24px;line-height:1.1;text-align:center}
+.vgo{font-size:12px;color:var(--muted);border:1px solid var(--rule);border-radius:999px;padding:4px 12px;background:var(--paper)}
+.micons a.qpill{width:auto;height:auto;padding:4px 12px;border:1px solid var(--line);border-radius:999px;font-size:12px;color:var(--ink);text-decoration:none;white-space:nowrap;margin-right:4px}
+.micons a.qpill:hover,.micons a.qpill.on{background:var(--light)}
+.micons svg{width:21px;height:21px;fill:none;stroke:var(--ink);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;opacity:.78}
+.rfhi{display:grid;grid-template-rows:repeat(3,minmax(0,1fr));gap:10px;flex:1;min-height:0}
+.rfh{position:relative;border:1px solid var(--line);border-radius:14px;background:var(--fill);display:flex;min-height:0}
+.rfh textarea{flex:1;border:0;background:transparent;resize:none;padding:10px 32px 10px 12px;font:inherit;font-size:13.5px;color:var(--ink);outline:none;min-height:0}
+.rfsp{position:absolute;right:9px;top:9px;width:16px;height:16px;fill:var(--light);stroke:var(--line);stroke-width:1.3;stroke-linejoin:round;pointer-events:none}
+.rfint{display:flex;flex-direction:column;gap:6px}.rfi{display:flex;align-items:baseline;gap:10px}.rfi span{flex:none;width:96px;font-family:var(--script);font-size:17px;color:var(--line);white-space:nowrap}
+@media (max-width:980px){.vcard{min-height:300px}.rfhi{grid-template-rows:none}.rfh{min-height:90px}}
 </style>
 
 <div class="app">
@@ -1245,10 +1276,11 @@ function miniCal(m){
 }
 
 function micons(m,on){
-  const items=[['month','micon0','Month calendar','#month-'+(m+1)],['quarter','micon1','Quarter goals','#quarter-'+(Math.floor(m/3)+1)]];
+  const q=Math.floor(m/3)+1, items=[['month','micon0','Month calendar','#month-'+(m+1)]];
   if(set().addons.money) items.push(['money','micon2','Budget','#money-'+(m+1)]);
-  items.push(['mvision','micon3','Vision board and notes','#vision-'+(m+1)]);
-  return `<span class="micons">${items.map(([id,ic,t,h])=>`<a href="${h}" class="${id===on?'on':''}" title="${t}" aria-label="${t}"><img src="${ICON[ic]}" alt=""></a>`).join('')}</span>`;
+  items.push(['mvision','svg','Vision board','#vision-'+(m+1)]);
+  items.push(['reflect','micon3','Monthly reflection','#reflect-'+(m+1)]);
+  return `<span class="micons"><a class="qpill${on==='quarter'?' on':''}" href="#quarter-${q}" title="Quarter ${q} goals">Quarter ${q}</a>${items.map(([id,ic,t,h])=>`<a href="${h}" class="${id===on?'on':''}" title="${t}" aria-label="${t}">${ic==='svg'?'<svg viewBox="0 0 24 24"><path d="M14.5 4.5a7.5 7.5 0 1 0 5 12.6A6 6 0 0 1 14.5 4.5z"/><path d="M18 3.5v3M16.5 5h3M5 4v2M4 5h2"/></svg>':`<img src="${ICON[ic]}" alt="">`}</a>`).join('')}</span>`;
 }
 /* ---------- planner views ---------- */
 function vYear(){
@@ -1373,13 +1405,13 @@ function vDay(d){
   const c2=`<div class="col">${recurBlock(k,d)}<div class="blk"><p class="lbl">Top 3 priorities</p>${checklist(k,'pri',{min:3,fixed:true})}</div><div class="blk grow scroll"><p class="lbl">Personal to do</p>${bdRows(d,'personal')}${checklist(k,'ptodo',{min:6})}</div><div class="blk grow scroll"><p class="lbl">Work to do</p>${bdRows(d,'work')}${checklist(k,'wtodo',{min:6})}</div></div>`;
   const wk_='wellness'+(d.getMonth()+1), wf_='days.d'+d.getDate(), mood=getPath(doc(wk_),wf_+'.mood');
   const moodBlk = s.mood && d.getFullYear()===YEAR ? `<div class="blk"><p class="lbl">Mood of the day</p><div class="moodpick">${[['Low','😞'],['Meh','😕'],['OK','😐'],['Good','🙂'],['Great','😄']].map(([x,e])=>`<button class="${mood===x?'on':''}" data-set="${wk_}|${wf_}.mood|${mood===x?'':x}" aria-label="${x}"><span>${e}</span>${x}</button>`).join('')}</div></div>` : '';
-  const readBlk = s.reading ? `<div class="blk"><p class="lbl">Reading</p><div class="row" style="gap:12px">${inp(k,'read.book','What are you reading?')}<input class="line" style="width:74px;flex:none" data-k="${k}" data-f="read.amt" value="${esc(getPath(doc(k),'read.amt'))}" placeholder="Pages" aria-label="Pages or minutes read"></div></div>` : '';
+  const readBlk = s.reading ? readCard(k,d) : '';
   const c3=`<div class="col">${moodBlk}${readBlk}${s.reminders?`<div class="blk scroll" style="max-height:34%"><p class="lbl">Reminders</p>${reminders(k,d,false)}</div>`:''}<div class="blk grow"><p class="lbl">Notes</p>${area(k,'notes','','box white fill')}</div><div class="blk">${miniCal(d.getFullYear()<YEAR?0:d.getFullYear()>YEAR?11:d.getMonth())}</div></div>`;
   if(s.dayLayout==='d2'){ const ws=wstart(d), mkk='meals'+key(ws), di=Math.round((d-ws)/864e5), w=+getPath(doc(wk_),wf_+'.water')||0;
     const meal=(m,n)=>`<label class="d2m"><span>${n}</span><input data-k="${mkk}" data-f="days.d${di}.${m}" value="${esc(getPath(doc(mkk),`days.d${di}.${m}`))}" aria-label="${n}"></label>`;
     const c1b=c1.replace("Today's focus","Intention for the day").replace('The one thing that would make today a win','How do you want today to feel?');
-    const c2b=`<div class="col">${recurBlock(k,d)}<div class="blk"><p class="lbl">Absolutely must get done</p>${checklist(k,'pri',{min:3,fixed:true})}</div><div class="blk grow scroll"><p class="lbl">To do</p>${bdRows(d,'personal')}${bdRows(d,'work')}${checklist(k,'ptodo',{min:8})}</div><div class="blk grow"><p class="lbl">Notes</p>${area(k,'notes','','box white fill')}</div></div>`;
-    const c3b=`<div class="col">${moodBlk}<div class="blk"><p class="lbl">Meals <a class="hint r" href="#meals-${key(ws)}">meal planner</a></p><div class="d2meals">${meal('b','Breakfast')}${meal('l','Lunch')}${meal('d','Dinner')}${meal('s','Snacks')}</div></div>
+    const c2b=`<div class="col">${recurBlock(k,d)}<div class="blk"><p class="lbl">Absolutely must get done</p>${checklist(k,'pri',{min:3,fixed:true})}</div><div class="blk grow scroll"><p class="lbl">To do</p>${bdRows(d,'personal')}${bdRows(d,'work')}${checklist(k,'ptodo',{min:readBlk?5:8})}</div>${readBlk}<div class="blk grow"><p class="lbl">Notes</p>${area(k,'notes','','box white fill')}</div></div>`;
+    const c3b=`<div class="col">${moodBlk}<div class="blk"><p class="lbl">Meals <a class="lblic" href="#meals-${key(ws)}" data-mealfrom="${key(d)}" title="Open meal planner" aria-label="Open meal planner"><svg viewBox="0 0 24 24"><path d="M7 3v8a2 2 0 0 0 4 0V3M9 11v10M16 21V3c2.5 1.5 3 4.5 3 8h-3"/></svg></a></p><div class="d2meals">${meal('b','Breakfast')}${meal('l','Lunch')}${meal('d','Dinner')}${meal('s','Snacks')}</div></div>
       <div class="blk"><p class="lbl">Water</p><div class="water d2w">${Array.from({length:8},(_,j)=>`<button class="${j<w?'on':''}" data-set="${wk_}|${wf_}.water|${j+1===w?j:j+1}" aria-label="${j+1} glasses"></button>`).join('')}</div></div>
       <div class="blk"><p class="lbl">Movement</p><div class="row" style="gap:10px">${inp(k,'move.t','Walk, yoga, gym...')}<input class="line" style="width:70px;flex:none" data-k="${k}" data-f="move.mins" value="${esc(getPath(doc(k),'move.mins'))}" placeholder="Mins" aria-label="Minutes"></div></div>
       <div class="blk"><p class="lbl">Today I'm grateful for</p>${inp(k,'grat','')}</div>
@@ -1395,12 +1427,25 @@ function vJournal(d){
 }
 
 /* ---------- add-ons ---------- */
+/* reading card on the daily page: current book from the library, pages today, reading days this month */
+function readCard(k,d){
+  let bk=null;
+  for(const kk of ['tpl-reading',...myPages().filter(p=>p.tpl==='reading').map(p=>'pg-'+p.id)]){ const l=(arr(doc(kk).books)||[]).filter(b=>b&&b.id&&b.title&&(+b.prog||0)<100); if(l.length){ const b=l.find(x=>(+x.prog||0)>0)||l[0]; bk=Object.assign({cover:getPath(doc(`${kk}-cover-${b.id}`),'src'),lib:kk==='tpl-reading'?'#tpl-reading':'#page-'+kk.slice(3)},b); break; } }
+  const last=new Date(d.getFullYear(),d.getMonth()+1,0).getDate(); let n=0;
+  for(let i=1;i<=last;i++){ const v=getPath(doc('d'+key(new Date(d.getFullYear(),d.getMonth(),i,12))),'read.amt'); if(v&&String(v).trim()&&String(v).trim()!=='0') n++; }
+  const prog=bk?Math.max(0,Math.min(100,+bk.prog||0)):0;
+  return `<div class="blk rdb"><p class="lbl">Reading <a class="lblic" href="${bk?bk.lib:'#tpl-reading'}" title="My book library" aria-label="My book library"><svg viewBox="0 0 24 24"><path d="M5 4h10a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h10"/></svg></a></p>
+    <div class="rdcard"><span class="rdcov${bk&&bk.cover?' has':''}" style="${bk&&bk.cover?`background-image:url(${bk.cover})`:''}">${bk&&bk.cover?'':'<svg viewBox="0 0 24 24"><path d="M5 4h10a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h10"/></svg>'}</span>
+    <div class="rdinfo">${bk?`<b class="rdt">${esc(bk.title)}</b>${bk.author?`<span class="rda">${esc(bk.author)}</span>`:''}<span class="rdbar"><i style="width:${prog}%"></i></span>`:`${inp(k,'read.book','What are you reading?','line rdin')}`}
+    <span class="rdrow"><input class="rdpg" type="text" inputmode="numeric" data-k="${k}" data-f="read.amt" value="${esc(getPath(doc(k),'read.amt'))}" placeholder="0" aria-label="Pages read today"><span>pages today</span>${n?`<em>${n} reading day${n>1?'s':''} this month</em>`:''}</span></div></div></div>`;
+}
 function vMeals(ws){
   const k='meals'+key(ws);
   const meals=[['b','Breakfast'],['l','Lunch'],['d','Dinner'],['s','Snacks']];
   const recs=(doc('recipes').list||[]);
-  const head=`<div class="ph"><h1>Meal planner</h1><span class="sub">${fmtShort(ws)} to ${fmtShort(add(ws,6))}</span>${nav('meals-'+key(add(ws,-7)),'meals-'+key(add(ws,7)),`<a class="pill" href="#recipes">My recipes</a>`)}</div>`;
-  let t=`<div class="blk"><div class="mealgrid"><div class="mh"></div>${[0,1,2,3,4,5,6].map(i=>`<div class="mh">${DAYS[add(ws,i).getDay()].slice(0,3)} ${add(ws,i).getDate()}</div>`).join('')}`;
+  const fd=UI.mealFrom?parse(UI.mealFrom):null, back=fd&&fd>=ws&&fd<=add(ws,6)?`<a class="pill solid" href="#day-${UI.mealFrom}">‹ Back to ${DAYS[fd.getDay()].slice(0,3)} ${fd.getDate()}</a>`:'';
+  const head=`<div class="ph"><h1>Meal planner</h1><span class="sub">${fmtShort(ws)} to ${fmtShort(add(ws,6))}</span>${nav('meals-'+key(add(ws,-7)),'meals-'+key(add(ws,7)),`${back}<a class="pill" href="#recipes">My recipes</a>`)}</div>`;
+  let t=`<div class="blk"><div class="mealgrid"><div class="mh"></div>${[0,1,2,3,4,5,6].map(i=>`<a class="mh" href="#day-${key(add(ws,i))}" title="Open this day">${DAYS[add(ws,i).getDay()].slice(0,3)} ${add(ws,i).getDate()}</a>`).join('')}`;
   meals.forEach(([m,name])=>{ t+=`<div class="mr">${name}</div>`;
     for(let i=0;i<7;i++){ const f=`days.d${i}.${m}`; const rid=getPath(doc(k),f+'r'); const rec=recs.find(x=>x&&x.id===rid&&x.name);
       t+=`<div>${area(k,f,'','')}<div class="rbtn">${rec?`<a href="#recipes-${rec.id}" title="${esc(rec.name)}">${esc(rec.name)}</a>`:'<span></span>'}<button data-pick="${k}|${f}r" aria-label="Link a recipe">${rec?'change':'+ recipe'}</button></div></div>`; } });
@@ -1521,6 +1566,7 @@ function deadlines(from){
 const rel = (d,from) => { const n=Math.round((d-from)/864e5); return n===0?'Today':n===1?'Tomorrow':`In ${n} days`; };
 function donut(parts,size=150){ const tot=parts.reduce((a,p)=>a+p.v,0)||1, r=size/2-12, c=2*Math.PI*r; let off=0;
   return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="transform:rotate(-90deg);flex:none">${parts.filter(p=>p.v>0).map(p=>{ const len=p.v/tot*c; const el=`<circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${p.c}" stroke-width="20" stroke-dasharray="${Math.max(0,len-2)} ${c}" stroke-dashoffset="${-off}"/>`; off+=len; return el; }).join('')||`<circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="var(--mint)" stroke-width="20"/>`}</svg>`; }
+const VART='<svg class="vart" viewBox="0 0 220 260" aria-hidden="true"><defs><mask id="vm1"><rect width="220" height="260" fill="#fff"/><circle cx="128" cy="86" r="40" fill="#000"/></mask><mask id="vm2"><circle cx="108" cy="102" r="46" fill="#fff"/></mask></defs><g class="vl"><circle cx="108" cy="102" r="46" mask="url(#vm1)"/><circle cx="128" cy="86" r="40" mask="url(#vm2)"/><path d="M160 37Q160 50 173 50Q160 50 160 63Q160 50 147 50Q160 50 160 37Z"/><path d="M52 56Q52 64 60 64Q52 64 52 72Q52 64 44 64Q52 64 52 56Z"/><path d="M178 125Q178 132 185 132Q178 132 178 139Q178 132 171 132Q178 132 178 125Z"/><path d="M66 160Q66 170 76 170Q66 170 66 180Q66 170 56 170Q66 170 66 160Z"/><path d="M150 182Q150 188 156 188Q150 188 150 194Q150 188 144 188Q150 188 150 182Z"/><path class="vd" d="M52 64L92 40L160 50L188 92L178 132"/><path class="vd" d="M30 222C70 196 120 214 196 176"/><circle cx="92" cy="40" r="2.2" class="vf"/><circle cx="188" cy="92" r="2.2" class="vf"/><circle cx="40" cy="120" r="1.8" class="vf"/><circle cx="120" cy="230" r="1.8" class="vf"/><circle cx="196" cy="214" r="1.6" class="vf"/><circle cx="24" cy="40" r="1.6" class="vf"/><path d="M196 167Q196 176 205 176Q196 176 196 185Q196 176 187 176Q196 176 196 167Z"/></g></svg>';
 function vDash(){
   const s=set(), d=curDay(), m=d.getMonth(), dk='d'+key(d), mk_='m'+(m+1), hk=hbKey(d);
   const hr=new Date().getHours(), hello=hr<12?'Good morning':hr<18?'Good afternoon':'Good evening';
@@ -1551,7 +1597,7 @@ function vDash(){
   const parts=[{n:'Bills',v:mo.bills,c:L},{n:'Spent',v:mo.spend,c:'#e2a36b'},{n:'Saved',v:mo.sav,c:'#8fb3e0'},{n:'Left',v:Math.max(0,mo.left),c:'color-mix(in srgb,var(--line) 18%,var(--paper))'}];
   const budget= s.addons.money ? `<div class="card" style="grid-column:3;grid-row:2"><h2>Budget · ${MONTHS[m]} <a class="more" href="#money-${m+1}">Budget ›</a></h2>${mo.inc||mo.bills||mo.spend?`<div class="bud"><div class="donut">${donut(parts)}<div class="dc"><b style="${mo.left<0?'color:var(--warn)':''}">${fmtMoney(mo.left,mo.c).replace(/\.00$/,'')}</b><span>left</span></div></div><div class="leg">${parts.slice(0,3).map(p=>`<div><i style="background:${p.c}"></i>${p.n}<b>${fmtMoney(p.v,mo.c).replace(/\.00$/,'')}</b></div>`).join('')}<div class="inc">Income<b>${fmtMoney(mo.inc,mo.c).replace(/\.00$/,'')}</b></div></div></div>`:`<p class="empty">Add your income, bills and spending on the <a href="#money-${m+1}">budget page</a> to see where your money is going.</p>`}</div>` : '';
   const vimgs=[0,1,2,3,4].map(i=>getPath(doc(`vb-m${m+1}-${i}`),'src'));
-  const collage=`<div class="collage" style="grid-column:4;grid-row:1 / span 2">${vimgs.map(src=>src?`<a href="#vision-${m+1}" style="background-image:url(${src})" aria-label="${MONTHS[m]} vision board"></a>`:`<a href="#vision-${m+1}">+ Add a photo</a>`).join('')}<a class="tag" href="#vision-${m+1}">${MONTHS[m]} vision</a></div>`;
+  const collage=`<a class="vcard" href="#vision-${m+1}" style="grid-column:4;grid-row:1 / span 2" aria-label="${MONTHS[m]} vision board">${VART}<span class="vlab">${MONTHS[m]} vision board</span><span class="vgo">Open my board ›</span></a>`;
   return head+`<div class="dash3">${agenda}${habits}${month}${dead}${budget||`<div style="grid-column:3;grid-row:2"></div>`}${collage}</div>`;
 }
 
@@ -1671,6 +1717,17 @@ function vVision(){
   const grid=`<div class="vgrid" style="grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr))">${Array.from({length:12},(_,i)=>vtile('vb-year-'+i)).join('')}</div>`;
   const side=`<div class="col"><div class="blk"><p class="lbl">Word for the year</p>${inp('year','word','One word to guide your year')}</div><div class="blk grow"><p class="lbl">The life I'm creating</p>${area('year','vnotes','How do you want 2027 to feel?','box fill')}</div><div class="blk"><p class="lbl">Monthly boards</p><div style="display:flex;flex-wrap:wrap;gap:6px">${MS.map((n,i)=>`<a class="pill" href="#vision-${i+1}">${n}</a>`).join('')}</div></div></div>`;
   return page(head,'minmax(0,3fr) minmax(0,1fr)', `<div class="col">${grid}</div>`+side);
+}
+/* monthly reflection */
+function vMReflect(m){
+  const k='ref'+(m+1);
+  const head=`<div class="ph"><h1>${MONTHS[m]} reflection</h1><span class="sub">Look back before you plan the next month</span>${nav(m>0?'reflect-'+m:'',m<11?'reflect-'+(m+2):'',micons(m,'reflect'))}</div>`;
+  const c1=`<div class="col"><div class="blk"><p class="lbl">How would I rate this month?</p>${stars(k,'rate',10)}</div>
+    <div class="blk grow"><p class="lbl">Highlights this month</p><div class="rfhi">${[0,1,2].map(i=>`<div class="rfh"><svg class="rfsp" viewBox="0 0 24 24"><path d="M12 3Q12 12 21 12Q12 12 12 21Q12 12 3 12Q12 12 12 3Z"/></svg>${area(k,'hi.'+i,i?'':'A moment I loved','')}</div>`).join('')}</div></div></div>`;
+  const c2=`<div class="col"><div class="blk grow"><p class="lbl">Biggest challenges</p>${area(k,'chal','','box white fill')}</div><div class="blk grow"><p class="lbl">Lessons learnt</p>${area(k,'less','','box white fill')}</div>
+    <div class="blk"><p class="lbl">Intentions next month</p><div class="rfint">${[['start','To start'],['cont','To continue'],['stop','To stop']].map(([f,n])=>`<label class="rfi"><span>${n}</span>${inp(k,'int.'+f,'')}</label>`).join('')}</div></div></div>`;
+  const c3=`<div class="col lwcol"><p class="lbl" style="align-self:flex-start">Areas of my life</p><p class="note" style="margin:0;align-self:flex-start">Tap each slice to score it out of 10 for ${MONTHS[m]}.</p>${wheelSvg(k)}</div>`;
+  return page(head,'minmax(0,1fr) minmax(0,1fr) minmax(0,1.05fr)',c1+c2+c3);
 }
 function vMVision(m){
   const k='m'+(m+1);
@@ -1908,6 +1965,7 @@ function cTray(tab){ const b=(s,inner,name,cls='')=>`<button class="sti ctile ${
     <p class="sthd">Time blocks <span class="hint">stretch them over your schedule</span></p><div class="stgrid tbs">${b('c:tb|','<span class="ctb demo"></span>','Time block')}${b('c:tbp|','<span class="ctb pill demo"></span>','Rounded time block')}</div>
 `;
 }
+document.addEventListener('click',e=>{ const a=e.target.closest&&e.target.closest('[data-mealfrom]'); if(a) UI.mealFrom=a.dataset.mealfrom; },true);
 document.addEventListener('dblclick',e=>{ const el=e.target.closest&&e.target.closest('.stk'); if(!el) return; const ed=(el.querySelector('.ed:not(.pre)')||el.querySelector('.ed')); if(!ed) return; el.classList.add('editing'); ed.focus(); try{ ed.select(); }catch(_){}});
 document.addEventListener('focusout',e=>{ if(e.target.classList&&e.target.classList.contains('ed')){ const el=e.target.closest('.stk'); if(el) setTimeout(()=>el.classList.remove('editing'),80); } });
 document.addEventListener('keydown',e=>{ if(e.key==='Enter'&&e.target.matches&&e.target.matches('input.ed')){ e.preventDefault(); e.target.blur(); } });
@@ -2456,6 +2514,7 @@ function parseHash(){
   if(m=/^(money|habits|workout|wellness)-(\d{1,2})$/.exec(h)) return {v:m[1],m:Math.min(12,Math.max(1,+m[2]))-1};
   if(m=/^recipes-([a-z0-9]+)$/.exec(h)) return {v:'recipes',id:m[1]};
   if(m=/^vision-(\d{1,2})$/.exec(h)) return {v:'mvision',m:Math.min(12,Math.max(1,+m[1]))-1};
+  if(m=/^reflect-(\d{1,2})$/.exec(h)) return {v:'mreflect',m:Math.min(12,Math.max(1,+m[1]))-1};
   if(m=/^tpl-([a-z0-9]+)$/.exec(h)) return {v:'tpl',id:m[1]};
   if(m=/^page-([a-z0-9]+)$/.exec(h)) return {v:'page',id:m[1]};
   if(['year','setup','recipes','meals','money','habits','workout','wellness','vision','templates','dashboard','organise','recurring','brain'].includes(h)) return {v:h};
@@ -2489,7 +2548,7 @@ function render(){
     case 'month': h=vMonth(route.m); break; case 'quarter': h=vQuarter(route.q); break; case 'setup': h=vSetup(); break;
     case 'meals': h=vMeals(route.d); break; case 'recipes': h=vRecipes(route.id); break; case 'money': h=vMoney(route.m); break;
     case 'habits': h=vHabits(route.m); break; case 'workout': h=vWorkout(route.m); break; case 'wellness': h=vWellness(route.m); break;
-    case 'dashboard': h=vDash(); break; case 'year': h=vYear(); break; case 'vision': h=vVision(); break; case 'mvision': h=vMVision(route.m); break; case 'templates': h=vTemplates(); break; case 'tpl': h=vTpl(route.id); break; case 'page': h=vPage(route.id); break; case 'organise': h=vOrganise(); break; case 'recurring': h=vRecurring(); break; case 'brain': h=vBrain(); break;
+    case 'dashboard': h=vDash(); break; case 'year': h=vYear(); break; case 'vision': h=vVision(); break; case 'mvision': h=vMVision(route.m); break; case 'mreflect': h=vMReflect(route.m); break; case 'templates': h=vTemplates(); break; case 'tpl': h=vTpl(route.id); break; case 'page': h=vPage(route.id); break; case 'organise': h=vOrganise(); break; case 'recurring': h=vRecurring(); break; case 'brain': h=vBrain(); break;
     default: h=vDash();
   }
   sheet.innerHTML=h;
@@ -2615,6 +2674,7 @@ function where(id, path){
   if(m=/^q([1-4])$/.exec(id)) return [`#quarter-${m[1]}`,`Quarter ${m[1]}`];
   if(id==='year') return P.startsWith('vnotes')?['#vision','2027 vision board']:['#year','2027 at a glance'];
   if(m=/^meals(\d{8})$/.exec(id)) return [`#meals-${m[1]}`,`Meal planner · ${fmtShort(parse(m[1]))}`];
+  if(m=/^ref(\d{1,2})$/.exec(id)) return [`#reflect-${m[1]}`,`${MONTHS[m[1]-1]} reflection`];
   if(m=/^(money|workout|wellness)(\d{1,2})$/.exec(id)) return [`#${m[1]}-${m[2]}`,`${MONTHS[m[2]-1]} ${({money:'budget',workout:'workouts',wellness:'wellness'})[m[1]]}`];
   if(m=/^tpl-(\w+)$/.exec(id)) return [`#tpl-${m[1]}`,tplName(m[1])];
   if(m=/^pg-(\w+)$/.exec(id)){ const pg=myPages().find(x=>x.id===m[1]); return pg?[`#page-${m[1]}`,pg.title||tplName(pg.tpl)]:null; }
