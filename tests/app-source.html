@@ -2837,7 +2837,13 @@ async function supaBoot(){
   signedIn=true; startSync();
   pdfLoad(); SB.channel('pdf-'+SBUID).on('postgres_changes',{event:'*',schema:'public',table:'pdf_jobs',filter:'user_id=eq.'+SBUID},()=>pdfLoad()).subscribe();
 }
-window.llpSignOut=async()=>{ if(SB){ await SB.auth.signOut(); location.reload(); } };
+window.llpSignOut=async()=>{
+  // save anything still waiting, sign out on this device, clear this account's copy from the browser, then show the sign-in screen
+  try{ for(const k of Object.keys(pend)) await flush(k); }catch(e){}
+  try{ if(SB) await SB.auth.signOut({scope:'local'}); }catch(e){}
+  try{ Object.keys(localStorage).filter(k=>k.startsWith('sb-')||(SBUID&&k.startsWith('llp27:'+SBUID+':'))).forEach(k=>localStorage.removeItem(k)); }catch(e){}
+  location.replace(location.origin+location.pathname);
+};
 (async()=>{
   try{
     if(window.LLP_SUPA){ await supaBoot(); return; }
