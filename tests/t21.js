@@ -1,0 +1,14 @@
+const {chromium}=require('playwright');const fs=require('fs');
+(async()=>{const b=await chromium.launch();const errs=[];
+fs.writeFileSync('t2.html','<!doctype html><html><head><meta charset=utf-8><script>'+fs.readFileSync('mock.js','utf8')+'</script></head><body>'+fs.readFileSync('index.html','utf8')+'</body></html>');
+const url='file://'+process.cwd()+'/t2.html';const p=await (await b.newContext({viewport:{width:1366,height:768}})).newPage();p.on('pageerror',e=>errs.push(e.message));
+await p.goto(url+'#brain');await p.waitForTimeout(600);
+await p.fill('#brainin','Book dentist');await p.click('.inbox-add #brainday');await p.waitForTimeout(200);await p.click('.dp [data-dpd="20270105"]');await p.waitForTimeout(500);await p.click('.inbox-add button[type=submit]');await p.waitForTimeout(300);
+await p.click('[data-ui="brainArea|work"]');await p.waitForTimeout(200);await p.fill('#brainin','Send invoice');await p.press('#brainin','Enter');await p.waitForTimeout(300);
+await p.fill('#brainin','Random thought');await p.press('#brainin','Enter');await p.waitForTimeout(300);
+await p.fill('[data-tcustom]','10');await p.press('[data-tcustom]','Enter');await p.waitForTimeout(300);
+await p.screenshot({path:'br1.png'});
+await p.goto(url+'#day-20270105');await p.waitForTimeout(600);await p.screenshot({path:'br2.png'});
+await p.click('.bdrow input.chk');await p.waitForTimeout(300);await p.screenshot({path:'br3.png',clip:{x:600,y:150,width:760,height:400}});
+await p.goto(url+'#brain');await p.waitForTimeout(500);console.log(await p.$$eval('.ibx span',x=>x.map(y=>y.textContent)), await p.textContent('#tleft'));
+console.log(errs);await b.close();})();

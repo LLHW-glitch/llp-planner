@@ -1,0 +1,5 @@
+-- Applied to project hanqpldjcegadyrrxzvw on 24 Nov 2026 (migration name: planner_core)
+-- Tables: access_codes, entitlements, planner_docs (soft delete), planner_docs_history
+-- Functions: apply_patch(year, doc, flat_patch) merges a patch where null removes a key; redeem_code(code) unlocks a year
+-- Storage: private bucket user-uploads, one folder per user id
+-- See the Supabase dashboard (Database > Migrations) for the exact SQL as applied.

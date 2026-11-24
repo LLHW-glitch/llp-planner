@@ -1,0 +1,21 @@
+const {chromium}=require('playwright');const fs=require('fs');
+(async()=>{const b=await chromium.launch();const errs=[];
+fs.writeFileSync('t2.html','<!doctype html><html><head><meta charset=utf-8><script>'+fs.readFileSync('mock.js','utf8')+'</script></head><body>'+fs.readFileSync('index.html','utf8')+'</body></html>');
+const url='file://'+process.cwd()+'/t2.html';const p=await (await b.newContext({viewport:{width:1366,height:768}})).newPage();p.on('pageerror',e=>errs.push(e.message));
+await p.goto(url+'#day-20270105');await p.waitForTimeout(500);
+await p.click('.blk >> text=Top 3 priorities >> xpath=.. >> input.chk >> nth=0');await p.waitForTimeout(150);
+await p.click('.blk >> text=Top 3 priorities >> xpath=.. >> input.chk >> nth=1');await p.waitForTimeout(150);
+console.log('just classes',await p.$$eval('input.chk.just',x=>x.length),'checked',await p.$$eval('input.chk:checked',x=>x.length));
+await p.click('#stickerBtn');await p.click('[data-sttab="icons"]');await p.waitForTimeout(200);await p.screenshot({path:'i-tray.png',clip:{x:1050,y:0,width:316,height:768}});
+await p.fill('#stsearch','dentist');await p.waitForTimeout(100);console.log('search',await p.$$eval('#sttray .sti:not([hidden])',x=>x.map(y=>y.title)));await p.fill('#stsearch','');
+for(const s of ['c:ico|Christmas','c:icot|Gym Working out','c:ico|Bill','c:num|7']) await p.click(`[data-stadd="${s}"]`);
+await p.click('[data-sttab="notes"]');await p.waitForTimeout(200);await p.screenshot({path:'w-tray.png',clip:{x:1050,y:0,width:316,height:768}});
+for(const n of [1,2,3,4,5,6]) await p.click(`[data-stadd="c:washi|${n}"]`);await p.click('[data-stadd="c:note|check"]');
+await p.click('[data-stdone]');await p.waitForTimeout(200);
+const sh=await p.locator('#sheet').boundingBox();const n=await p.locator('.stk').count();
+for(let i=n-1;i>=0;i--){ const bb=await p.locator('.stk').nth(i).boundingBox(); const cx=sh.x+sh.width*(0.08+0.12*(i%8)), cy=sh.y+sh.height*(0.3+0.3*Math.floor(i/8)); await p.mouse.move(bb.x+bb.width/2,bb.y+bb.height/2);await p.mouse.down();await p.mouse.move(cx,cy,{steps:3});await p.mouse.up();}
+await p.click('.stk.k-note .ckb >> nth=1');await p.waitForTimeout(200);
+await p.mouse.click(700,40);await p.waitForTimeout(200);await p.screenshot({path:'i-page.png'});
+await p.evaluate(()=>{document.documentElement.dataset.tone='linen'});await p.waitForTimeout(150);await p.screenshot({path:'i-page-linen.png'});
+await p.evaluate(()=>{document.documentElement.dataset.tone='afterdark'});await p.waitForTimeout(150);await p.screenshot({path:'i-page-dark.png'});
+console.log(errs);await b.close();})();
