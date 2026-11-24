@@ -7,3 +7,5 @@ pdf/planner-*
 pdf/_app.html
 pdf/fb.html
 pdf/job-*.json
+pdf-builder/masters/
+__pycache__/
