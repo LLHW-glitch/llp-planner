@@ -1113,6 +1113,7 @@ a.mh{text-decoration:none;color:inherit;display:flex}a.mh:hover{background:var(-
 <script>
 (() => {
 const YEAR = 2027;
+let SB=null, SBUID=null;
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const MS = MONTHS.map(m => m.slice(0,3));
 const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -2817,7 +2818,7 @@ function startSync(){
     }, ()=>status('Could not load, check your connection', true));
 }
 /* ---------- Supabase (live site) ---------- */
-let SB=null, SBUID=null;
+
 function gate(html){ let g=document.getElementById('gate'); if(!g){ g=document.createElement('div'); g.id='gate'; document.body.appendChild(g); } g.innerHTML=`<div class="gcard"><b class="gbrand">Live Love Planners</b>${html}</div>`; return g; }
 function gateSignIn(){ const g=gate(`<h2>Sign in to your planner</h2><p>Enter your email and we'll send you a link. No password needed.</p><form id="gform"><input id="gemail" type="email" required placeholder="you@email.com" autocomplete="email"><button class="pill solid" type="submit">Send my link</button></form><p class="gmsg" id="gmsg"></p>`);
   g.querySelector('#gform').addEventListener('submit',async e=>{ e.preventDefault(); const m=g.querySelector('#gmsg'), em=g.querySelector('#gemail').value.trim(); m.textContent='Sending...'; const {error}=await SB.auth.signInWithOtp({email:em,options:{emailRedirectTo:location.origin+location.pathname}}); m.textContent=error?'That didn\'t work: '+error.message:'Check your email for your sign-in link. You can close this tab.'; }); }
