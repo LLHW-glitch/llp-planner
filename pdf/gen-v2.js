@@ -115,7 +115,7 @@ function switcher(p, m) {
 }
 function star(cx, cy, size, n, on = false) {
   const pts = []; for (let i = 0; i < 10; i++) { const r = i % 2 ? .42 : 1, a = Math.PI / 5 * i - Math.PI / 2; pts.push(`${(Math.cos(a) * r * 100).toFixed(1)},${((Math.sin(a) * r + .08) * 100).toFixed(1)}`); }
-  return `<svg class="svg" style="left:${cx - size / 2}pt;top:${cy - size / 2}pt;width:${size}pt;height:${size}pt" viewBox="-110 -110 220 220"><polygon points="${pts.join(' ')}" fill="${on ? SOFT : 'none'}" stroke="${G}" stroke-width="7" stroke-linejoin="round"/><text x="0" y="30" font-size="60" text-anchor="middle" fill="${on ? INK : GREY}" font-style="italic" font-family="Body">${n}</text></svg>`;
+  return `<svg class="svg" style="left:${cx - size / 2}pt;top:${cy - size / 2}pt;width:${size}pt;height:${size}pt" viewBox="-110 -110 220 220"><polygon points="${pts.join(' ')}" fill="${on ? WHEEL : 'none'}" stroke="${G}" stroke-width="7" stroke-linejoin="round"/><text x="0" y="30" font-size="60" text-anchor="middle" fill="${on ? INK : GREY}" font-style="italic" font-family="Body">${n}</text></svg>`;
 }
 function sparkles(x, y, w, h) {
   const sp = (cx, cy, r) => `<path transform="translate(${cx} ${cy}) scale(${r})" d="M0-1Q.12-.12 1 0Q.12 .12 0 1Q-.12 .12-1 0Q-.12-.12 0-1Z" fill="${SOFT}"/>`;
@@ -251,10 +251,12 @@ function finances(c) {
 }
 
 // ---------- REFLECTION ----------
-function wheel() {
+const APPWHEEL = [['Health', '#8cc49a'], ['Career', '#5b8fc9'], ['Money', '#d9a441'], ['Relationships', '#e07a95'], ['Family', '#f0a070'], ['Fun', '#b48fe0'], ['Growth', '#3fa7a0'], ['Home', '#c49a7a']];
+function wheel(rf = {}) {
+  const sc = APPWHEEL.map((_, i) => +gp(rf, 's.a' + i) || 0), has = sc.some(Boolean);
   const cx = 204.2, cy = 504.6, R = 110, pt = (r, a) => [cx + r * Math.sin(a * Math.PI / 180), cy - r * Math.cos(a * Math.PI / 180)].map(v => v.toFixed(2));
   let s = `<svg class="svg" style="left:0;top:0;width:612pt;height:792pt" viewBox="0 0 612 792"><defs>`;
-  const areas = ['Personal Growth', 'Health &amp; Fitness', 'Finances', 'Family &amp; Friends', 'Relationships', 'Fun / Social', 'Career / Business', 'Spiritual'];
+  const areas = has ? APPWHEEL.map(a => a[0]) : ['Personal Growth', 'Health &amp; Fitness', 'Finances', 'Family &amp; Friends', 'Relationships', 'Fun / Social', 'Career / Business', 'Spiritual'];
   const cw = [1, 1, 0, 0, 0, 0, 1, 1];
   areas.forEach((t, i) => {
     const a0 = i * 45 + 2, a1 = i * 45 + 43;
@@ -262,6 +264,7 @@ function wheel() {
     else { const r = 122, p0 = pt(r, a1), p1 = pt(r, a0); s += `<path id="ap${i}" d="M${p0} A${r} ${r} 0 0 0 ${p1}"/>`; }
   });
   s += '</defs>';
+  sc.forEach((v, i) => { if (!v) return; const r = v * 11, p0 = pt(r, i * 45), p1 = pt(r, i * 45 + 45); s += `<path d="M${cx} ${cy}L${p0}A${r} ${r} 0 0 1 ${p1}Z" fill="${APPWHEEL[i][1]}" fill-opacity=".45"/>`; });
   for (let k = 1; k <= 10; k++) s += `<circle cx="${cx}" cy="${cy}" r="${k * 11}" fill="none" stroke="${WHEEL}" stroke-width=".7"/>`;
   for (let a = 0; a < 360; a += 45) { const p = pt(R, a); s += `<line x1="${cx}" y1="${cy}" x2="${p[0]}" y2="${p[1]}" stroke="${WHEEL}" stroke-width=".7"/>`; }
   for (let k = 1; k <= 10; k++) s += `<text x="${(cx + k * 11 - 5.5).toFixed(1)}" y="${cy + 2.4}" font-size="6.6" text-anchor="middle" fill="${GREY}" font-style="italic" font-family="Body">${k}</text>`;
@@ -269,23 +272,25 @@ function wheel() {
   return s + '</svg>';
 }
 function reflection(c) {
+  const rf = dk('ref' + (c.m + 1)), has = APPWHEEL.some((_, i) => +gp(rf, 's.a' + i));
   let h = h1(MONTHS[c.m] + ' Reflection') + switcher('ref', c.m) + micons(c.m);
   h += lbl('How would I rate this month:', 47, 81);
-  for (let i = 0; i < 10; i++) h += star(216 + i * 37.3, 87, 22, i + 1);
+  for (let i = 0; i < 10; i++) h += star(216 + i * 37.3, 87, 22, i + 1, i < +(rf.rate || 0));
   h += lbl('Highlights this month:', 47, 107.2);
-  [47, 227, 407].forEach(x => h += box(x, 125.7, 157.7, 78.5, 'rnd') + sparkles(x, 125.7, 157.7, 78.5));
+  [47, 227, 407].forEach(x => h += box(x, 125.7, 157.7, 78.5, 'rnd') + sparkles(x, 125.7, 157.7, 78.5)); [47, 227, 407].forEach((x, i) => h += para(gp(rf, 'hi.' + i), x + 8, 133, 141, 64, 'text-align:center'));
   h += lbl('Biggest challenges this month:', 47, 217.2) + lbl('Lessons learnt this month:', 314.8, 217.2);
   for (let i = 0; i < 5; i++) h += `<div class="ln" style="left:47pt;width:247.5pt;top:${242.2 + i * 15.5}pt"></div><div class="ln" style="left:314.8pt;width:248.2pt;top:${242.2 + i * 15.5}pt"></div>`;
+  h += para(rf.chal, 47, 231, 247.5, 77, 'line-height:15.5pt') + para(rf.less, 314.8, 231, 248.2, 77, 'line-height:15.5pt');
   h += lbl('Areas of my life', 47, 317.3);
   h += `<div class="instr">Use this Level 10 life wheel to assess and improve 8 areas of your life. Color code each area of your life and give it a score from 1-10 for the entire month.</div>`;
-  h += wheel();
+  h += wheel(rf);
   h += lbl('Color', 371, 416.8, 'width:25.7pt;text-align:center') + lbl('Area', 412.4, 416.8, 'width:107.3pt;text-align:center') + lbl('Score', 538.7, 416.8, 'width:25pt;text-align:center');
-  ['Personal Growth', 'Health &amp; Fitness', 'Finances', 'Family &amp; Friends', 'Relationships', 'Fun / Social', 'Career / Business', 'Spiritual'].forEach((t, i) => {
-    const y = 439.9 + i * 19.96;
-    h += `<div class="lw" style="left:371pt;width:25.7pt;top:${y}pt"></div><div class="lw a" style="left:412.4pt;width:107.3pt;top:${y}pt">${t}</div><div class="lw" style="left:538.7pt;width:24.9pt;top:${y}pt"></div>`;
+  (has ? APPWHEEL.map(a => a[0]) : ['Personal Growth', 'Health &amp; Fitness', 'Finances', 'Family &amp; Friends', 'Relationships', 'Fun / Social', 'Career / Business', 'Spiritual']).forEach((t, i) => {
+    const y = 439.9 + i * 19.96, v = +gp(rf, 's.a' + i) || 0;
+    h += `<div class="lw" style="left:371pt;width:25.7pt;top:${y}pt;${has ? `background:${APPWHEEL[i][1]};opacity:.55` : ''}"></div><div class="lw a" style="left:412.4pt;width:107.3pt;top:${y}pt">${t}</div><div class="lw" style="left:538.7pt;width:24.9pt;top:${y}pt;text-align:center">${v || ''}</div>`;
   });
   h += lbl('Intentions next month:', 47, 657.7);
-  ['to start', 'to continue', 'to stop'].forEach((t, i) => { const x = [47, 227, 407][i]; h += box(x, 677.5, 157.7, 66.7, 'rnd') + `<div class="script" style="left:${x}pt;top:677.5pt">${t}</div>`; });
+  ['to start', 'to continue', 'to stop'].forEach((t, i) => { const x = [47, 227, 407][i]; h += box(x, 677.5, 157.7, 66.7, 'rnd') + `<div class="script" style="left:${x}pt;top:677.5pt">${t}</div>` + para(gp(rf, 'int.' + ['start', 'cont', 'stop'][i]), x + 8, 714, 141, 28, 'text-align:center'); });
   return page('ref' + c.m, h, c.m);
 }
 

@@ -196,5 +196,23 @@
   "list~5~y": 50,
   "list~5~w": 10,
   "list~5~r": 0
+ },
+ "ref1": {
+  "rate": 7,
+  "hi~0": "Half term at the beach",
+  "hi~1": "Spring bundle launched",
+  "chal": "Not enough sleep",
+  "less": "Batching works",
+  "s~a0": 7,
+  "s~a1": 8,
+  "s~a2": 5,
+  "s~a3": 6,
+  "s~a4": 9,
+  "s~a5": 4,
+  "s~a6": 6,
+  "s~a7": 7,
+  "int~start": "Morning walks",
+  "int~cont": "Pinning daily",
+  "int~stop": "Late night scrolling"
  }
 }
