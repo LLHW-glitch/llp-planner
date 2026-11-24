@@ -1,0 +1,36 @@
+name: PDF worker
+# Woken by the request-pdf edge function the moment a customer asks for a PDF.
+# The schedule is a safety net in case a wake-up is missed.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 */6 * * *'
+concurrency:
+  group: pdf-worker
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: pdf/package-lock.json
+      - run: npm ci
+        working-directory: pdf
+      - run: npx playwright install --with-deps chromium
+        working-directory: pdf
+      - run: node worker.js
+        working-directory: pdf
+        env:
+          SUPABASE_URL: https://hanqpldjcegadyrrxzvw.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          APP_URL: https://llp-planner-app.vercel.app
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          MAIL_FROM: Live Love Planners <planner@liveloveplanners.com>

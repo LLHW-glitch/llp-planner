@@ -1,0 +1,14 @@
+{
+  "name": "llp-planner-pdf",
+  "private": true,
+  "description": "Builds customer planner PDFs and emails a download link",
+  "scripts": { "worker": "node worker.js" },
+  "dependencies": {
+    "@fontsource/dancing-script": "^5.1.0",
+    "@fontsource/figtree": "^5.1.0",
+    "@fontsource/forum": "^5.1.0",
+    "@supabase/supabase-js": "^2.45.4",
+    "nodemailer": "^6.9.16",
+    "playwright": "1.63.0"
+  }
+}
