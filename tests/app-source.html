@@ -147,7 +147,7 @@ input,textarea,select{font:inherit;color:var(--ink)}
 .mcal{width:100%;height:100%;border-collapse:collapse;table-layout:fixed}
 .mcal th{font-weight:500;font-size:12.5px;padding:0 0 5px;text-align:center;height:22px}
 .mcal td{border:1px solid var(--line);vertical-align:top;padding:0;position:relative}
-.mcal td.out{border-color:var(--rule)}
+.mcal td.out{border-color:var(--line)}
 .mcal td.wk{width:26px;background:var(--fill);border-color:var(--line)}
 .mcal td.wk a{position:absolute;inset:0;display:grid;place-items:center;text-decoration:none;font-size:11.5px;writing-mode:vertical-rl;transform:rotate(180deg)}
 .mcal td a.cell{position:absolute;inset:0;text-decoration:none;padding:4px 6px;display:flex;flex-direction:column;gap:2px;overflow:hidden}
@@ -1078,6 +1078,71 @@ a.mh{text-decoration:none;color:inherit;display:flex}a.mh:hover{background:var(-
 
 .gpw{position:relative;display:flex}.gpw input{flex:1;padding-right:58px!important}.gshow{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:none;color:var(--muted);font:inherit;font-size:12px;cursor:pointer;padding:4px 6px}
 #gform{display:flex;flex-direction:column;gap:10px}
+
+/* v44: notes, sections, journal, habits overview, Dec 2026 */
+.stabs>a.dec26{flex:.8;margin-bottom:4px;opacity:.85}
+.stabs>a.dec26 span{font-size:10.5px}
+.jmode{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.nbhub{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px}
+.nbcard{border:1px solid var(--line);border-radius:16px;padding:14px 16px;background:var(--paper,#fff);display:flex;flex-direction:column;gap:10px}
+.nbcardh{display:flex;gap:12px;align-items:center}
+.nbcardh svg{width:38px;height:38px;padding:8px;border-radius:12px;background:var(--fill);fill:none;stroke:var(--line);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.nbcardh b{font-family:var(--display);font-weight:400;font-size:20px;display:block}
+.nbcardh span{font-size:12px;color:var(--muted)}
+.nbpaper{display:flex;gap:8px;flex-wrap:wrap}
+.nbpaper a{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;text-decoration:none;color:inherit;padding:0!important;border:0!important;margin:0!important}
+.nbpaper a:hover .nbsw{background-color:var(--fill)}
+.nbsw{width:46px;height:58px;border:1px solid var(--line);border-radius:7px;background:#fff}
+.nbsw.p-lined{background:repeating-linear-gradient(#fff 0 9px,var(--rule) 9px 10px)}
+.nbsw.p-dots{background:radial-gradient(circle,var(--line) 1px,transparent 1.4px) 0 0/8px 8px #fff}
+.nbsw.p-grid{background:linear-gradient(var(--rule) 1px,transparent 1px) 0 0/8px 8px,linear-gradient(90deg,var(--rule) 1px,#fff 1px) 0 0/8px 8px}
+.nbsw.p-cornell{background:linear-gradient(90deg,transparent 13px,var(--line) 13px 14px,transparent 14px),linear-gradient(transparent 44px,var(--line) 44px 45px,transparent 45px),repeating-linear-gradient(#fff 0 9px,var(--rule) 9px 10px)}
+.nbl2{font-size:11.5px;color:var(--muted);margin:2px 0 -4px}
+.nblist{display:flex;flex-direction:column;gap:6px}
+.nblist a,.nbmine{display:block;border:1px solid var(--rule);border-radius:10px;padding:7px 11px!important;margin:0!important;text-decoration:none;font-size:13px}
+.nblist a:hover{background:var(--fill)}
+.nbcard .pill{align-self:flex-start}
+.nbtools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:4px 0 10px}
+.nbidx{display:flex;gap:4px;flex-wrap:wrap}
+.nbidx a{font-size:12px;padding:3px 9px;border-radius:999px;background:var(--fill);text-decoration:none}
+.nbpages{display:flex;flex-direction:column;gap:18px;flex:1;min-height:0}
+.nbpage{position:relative;border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:#fff;display:flex;flex-direction:column;gap:8px}
+.nbhead{display:flex;gap:10px;align-items:center}
+.nbtitle{flex:1;border:0;border-bottom:1px solid var(--rule);font:inherit;font-family:var(--display);font-size:21px;padding:2px 0;background:none;color:inherit;outline:none}
+.nbdel{position:absolute;top:8px;right:10px}
+textarea.paper{width:100%;min-height:520px;border:0;resize:vertical;font:inherit;font-size:14px;line-height:28px;padding:0 2px;background-color:#fff;color:inherit;outline:none}
+textarea.paper.lined{background:repeating-linear-gradient(transparent 0 27px,var(--rule) 27px 28px);background-attachment:local}
+textarea.paper.dots{background:radial-gradient(circle,var(--line) 1.1px,transparent 1.6px) 0 0/28px 28px;background-attachment:local}
+textarea.paper.grid{background:linear-gradient(var(--rule) 1px,transparent 1px) 0 0/28px 28px,linear-gradient(90deg,var(--rule) 1px,transparent 1px) 0 0/28px 28px;background-attachment:local}
+.cornell{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.6fr);gap:0 14px}
+.cornell textarea:first-child{border-right:1px solid var(--line)}
+.cornell textarea.sum{grid-column:1/-1;min-height:140px;border-top:1px solid var(--line);margin-top:8px;padding-top:4px}
+.nbl{border-top:1px solid var(--rule)}
+.hhabwrap{display:grid;grid-template-columns:minmax(330px,1fr) minmax(0,2fr);gap:16px;margin-bottom:14px}
+.hhero{display:flex;gap:18px;align-items:center;border-radius:20px;padding:18px 20px;background:var(--fill)}
+.hmsg{font-family:var(--display);font-size:24px;margin:0;line-height:1.15}
+.hcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.hcard{display:flex;gap:12px;align-items:center;border:1px solid var(--rule);border-radius:16px;padding:10px 12px;background:#fff}
+.hcard b{display:block;font-weight:500;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px}
+.hcard span{display:block;font-size:12px;color:var(--muted)}
+.hcard .hstreak{color:var(--ink);margin-top:2px}
+.hcard .hstreak i{color:var(--line);font-style:normal;margin-right:3px}
+.hring{flex:none;overflow:visible}
+.hring .tr{fill:none;stroke:var(--mint,var(--fill));stroke-width:7}
+.hring .pr{fill:none;stroke:var(--line);stroke-width:7;stroke-linecap:round;transition:stroke-dasharray .5s}
+.hring text{font-size:15px;fill:var(--ink);font-variant-numeric:tabular-nums}
+.hring.big .tr,.hring.big .pr{stroke-width:11}
+.hring.big text{font-size:26px;font-family:var(--display)}
+.hyear{display:grid;grid-template-columns:repeat(13,minmax(0,1fr));gap:6px}
+.hyear a{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;font-size:12px;padding:6px 0;border-radius:12px}
+.hyear a.on,.hyear a:hover{background:var(--fill)}
+.hyear a.fut{opacity:.55}
+.hyear .hring .tr,.hyear .hring .pr{stroke-width:6}
+.hyear .hring text{font-size:12px}
+.hmonth th{font-size:10.5px;line-height:1.15}
+.hmonth th small{display:block;color:var(--muted);font-size:9px}
+.hmonth th.tdy{color:var(--line);font-weight:600}
+@media (max-width:760px){.nbhub,.hhabwrap{grid-template-columns:1fr}.hyear{grid-template-columns:repeat(7,1fr)}}
 </style>
 
 <div class="app">
@@ -1115,6 +1180,7 @@ const YEAR = 2027;
 let SB=null, SBUID=null;
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const MS = MONTHS.map(m => m.slice(0,3));
+MONTHS[-1]='December'; MS[-1]='Dec';   /* December 2026, so people can start before January */
 const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const PROMPTS = [
  "What would make today feel like a good day?",
@@ -1274,19 +1340,28 @@ function miniCal(m){
   let h=`<table class="mini"><caption><a href="#month-${m+1}">${MONTHS[m]}</a></caption><tr><th></th>${hd.map(x=>`<th>${x}</th>`).join('')}</tr>`;
   monthWeeks(m).forEach(w=>{
     h+=`<tr><td class="w"><a href="#week-${key(w)}" aria-label="Week ${weekNo(w)}">W${weekNo(w)}</a></td>`;
-    for(let i=0;i<7;i++){ const d=add(w,i); const cls=[d.getMonth()!==m?'o':'', has(docs['d'+key(d)])?'has':'', sameDay(d,t)?'today':''].join(' ');
+    for(let i=0;i<7;i++){ const d=add(w,i); const cls=[d.getMonth()!==(m+12)%12?'o':'', has(docs['d'+key(d)])?'has':'', sameDay(d,t)?'today':''].join(' ');
       h+=`<td class="${cls}"><a href="#day-${key(d)}" aria-label="${fmtLong(d)}">${d.getDate()}</a></td>`; }
     h+='</tr>';
   });
   return h+'</table>';
 }
 
+const MIC={
+  cal:'<rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/><path d="M8 13.5h.01M12 13.5h.01M16 13.5h.01M8 16.8h.01M12 16.8h.01" stroke-width="2"/>',
+  money:'<rect x="3.5" y="7" width="17" height="12.5" rx="2.5"/><path d="M6 7l9.5-3 1.2 3M16 13.2h2.5"/>',
+  habits:'<circle cx="12" cy="12" r="8.5"/><path d="M8.3 12.3l2.5 2.5 5-5.2"/>',
+  moon:'<path d="M14.5 4.5a7.5 7.5 0 1 0 5 12.6A6 6 0 0 1 14.5 4.5z"/><path d="M18 3.5v3M16.5 5h3M5 4v2M4 5h2"/>',
+  reflect:'<rect x="4.5" y="3.5" width="12" height="17" rx="2"/><path d="M8 8h5M8 11.5h5M8 15h3"/><path d="M19.8 8.5l-4 6.8-1.6.6.2-1.7 4-6.8z"/>',
+  journal:'<path d="M6.5 3.5H18a1.5 1.5 0 0 1 1.5 1.5v15.5h-12A2.5 2.5 0 0 1 5 18V5a1.5 1.5 0 0 1 1.5-1.5z"/><path d="M5 18a2.5 2.5 0 0 1 2.5-2.5h12M10 3.5v6l2-1.4 2 1.4v-6"/>'
+};
 function micons(m,on){
-  const q=Math.floor(m/3)+1, items=[['month','micon0','Month calendar','#month-'+(m+1)]];
-  if(set().addons.money) items.push(['money','micon2','Budget','#money-'+(m+1)]);
-  items.push(['mvision','svg','Vision board','#vision-'+(m+1)]);
-  items.push(['reflect','micon3','Monthly reflection','#reflect-'+(m+1)]);
-  return `<span class="micons"><a class="qpill${on==='quarter'?' on':''}" href="#quarter-${q}" title="Quarter ${q} goals">Quarter ${q}</a>${items.map(([id,ic,t,h])=>`<a href="${h}" class="${id===on?'on':''}" title="${t}" aria-label="${t}">${ic==='svg'?'<svg viewBox="0 0 24 24"><path d="M14.5 4.5a7.5 7.5 0 1 0 5 12.6A6 6 0 0 1 14.5 4.5z"/><path d="M18 3.5v3M16.5 5h3M5 4v2M4 5h2"/></svg>':`<img src="${ICON[ic]}" alt="">`}</a>`).join('')}</span>`;
+  const q=Math.floor(m/3)+1, items=[['month',MIC.cal,'Month calendar','#month-'+(m+1)]];
+  if(set().addons.money) items.push(['money',MIC.money,'Budget','#money-'+(m+1)]);
+  if(set().addons.habits) items.push(['habits',MIC.habits,'Habit tracker','#habits-'+(m+1)]);
+  items.push(['mvision',MIC.moon,'Vision board','#vision-'+(m+1)]);
+  items.push(['reflect',MIC.reflect,'Monthly reflection','#reflect-'+(m+1)]);
+  return `<span class="micons">${m<0?'':`<a class="qpill${on==='quarter'?' on':''}" href="#quarter-${q}" title="Quarter ${q} goals">Quarter ${q}</a>`}${items.map(([id,ic,t,h])=>`<a href="${h}" class="${id===on?'on':''}" title="${t}" aria-label="${t}"><svg viewBox="0 0 24 24">${ic}</svg></a>`).join('')}</span>`;
 }
 /* ---------- planner views ---------- */
 function vYear(){
@@ -1331,11 +1406,11 @@ function monthEntries(m){
 }
 function vMonth(m){
   const k='m'+(m+1), t=today(), order = set().ws===1?[1,2,3,4,5,6,0]:[0,1,2,3,4,5,6];
-  const head=`<div class="ph"><h1>${MONTHS[m]}</h1><span class="sub">2027</span>${nav(m>0?'month-'+m:'',m<11?'month-'+(m+2):'',micons(m,'month'))}</div>`;
+  const head=`<div class="ph"><h1>${MONTHS[m]}</h1><span class="sub">${mk(YEAR,m,1).getFullYear()}</span>${nav(m>-1?'month-'+m:'',m<11?'month-'+(m+2):'',micons(m,'month'))}</div>`;
   const ENT=monthEntries(m);
   let cal=`<div class="blk"><table class="mcal"><tr><th style="width:26px"></th>${order.map(d=>`<th>${DAYS[d]}</th>`).join('')}</tr>`;
   monthWeeks(m).forEach(w=>{ cal+=`<tr><td class="wk"><a href="#week-${key(w)}">Week ${weekNo(w)}</a></td>`;
-    for(let i=0;i<7;i++){ const d=add(w,i), dd=docs['d'+key(d)]||{}, out=d.getMonth()!==m;
+    for(let i=0;i<7;i++){ const d=add(w,i), dd=docs['d'+key(d)]||{}, out=d.getMonth()!==(m+12)%12;
       const es=ENT[key(d)]||[], rows=monthWeeks(m).length, cap=Math.max(2,Math.floor(((Math.max(innerHeight,620)-235)/rows-24)/18)); let ti=0;
       cal+=`<td class="${out?'out':''} ${sameDay(d,t)?'today':''}"><a class="cell" href="#day-${key(d)}" aria-label="${fmtLong(d)}"><span class="num">${d.getDate()}</span>${es.slice(0,cap).map(e=>`<span class="mpill y-${e.y}${e.y==='task'?' s'+(ti++%3):''}${e.done?' done':''}">${e.done?'✓ ':''}${esc(e.t)}</span>`).join('')}${es.length>cap?`<span class="mmore">+${es.length-cap} more</span>`:''}</a></td>`; }
     cal+='</tr>'; });
@@ -1356,12 +1431,12 @@ function vWeek(ws){
   const head=`<div class="ph"><h1>Week ${weekNo(ws)}</h1><span class="sub">${fmtShort(ws)} to ${fmtShort(last)}</span>${nav('week-'+key(add(ws,-7)),'week-'+key(add(ws,7)),`<span class="wtoggle"><a class="on" href="#week-${key(ws)}">Week list</a><a href="#wsched-${key(ws)}">Week schedule</a></span><a class="pill" href="#review-${key(ws)}">Weekly review</a>`)}</div>`;
   let days=`<div class="wkdays">`;
   for(let i=0;i<7;i++){ const d=add(ws,i);
-    days+=`<div class="wkday"><a class="d${d.getMonth()!==ws.getMonth()&&d.getMonth()!==last.getMonth()?' o':''}" href="#day-${key(d)}" title="Open ${fmtLong(d)}">${DAYS[d.getDay()].slice(0,3)}<b>${d.getDate()}</b>${has(docs['d'+key(d)])?'<i></i>':''}</a>${area(k,`days.d${i}`,i===0?'Plans, appointments, notes':'','')}</div>`; }
+    days+=`<div class="wkday"><a class="d${d.getMonth()!==ws.getMonth()&&d.getMonth()!==last.getMonth()?' o':''}" href="#day-${key(d)}" title="Open ${fmtLong(d)}">${DAYS[d.getDay()].slice(0,3)}<b>${d.getDate()}</b>${has(docs['d'+key(d)])?'<i></i>':''}</a>${area(k,`days.d${i}`,'','')}</div>`; }
   days+='</div>';
   const mid=`<div class="col"><div class="blk"><p class="lbl">Priorities this week</p>${checklist(k,'pri',{min:3,numbered:true,fixed:true})}</div><div class="blk grow scroll"><p class="lbl">To do</p>${checklist(k,'todo',{min:10})}</div></div>`;
-  const right=`<div class="col"><div class="blk"><p class="lbl">Habit tracker <a class="hint r" href="#setup">edit habits</a></p>${habitTable(k,ws)}</div>
+  const right=`<div class="col"><div class="blk"><p class="lbl">Habit tracker <a class="lblic" href="#habits-${mIdx(add(ws,3))+1}" title="Open my habit tracker" aria-label="Open my habit tracker"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M8.3 12.3l2.5 2.5 5-5.2"/></svg></a><a class="hint r" href="#setup" style="margin-right:8px">edit habits</a></p>${habitTable(k,ws)}</div>
     ${s.reminders?`<div class="blk grow scroll"><p class="lbl">Reminders <span class="hint">Set a time, then tap the calendar</span></p>${reminders(k,ws,true)}</div>`:'<div class="grow"></div>'}
-    <div class="blk">${miniCal(ws.getFullYear()<YEAR?0:(last.getFullYear()>YEAR?11:ws.getMonth()))}</div></div>`;
+    <div class="blk">${miniCal(ws.getFullYear()<YEAR?-1:(last.getFullYear()>YEAR?11:ws.getMonth()))}</div></div>`;
   return page(head,'minmax(0,1.35fr) minmax(0,1fr) minmax(0,1fr)', `<div class="col">${days}</div>`+mid+right);
 }
 function vWSched(ws){
@@ -1400,7 +1475,7 @@ function vReview(ws){
 }
 function vDay(d){
   const k='d'+key(d), s=set(), wk=wstart(d);
-  const head=`<div class="ph"><h1>${fmtLong(d)}</h1>${nav('day-'+key(add(d,-1)),'day-'+key(add(d,1)),`${s.journal?`<a class="pill" href="#journal-${key(d)}">Journal</a>`:''}<a class="pill" href="#week-${key(wk)}">Week ${weekNo(wk)}</a>`)}</div>`;
+  const head=`<div class="ph"><h1>${fmtLong(d)}</h1>${nav('day-'+key(add(d,-1)),'day-'+key(add(d,1)),`${s.journal?`<a class="pill" href="${jlink(d)}">Journal</a>`:''}<a class="pill" href="#week-${key(wk)}">Week ${weekNo(wk)}</a>`)}</div>`;
   const st=stepOf(s), slots=[]; for(let t=s.from*60; t<s.to*60; t+=st) slots.push(t);
   let sched=`<div class="sched" style="grid-template-rows:repeat(${slots.length},minmax(0,1fr))">`;
   slots.forEach(t=>{ const v=getPath(doc(k),'sched.t'+hm(t))||'';
@@ -1412,7 +1487,7 @@ function vDay(d){
   const wk_='wellness'+(d.getMonth()+1), wf_='days.d'+d.getDate(), mood=getPath(doc(wk_),wf_+'.mood');
   const moodBlk = s.mood && d.getFullYear()===YEAR ? `<div class="blk"><p class="lbl">Mood of the day</p><div class="moodpick">${[['Low','😞'],['Meh','😕'],['OK','😐'],['Good','🙂'],['Great','😄']].map(([x,e])=>`<button class="${mood===x?'on':''}" data-set="${wk_}|${wf_}.mood|${mood===x?'':x}" aria-label="${x}"><span>${e}</span>${x}</button>`).join('')}</div></div>` : '';
   const readBlk = s.reading ? readCard(k,d) : '';
-  const c3=`<div class="col">${moodBlk}${readBlk}${s.reminders?`<div class="blk scroll" style="max-height:34%"><p class="lbl">Reminders</p>${reminders(k,d,false)}</div>`:''}<div class="blk grow"><p class="lbl">Notes</p>${area(k,'notes','','box white fill')}</div><div class="blk">${miniCal(d.getFullYear()<YEAR?0:d.getFullYear()>YEAR?11:d.getMonth())}</div></div>`;
+  const c3=`<div class="col">${moodBlk}${readBlk}${s.reminders?`<div class="blk scroll" style="max-height:34%"><p class="lbl">Reminders</p>${reminders(k,d,false)}</div>`:''}<div class="blk grow"><p class="lbl">Notes</p>${area(k,'notes','','box white fill')}</div><div class="blk">${miniCal(d.getFullYear()<YEAR?-1:d.getFullYear()>YEAR?11:d.getMonth())}</div></div>`;
   if(s.dayLayout==='d2'){ const ws=wstart(d), mkk='meals'+key(ws), di=Math.round((d-ws)/864e5), w=+getPath(doc(wk_),wf_+'.water')||0;
     const meal=(m,n)=>`<label class="d2m"><span>${n}</span><input data-k="${mkk}" data-f="days.d${di}.${m}" value="${esc(getPath(doc(mkk),`days.d${di}.${m}`))}" aria-label="${n}"></label>`;
     const c1b=c1.replace("Today's focus","Intention for the day").replace('The one thing that would make today a win','How do you want today to feel?');
@@ -1422,13 +1497,17 @@ function vDay(d){
       <div class="blk"><p class="lbl">Movement</p><div class="row" style="gap:10px">${inp(k,'move.t','Walk, yoga, gym...')}<input class="line" style="width:70px;flex:none" data-k="${k}" data-f="move.mins" value="${esc(getPath(doc(k),'move.mins'))}" placeholder="Mins" aria-label="Minutes"></div></div>
       <div class="blk"><p class="lbl">Today I'm grateful for</p>${inp(k,'grat','')}</div>
       <div class="blk"><p class="lbl">One thing just for me</p><div class="row" style="gap:8px">${chk(k,'care.c',true,'Done',true)}${inp(k,'care.t','A bath, a walk, a chapter of my book')}</div></div>
-      <div class="blk">${miniCal(d.getFullYear()<YEAR?0:d.getFullYear()>YEAR?11:d.getMonth())}</div></div>`;
+      <div class="blk">${miniCal(d.getFullYear()<YEAR?-1:d.getFullYear()>YEAR?11:d.getMonth())}</div></div>`;
     return page(head,'minmax(0,1.15fr) minmax(0,1fr) minmax(0,1fr)', c1b+c2b+c3b); }
   return page(head,'minmax(0,1.2fr) minmax(0,1fr) minmax(0,.95fr)', c1+c2+c3);
 }
+function jbook(){ const s=set(); if(s.jmode!=='book') return null; return myPages().find(x=>x.id===s.jbook)||myPages().find(x=>x.tpl==='njournal')||null; }
+function jlink(d){ const b=jbook(); return b?'#page-'+b.id:'#journal-'+key(d); }
+function jmodeBar(){ const s=set(), books=myPages().filter(x=>x.tpl==='njournal');
+  return `<div class="jmode"><label class="pill">Keep my journal <select data-k="settings" data-f="jmode" style="border:0;background:none;font:inherit;color:inherit"><option value="daily" ${s.jmode!=='book'?'selected':''}>behind each daily page</option><option value="book" ${s.jmode==='book'?'selected':''}>as a named journal</option></select></label>${s.jmode==='book'?(books.length?`<label class="pill">Use <select data-k="settings" data-f="jbook" style="border:0;background:none;font:inherit;color:inherit">${books.map(b=>`<option value="${b.id}" ${(jbook()||{}).id===b.id?'selected':''}>${esc(b.title||'Journal')}</option>`).join('')}</select></label>`:'')+`<button class="pill solid" data-copytpl="njournal">+ New journal</button>`:''}</div>`; }
 function vJournal(d){
   const k='d'+key(d), doy=Math.round((d - mk(d.getFullYear(),0,1))/864e5);
-  const head=`<div class="ph"><h1>Journal</h1><span class="sub">${fmtLong(d)}</span>${nav('journal-'+key(add(d,-1)),'journal-'+key(add(d,1)),`<a class="pill" href="#day-${key(d)}">‹ Back to day</a>`)}</div>`;
+  const head=`<div class="ph"><h1>Journal</h1><span class="sub">${fmtLong(d)}</span>${nav('journal-'+key(add(d,-1)),'journal-'+key(add(d,1)),`${jmodeBar()}<a class="pill" href="#day-${key(d)}">‹ Back to day</a>`)}</div>`;
   return page(head,'minmax(0,1fr)', `<div class="col"><p class="prompt">${esc(PROMPTS[doy%PROMPTS.length])}</p>${area(k,'journal','','lined')}</div>`);
 }
 
@@ -1503,36 +1582,46 @@ const fmtMoney = (v,c) => (v<0?'-':'')+c+Math.abs(v).toLocaleString('en-GB',{min
 function moneyTiles(m){ const x=money(m); return `<div class="tile"><span>Money in</span><b>${fmtMoney(x.inc,x.c)}</b></div><div class="tile"><span>Bills</span><b>${fmtMoney(x.bills,x.c)}</b></div><div class="tile"><span>Spending</span><b>${fmtMoney(x.spend,x.c)}</b></div><div class="tile ${x.left<0?'neg':''}"><span>Left after saving ${fmtMoney(x.sav,x.c)}</span><b>${fmtMoney(x.left,x.c)}</b></div>`; }
 function vMoney(m){
   const k='money'+(m+1);
-  const head=`<div class="ph"><h1>${MONTHS[m]} budget</h1><span class="sub">Income, bills, spending and savings</span>${nav(m>0?'money-'+m:'',m<11?'money-'+(m+2):'',micons(m,'money'))}</div><div class="tiles" id="mtiles">${moneyTiles(m)}</div>`;
+  const head=`<div class="ph"><h1>${MONTHS[m]} budget</h1><span class="sub">Income, bills, spending and savings</span>${nav(m>-1?'money-'+m:'',m<11?'money-'+(m+2):'',micons(m,'money'))}</div><div class="tiles" id="mtiles">${moneyTiles(m)}</div>`;
   const c1=`<div class="col"><div class="blk grow"><p class="lbl">Income</p>${tbl(k,'inc',['Source','Expected','Amount'],[['src'],['exp','num'],['amt','num']],3)}</div><div class="blk grow"><p class="lbl">Savings and sinking funds</p>${tbl(k,'save',['Saving for','Amount'],[['goal'],['amt','num']],4)}</div><div class="blk"><p class="lbl">Financial goal this month</p>${area(k,'goal','','box white')}</div></div>`;
   const c2=`<div class="col"><div class="blk grow"><p class="lbl">Bills</p>${tbl(k,'bills',['Bill','Due','Amount','Paid'],[['name'],['due','date'],['amt','num'],['paid','chk']],10)}</div></div>`;
   const c3=`<div class="col"><div class="blk grow"><p class="lbl">Spending</p>${tbl(k,'spend',['Date','What','Amount'],[['date','date'],['what'],['amt','num']],10)}</div></div>`;
   return page(head,'repeat(3,minmax(0,1fr))', c1+c2+c3);
 }
+function hring(pct,sz,inner,cls=''){ const r=(sz-8)/2, c=2*Math.PI*r, v=Math.max(0,Math.min(100,pct));
+  return `<svg class="hring ${cls}" viewBox="0 0 ${sz} ${sz}" width="${sz}" height="${sz}"><circle cx="${sz/2}" cy="${sz/2}" r="${r}" class="tr"/><circle cx="${sz/2}" cy="${sz/2}" r="${r}" class="pr" stroke-dasharray="${c*v/100} ${c}" transform="rotate(-90 ${sz/2} ${sz/2})"/>${inner?`<text x="50%" y="50%" dy=".35em" text-anchor="middle">${inner}</text>`:''}</svg>`; }
+function habitMonth(m,hs){ /* ticks, days counted so far, per habit, for month index m */
+  const first=mk(YEAR,m,1), last=mk(YEAR,m+1,0), n=last.getDate(), t=curDay(), k=hbKey(first);
+  const upto=t<first?0:t>last?n:t.getDate();
+  const per=hs.map((x,hi)=>{ const row=getPath(doc(k),'g.h'+hi)||{}; const got=Object.entries(row).filter(([kk,v])=>v===true&&+kk.slice(1)<=n).length; return {got,den:Math.max(upto,got)}; });
+  const got=per.reduce((a,x)=>a+x.got,0), den=per.reduce((a,x)=>a+x.den,0);
+  return {per,got,den,pct:den?Math.round(got/den*100):0,future:upto===0,n,k};
+}
 function vHabits(m){
-  const k=hbKey(mk(YEAR,m,1)), hs=set().habits.filter(x=>x&&x.t), n=new Date(YEAR,m+1,0).getDate();
-  const head=`<div class="ph"><h1>${MONTHS[m]} habits</h1><span class="sub"><a href="#setup">Edit your habits</a></span>${nav(m>0?'habits-'+m:'',m<11?'habits-'+(m+2):'')}</div>`;
+  const hs=set().habits.filter(x=>x&&x.t), M=habitMonth(m,hs), k=M.k, n=M.n;
+  const head=`<div class="ph"><h1>${MONTHS[m]} habits</h1><span class="sub">${mk(YEAR,m,1).getFullYear()} · <a href="#setup">Edit your habits</a></span>${nav(m>-1?'habits-'+m:'',m<11?'habits-'+(m+2):'')}</div>`;
   if(!hs.length) return head+`<p class="empty">Add the habits you want to track in <a href="#setup">settings</a>.</p>`;
-  let t=`<div class="scroll" style="flex:none"><table class="hab" style="min-width:760px"><tr><th style="width:160px"></th>${Array.from({length:n},(_,i)=>`<th style="font-size:10.5px">${i+1}</th>`).join('')}<th style="width:40px">Total</th></tr>`;
-  hs.forEach((x,hi)=>{ const row=getPath(doc(k),'g.h'+hi)||{}; const tot=Object.values(row).filter(v=>v===true).length;
-    t+=`<tr style="height:34px"><td title="${esc(x.t)}">${esc(x.t)}</td>${Array.from({length:n},(_,i)=>`<td>${chk(k,`g.h${hi}.d${i+1}`,true,`${esc(x.t)} day ${i+1}`,true)}</td>`).join('')}<td><b>${tot}</b></td></tr>`; });
-  const today_=curDay(), upto=today_.getMonth()===m?today_.getDate():(m<today_.getMonth()?n:0);
-  const tk=(hi,dd)=>getPath(doc(hbKey(dd)),`g.h${hi}.d${dd.getDate()}`)===true;
-  const stats=hs.map((x,hi)=>{ let cur=0; for(let i=tk(hi,today_)?0:1;i<400;i++){ if(tk(hi,add(today_,-i))) cur++; else break; } let best=0,run=0; for(let dd=mk(YEAR,0,1); dd<=today_; dd=add(dd,1)){ if(tk(hi,dd)){ run++; best=Math.max(best,run); } else run=0; }
-    const row=getPath(doc(k),'g.h'+hi)||{}, got=Object.values(row).filter(v=>v===true).length, lastDay=Math.max(0,...Object.entries(row).filter(([kk,v])=>v===true).map(([kk])=>+kk.slice(1))), den=Math.max(upto,lastDay); return `<tr><td>${esc(x.t)}</td><td>${got}${den?` / ${den} (${Math.round(got/den*100)}%)`:''}</td><td>${cur} day${cur===1?'':'s'}</td><td>${best} day${best===1?'':'s'}</td></tr>`; }).join('');
-  const days28=Array.from({length:28},(_,i)=>add(today_,i-27)), W=560, Hh=90, bw=W/28;
-  const chart=`<svg viewBox="0 0 ${W} ${Hh+16}" style="width:100%;height:auto;max-height:120px">${days28.map((dd,i)=>{ const c=hs.filter((x,hi)=>tk(hi,dd)).length, h=hs.length?c/hs.length*Hh:0; return `<rect x="${i*bw+2}" y="${Hh-h}" width="${bw-4}" height="${Math.max(h,1.5)}" rx="3" fill="${c?'var(--line)':'var(--mint)'}"/>${i%7===0?`<text x="${i*bw+bw/2}" y="${Hh+13}" font-size="10" text-anchor="middle" fill="var(--muted)">${dd.getDate()} ${MS[dd.getMonth()]}</text>`:''}`; }).join('')}</svg>`;
-  return head+t+`</table></div><div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;margin-top:14px"><div><p class="lbl">Streaks</p><table class="hstats"><tr><th>Habit</th><th>This month</th><th>Current streak</th><th>Best streak</th></tr>${stats}</table></div><div><p class="lbl">Last 28 days <span class="hint">how many of your habits you ticked each day</span></p>${chart}</div></div>`;
+  const today_=curDay(), tk=(hi,dd)=>getPath(doc(hbKey(dd)),`g.h${hi}.d${dd.getDate()}`)===true;
+  const msg=M.future?'Your fresh start is waiting':M.pct>=80?'You\'re smashing it':M.pct>=50?'Look at you go':M.pct>=20?'Every tick counts':M.got?'Lovely start, keep going':'Tick your first habit today';
+  const cards=hs.map((x,hi)=>{ const p=M.per[hi], pct=p.den?Math.round(p.got/p.den*100):0; let cur=0; for(let i=tk(hi,today_)?0:1;i<400;i++){ if(tk(hi,add(today_,-i))) cur++; else break; }
+    let best=0,run=0; for(let dd=mk(YEAR-1,11,1); dd<=today_; dd=add(dd,1)){ if(tk(hi,dd)){ run++; best=Math.max(best,run); } else run=0; }
+    return `<div class="hcard">${hring(pct,74,pct+'%')}<div><b title="${esc(x.t)}">${esc(x.t)}</b><span>${p.got} of ${p.den||n} days</span><span class="hstreak">${cur?`<i>✦</i>${cur} day streak`:'Start a streak today'}${best>1?` · best ${best}`:''}</span></div></div>`; }).join('');
+  const hero=`<div class="hhero">${hring(M.pct,132,M.pct+'%','big')}<div><p class="hmsg">${msg}</p><p class="note" style="margin:2px 0 0">${M.got} ticks this month across ${hs.length} habit${hs.length>1?'s':''}. Ticks from your dashboard and weekly pages land here too.</p></div></div>`;
+  let t=`<div class="scroll" style="flex:none"><table class="hab hmonth" style="min-width:760px"><tr><th style="width:160px"></th>${Array.from({length:n},(_,i)=>{ const d=mk(YEAR,m,i+1); return `<th class="${sameDay(d,today())?'tdy':''}"><small>${DAYS[d.getDay()][0]}</small>${i+1}</th>`; }).join('')}<th style="width:40px">Total</th></tr>`;
+  hs.forEach((x,hi)=>{ t+=`<tr style="height:32px"><td title="${esc(x.t)}">${esc(x.t)}</td>${Array.from({length:n},(_,i)=>`<td>${chk(k,`g.h${hi}.d${i+1}`,true,`${esc(x.t)} day ${i+1}`,true)}</td>`).join('')}<td><b>${M.per[hi].got}</b></td></tr>`; });
+  t+='</table></div>';
+  const year=`<div class="hyear">${[-1,...Array.from({length:12},(_,i)=>i)].map(mm=>{ const Y=habitMonth(mm,hs); return `<a href="#habits-${mm+1}" class="${mm===m?'on':''}${Y.future?' fut':''}">${hring(Y.future?0:Y.pct,46,Y.future?'':Y.pct+'')}<span>${MS[mm]}${mm===-1?' 26':''}</span></a>`; }).join('')}</div>`;
+  return head+`<div class="hhabwrap">${hero}<div class="hcards">${cards}</div></div>`+t+`<p class="lbl" style="margin-top:14px">Your year of habits</p>${year}`;
 }
 function vWorkout(m){
   const k='workout'+(m+1); const l=list(k,'log',12);
-  const head=`<div class="ph"><h1>${MONTHS[m]} workouts</h1><span class="sub">Log what you did and how it felt</span>${nav(m>0?'workout-'+m:'',m<11?'workout-'+(m+2):'')}</div>`;
+  const head=`<div class="ph"><h1>${MONTHS[m]} workouts</h1><span class="sub">Log what you did and how it felt</span>${nav(m>-1?'workout-'+m:'',m<11?'workout-'+(m+2):'')}</div>`;
   const t=`<div class="col"><div class="blk"><p class="lbl">This month's fitness goal</p>${inp(k,'goal','For example: 3 strength sessions a week')}</div><div class="blk grow"><div class="scroll grow"><table class="tbl"><tr><th style="width:90px">Date</th><th>Activity</th><th style="width:90px">Time</th><th style="width:150px">Sets, reps or distance</th><th>How it felt</th><th></th></tr>${l.map((r,i)=>`<tr>${['date','act','dur','sets','feel'].map(c=>`<td><input data-k="${k}" data-f="log.${i}.${c}" value="${esc(r[c])}" aria-label="${c}"></td>`).join('')}<td class="x"><button class="del" data-del="${k}|log|${i}" aria-label="Remove">×</button></td></tr>`).join('')}</table></div><button class="add" data-add="${k}|log">+ Add workout</button></div></div>`;
   return page(head,'minmax(0,1fr)', t);
 }
 function vWellness(m){
   const k='wellness'+(m+1), n=new Date(YEAR,m+1,0).getDate(), moods=['Low','Meh','OK','Good','Great'];
-  const head=`<div class="ph"><h1>${MONTHS[m]} wellness</h1><span class="sub">Sleep, water and mood, one line a day</span>${nav(m>0?'wellness-'+m:'',m<11?'wellness-'+(m+2):'')}</div>`;
+  const head=`<div class="ph"><h1>${MONTHS[m]} wellness</h1><span class="sub">Sleep, water and mood, one line a day</span>${nav(m>-1?'wellness-'+m:'',m<11?'wellness-'+(m+2):'')}</div>`;
   const tb=(a,b)=>{ let h=`<div class="scroll"><table class="tbl"><tr><th style="width:62px">Day</th><th style="width:58px">Sleep</th><th>Water</th><th>Mood</th></tr>`;
     for(let i=a;i<=b;i++){ const d=mk(YEAR,m,i), f='days.d'+i, w=+getPath(doc(k),f+'.water')||0, mo=getPath(doc(k),f+'.mood');
       h+=`<tr><td style="padding:0 6px;font-size:12px"><a href="#day-${key(d)}">${DAYS[d.getDay()].slice(0,3)} ${i}</a></td><td><input data-k="${k}" data-f="${f}.sleep" value="${esc(getPath(doc(k),f+'.sleep'))}" inputmode="decimal" placeholder="hrs" aria-label="Sleep hours"></td><td style="padding:0 6px"><div class="water">${Array.from({length:8},(_,j)=>`<button class="${j<w?'on':''}" data-set="${k}|${f}.water|${j+1===w?0:j+1}" aria-label="${j+1} glasses"></button>`).join('')}</div></td><td style="padding:0 4px"><div class="moods">${moods.map(x=>`<button class="${mo===x?'on':''}" data-set="${k}|${f}.mood|${mo===x?'':x}">${x}</button>`).join('')}</div></td></tr>`; }
@@ -1541,7 +1630,7 @@ function vWellness(m){
 }
 
 
-const artFor = id => { if(TPL_ART[id]) return 'svg:'+id; for(const [cat,l] of TPL) if(l.some(x=>x[0]===id)) return 'svg:'+CATSVG[cat]; return 'svg:travel'; };
+const artFor = id => { if(NTPL.some(x=>x[0]===id)) return 'svg:nb'; if(TPL_ART[id]) return 'svg:'+id; for(const [cat,l] of TPL) if(l.some(x=>x[0]===id)) return 'svg:'+CATSVG[cat]; return 'svg:travel'; };
 const art = (src,cls='') => src.startsWith('svg:') ? `<svg class="art lineart ${cls}" viewBox="0 0 64 64" aria-hidden="true">${TPL_ART[src.slice(4)]}</svg>` : `<i class="art ${cls}" style="--img:url(${src})" aria-hidden="true"></i>`;
 function ring(pct,label,sub,size=64){ const r=(size-8)/2, c=2*Math.PI*r, off=c*(1-Math.max(0,Math.min(1,pct)));
   return `<div class="ring" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}"><circle class="bg" cx="${size/2}" cy="${size/2}" r="${r}"/><circle class="fg" cx="${size/2}" cy="${size/2}" r="${r}" stroke-dasharray="${c}" stroke-dashoffset="${off}" style="--full:${c}"/></svg><b>${label}</b>${sub?`<small>${sub}</small>`:''}</div>`; }
@@ -1555,7 +1644,9 @@ function confetti(){
 }
 const doy = d => Math.round((d - mk(d.getFullYear(),0,1))/864e5)+1;
 /* ---------- dashboard ---------- */
-function curDay(){ const t=today(); return t.getFullYear()===YEAR?t:mk(YEAR,0,1); }
+const inPlan = t => t>=mk(YEAR-1,11,1) && t<=mk(YEAR,11,31);
+const mIdx = d => d.getFullYear()<YEAR ? -1 : d.getMonth();   /* month index used in routes and keys: Dec 2026 is -1 */
+function curDay(){ const t=today(); return inPlan(t)?t:mk(YEAR,0,1); }
 function parseMD(str){ if(!str) return null; let m=/^\s*([A-Za-z]{3})[a-z]*\.?\s+(\d{1,2})/.exec(str); if(m){ const mi=MS.findIndex(x=>x.toLowerCase()===m[1].toLowerCase()); if(mi>-1) return mk(YEAR,mi,+m[2]); }
   m=/^\s*(\d{1,2})[\/.](\d{1,2})/.exec(str); if(m) return mk(YEAR,+m[2]-1,+m[1]); m=/^\s*(\d{1,2})\s+([A-Za-z]{3})/.exec(str); if(m){ const mi=MS.findIndex(x=>x.toLowerCase()===m[2].toLowerCase()); if(mi>-1) return mk(YEAR,mi,+m[1]); } return null; }
 function deadlines(from){
@@ -1727,7 +1818,7 @@ function vVision(){
 /* monthly reflection */
 function vMReflect(m){
   const k='ref'+(m+1);
-  const head=`<div class="ph"><h1>${MONTHS[m]} reflection</h1><span class="sub">Look back before you plan the next month</span>${nav(m>0?'reflect-'+m:'',m<11?'reflect-'+(m+2):'',micons(m,'reflect'))}</div>`;
+  const head=`<div class="ph"><h1>${MONTHS[m]} reflection</h1><span class="sub">Look back before you plan the next month</span>${nav(m>-1?'reflect-'+m:'',m<11?'reflect-'+(m+2):'',micons(m,'reflect'))}</div>`;
   const c1=`<div class="col"><div class="blk"><p class="lbl">How would I rate this month?</p>${stars(k,'rate',10)}</div>
     <div class="blk grow"><p class="lbl">Highlights this month</p><div class="rfhi">${[0,1,2].map(i=>`<div class="rfh"><svg class="rfsp" viewBox="0 0 24 24"><path d="M12 3Q12 12 21 12Q12 12 12 21Q12 12 3 12Q12 12 12 3Z"/></svg>${area(k,'hi.'+i,i?'':'A moment I loved','')}</div>`).join('')}</div></div></div>`;
   const c2=`<div class="col"><div class="blk grow"><p class="lbl">Biggest challenges</p>${area(k,'chal','','box white fill')}</div><div class="blk grow"><p class="lbl">Lessons learnt</p>${area(k,'less','','box white fill')}</div>
@@ -1737,7 +1828,7 @@ function vMReflect(m){
 }
 function vMVision(m){
   const k='m'+(m+1);
-  const head=`<div class="ph"><h1>${MONTHS[m]} vision board</h1><span class="sub">What you want this month to look and feel like</span>${nav(m>0?'vision-'+m:'',m<11?'vision-'+(m+2):'',micons(m,'mvision'))}</div>`;
+  const head=`<div class="ph"><h1>${MONTHS[m]} vision board</h1><span class="sub">What you want this month to look and feel like</span>${nav(m>-1?'vision-'+m:'',m<11?'vision-'+(m+2):'',micons(m,'mvision'))}</div>`;
   const grid=`<div class="vgrid" style="grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr))">${Array.from({length:6},(_,i)=>vtile(`vb-m${m+1}-${i}`)).join('')}</div>`;
   return page(head,'minmax(0,2.4fr) minmax(0,1fr)', `<div class="col">${grid}</div><div class="col"><div class="blk grow"><p class="lbl">Notes</p>${area(k,'vnotes','Intentions, ideas, things to remember','box white fill')}</div></div>`);
 }
@@ -1765,6 +1856,7 @@ Object.assign(TPL_ART,{
  series:'<rect x="8" y="16" width="48" height="32" rx="5"/><path d="M24 56h16M32 48v8M24 6l8 10 8-10"/><path d="M28 26l10 6-10 6z"/>',
  wish:'<rect x="10" y="26" width="44" height="10" rx="2"/><rect x="14" y="36" width="36" height="20" rx="2"/><path d="M32 26v30"/><path d="M32 26c-4-10-16-10-14-2 1 3 8 2 14 2zM32 26c4-10 16-10 14-2-1 3-8 2-14 2z"/>'
 });
+TPL_ART.nb='<rect x="16" y="8" width="34" height="48" rx="4"/><path d="M16 16h-4M16 26h-4M16 36h-4M16 46h-4M24 20h18M24 28h18M24 36h12"/>';
 const CATSVG={Business:'content',Finance:'savings','Health & fitness':'wplan',Wellness:'selfcare',Lifestyle:'travel',Organisation:'lists','Seasonal and occasions':'christmas'};
 const UI={};
 document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closest('[data-ui],[data-push]'); if(!t) return; if(t.dataset.push){ const [kk,ff]=t.dataset.push.split('|'); const b=listSnap(kk,ff); list(kk,ff).push({id:'i'+Date.now().toString(36)}); saveList(kk,ff,b); } if(t.dataset.ui){ const [n,v]=t.dataset.ui.split('|'); UI[n]=v; } rerender(); });
@@ -2374,10 +2466,20 @@ const TPL=[
  ['Organisation',[['lists','Checklists','Checklists for anything you need'],['matrix','Priority matrix','Sort what matters from what can wait'],['routines','Routines','Morning, evening and weekly resets'],['meetings','Meeting notes','Agenda, notes and actions'],['contacts','Contacts','Phone numbers, birthdays and addresses'],['passwords','Passwords','Logins and password hints']]],
  ['Seasonal and occasions',[['christmas','Christmas planner','Gifts, cards, menu and the countdown'],['wedding','Wedding planner','Checklist, budget, guests and suppliers'],['school','Back to school','Uniform, forms and the new routine'],['summer','Summer holidays','Days out, rainy day ideas and bookings'],['halloween','Halloween','Costumes, decorations and treats'],['easter','Easter','Eggs, the hunt and Easter lunch']]]
 ];
-const tplName = id => { for(const [,l] of TPL) for(const [i,n] of l) if(i===id) return n; return 'Template'; };
+const NTPL=[['nlined','Lined notes','Lined pages for anything'],['ndots','Dot grid notes','Dotted pages for lists, layouts and doodles'],['ngrid','Grid notes','Squared pages for plans and tables'],['ncornell','Cornell notes','Cues, notes and a summary, great for learning'],['nblank','Blank notes','Plain pages, no lines'],['section','Custom section','Name it, pick the paper, add as many pages as you need'],['njournal','Journal','A named journal with a prompt on every page']];
+const PAPERS=[['lined','Lined'],['dots','Dot grid'],['grid','Grid'],['cornell','Cornell'],['blank','Blank']];
+const tplName = id => { for(const [,l] of TPL) for(const [i,n] of l) if(i===id) return n; const x=NTPL.find(x=>x[0]===id); return x?x[1]:'Template'; };
 function vTemplates(){
   const head=`<div class="ph"><h1>Bonus templates</h1><span class="sub">Open one to use it, or add copies anywhere in your planner</span><div class="nav"><a class="pill" href="#organise">Organise my pages</a></div></div>`;
-  return head+`<div class="tplhub">${TPL.map(([cat,l])=>`<div class="col" style="gap:0"><div class="banner" style="padding:10px 14px;margin-bottom:10px">${art('svg:'+CATSVG[cat])}<b style="font-family:var(--display);font-weight:400;font-size:21px;position:relative">${cat}</b></div>${l.map(([id,n,d])=>`<a href="#tpl-${id}"><b>${n}</b><span>${d}</span></a>`).join('')}</div>`).join('')}</div>`;
+  return head+`<div class="scroll" style="flex:1;min-height:0"><div class="tplhub" style="flex:none">${TPL.map(([cat,l])=>`<div class="col" style="gap:0"><div class="banner" style="padding:10px 14px;margin-bottom:10px">${art('svg:'+CATSVG[cat])}<b style="font-family:var(--display);font-weight:400;font-size:21px;position:relative">${cat}</b></div>${l.map(([id,n,d])=>`<a href="#tpl-${id}"><b>${n}</b><span>${d}</span></a>`).join('')}</div>`).join('')}</div>`+nbHub()+'</div>';
+}
+function nbHub(){
+  const mine=t=>myPages().filter(x=>t.includes(x.tpl)), link=x=>`<a class="nbmine" href="#page-${x.id}">${esc(x.title||tplName(x.tpl))}</a>`;
+  const notes=mine(['nlined','ndots','ngrid','ncornell','nblank']), secs=mine(['section']), jr=mine(['njournal']), s=set();
+  const card=(title,ic,sub,inner)=>`<div class="nbcard"><div class="nbcardh"><svg viewBox="0 0 24 24">${ic}</svg><div><b>${title}</b><span>${sub}</span></div></div>${inner}</div>`;
+  return `<div class="nbhub">${card('Notes','<rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M8.5 8h7M8.5 11.5h7M8.5 15h4"/>','Pick a paper, then add a copy and name it',`<div class="nbpaper">${NTPL.slice(0,5).map(([id,n])=>`<a href="#tpl-${id}" title="${n}"><i class="nbsw p-${id.slice(1)}"></i>${n.replace(' notes','')}</a>`).join('')}</div>${notes.length?`<p class="nbl2">My notes</p><div class="nblist">${notes.map(link).join('')}</div>`:''}`)}
+  ${card('Custom sections','<path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H10l2 2.5h5.5A2.5 2.5 0 0 1 20 9v8.5a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5z"/><path d="M12 10.5v6M9 13.5h6"/>','Your own named sections, with as many pages as you like',`${secs.length?`<div class="nblist">${secs.map(link).join('')}</div>`:'<p class="note">Make a section for anything: a course, a project, the kids, a side hustle.</p>'}<button class="pill solid" data-copytpl="section">+ New section</button>`)}
+  ${card('Journal',MIC.journal,s.jmode==='book'?'Kept as a named journal':'Kept behind each daily page',`<div class="nblist"><a class="nbmine" href="#journal-${key(curDay())}">Today's journal page</a>${jr.map(link).join('')}</div><button class="pill" data-copytpl="njournal">+ New named journal</button>`)}</div>`;
 }
 function myPages(){ return list('pages','list',0).filter(x=>x&&x.id); }
 function vPage(pid){ const l=myPages(); const i=list('pages','list').findIndex(x=>x&&x.id===pid); const pg=l.find(x=>x.id===pid);
@@ -2389,6 +2491,18 @@ function vOrganise(){
   const z=([v,n])=>{ const items=l.filter(x=>(x.loc||'year')===v);
     return `<div class="zone" data-zone="${v}"><h3>${n}<span>${items.length||''}</span></h3>${items.map(x=>`<a class="thumb" draggable="true" data-pid="${x.id}" href="#page-${x.id}">${art(artFor(x.tpl))}<span>${esc(x.title||tplName(x.tpl))}</span></a>`).join('')}</div>`; };
   return head+(l.length?'':`<p class="empty" style="margin-bottom:10px">No pages yet. Open a bonus template and tap "+ Add a copy to my planner".</p>`)+`<div class="org">${LOCS.map(z).join('')}</div>`;
+}
+function notebook(k,id){
+  const fixed={nlined:'lined',ndots:'dots',ngrid:'grid',ncornell:'cornell',nblank:'blank',njournal:'lined'}[id];
+  const paper=fixed||getPath(doc(k),'paper')||'lined', l=list(k,'pp',1), named=id==='section'||id==='njournal';
+  const tools=`<div class="nbtools">${fixed?'':`<label class="pill">Paper <select data-k="${k}" data-f="paper" style="border:0;background:none;font:inherit;color:inherit">${PAPERS.map(([v,n])=>`<option value="${v}" ${paper===v?'selected':''}>${n}</option>`).join('')}</select></label>`}${named&&l.length>1?`<span class="nbidx">${l.map((pg,i)=>`<a href="#" data-nbgo="nb${i}">${esc(pg.t||(id==='njournal'?'Entry '+(i+1):'Page '+(i+1)))}</a>`).join('')}</span>`:''}<button class="pill" data-add="${k}|pp" style="margin-left:auto">+ Add a page</button></div>`;
+  const sheet=(pg,i)=>{ const f=`pp.${i}`;
+    const top=named?`<div class="nbhead">${id==='njournal'?`<input class="mini-in" style="width:110px" data-k="${k}" data-f="${f}.d" value="${esc(pg.d)}" placeholder="Date" aria-label="Date" data-date readonly>`:''}<input class="nbtitle" data-k="${k}" data-f="${f}.t" value="${esc(pg.t)}" placeholder="${id==='njournal'?'Title (optional)':'Page title'}" aria-label="Page title"></div>`:'';
+    const prompt=id==='njournal'?`<p class="prompt">${esc(PROMPTS[i%PROMPTS.length])}</p>`:'';
+    const body=paper==='cornell'?`<div class="cornell"><textarea class="paper lined" data-k="${k}" data-f="${f}.cue" placeholder="Cues and questions" aria-label="Cues">${esc(pg.cue)}</textarea><textarea class="paper lined" data-k="${k}" data-f="${f}.x" aria-label="Notes">${esc(pg.x)}</textarea><textarea class="paper lined sum" data-k="${k}" data-f="${f}.sum" placeholder="Summary" aria-label="Summary">${esc(pg.sum)}</textarea></div>`
+      :`<textarea class="paper ${paper}" data-k="${k}" data-f="${f}.x" aria-label="Notes">${esc(pg.x)}</textarea>`;
+    return `<div class="nbpage" id="nb${i}">${top}${prompt}${body}${l.length>1?`<button class="del nbdel" data-del="${k}|pp|${i}" aria-label="Remove this page" title="Remove this page">×</button>`:''}</div>`; };
+  return tools+`<div class="nbpages scroll">${l.map(sheet).join('')}</div>`;
 }
 const LOCS=[['year','Year'],...MS.map((n,i)=>['m'+(i+1),MONTHS[i]])];
 function cardList(k,addLabel,inner){ const l=list(k,'items',1);
@@ -2427,12 +2541,13 @@ function vContent(k){
 }
 function vTpl(id, k, pg){
   k = k || 'tpl-'+id; const c=set().cur, F=v=>fmtMoney(v,c);
-  const desc = (TPL.flatMap(x=>x[1]).find(x=>x[0]===id)||[])[2]||'';
+  const desc = ([...TPL.flatMap(x=>x[1]),...NTPL].find(x=>x[0]===id)||[])[2]||'';
   const title = pg ? `<input class="titlein" data-k="pages" data-f="list.${pg.i}.title" value="${esc(pg.title)}" aria-label="Page title" data-rr>` : `<h1>${tplName(id)}</h1>`;
   const loc = pg ? `<label class="pill">In <select data-k="pages" data-f="list.${pg.i}.loc" style="border:0;background:none;font:inherit">${LOCS.map(([v,n])=>`<option value="${v}" ${pg.loc===v?'selected':''}>${n}</option>`).join('')}</select></label><a class="pill" href="#organise">Organise pages</a><button class="pill" data-delpage="${pg.id}" style="color:var(--warn);border-color:var(--warn)">Delete page</button>` : `<button class="pill solid" data-copytpl="${id}">+ Add a copy to my planner</button><a class="pill" href="#templates">‹ All templates</a>`;
   const head=`<div class="banner">${art(artFor(id))}${art(artFor(id),'ghost')}<div style="min-width:0;flex:1">${title}<p>${desc}</p></div><div class="nav">${loc}</div></div>`;
   let body='';
   if(id==='content') return head.replace('class="banner"','class="banner" style="padding:8px 18px"')+vContent(k);
+  if(NTPL.some(x=>x[0]===id)) return head.replace('class="banner"','class="banner" style="padding:8px 18px"')+notebook(k,id);
   if(id==='savings') body=cardList(k,'Add another savings goal',(it,i)=>{ const saved=(it.log||[]).reduce((a,r)=>a+num((r||{}).amt),0), tgt=num(it.target);
     return `<div class="visrow"><div class="visbox">${jarSvg(tgt?saved/tgt:0)}</div><div style="min-width:0">${inp(k,`items.${i}.name`,'What are you saving for?')}${inp(k,`items.${i}.why`,'Why is this important to you?')}<div class="row">${inp(k,`items.${i}.target`,'Target '+c)}<input class="line" data-k="${k}" data-f="items.${i}.by" value="${esc(it.by)}" placeholder="By when?" aria-label="By when" data-date readonly></div>${bar(tgt?saved/tgt*100:0)}<p class="note">${F(saved)} saved${tgt?` of ${F(tgt)}`:''}</p>${tbl(k,`items.${i}.log`,['Date','Amount'],[['date','date'],['amt','num']],4,true)}</div></div>`; });
   else if(id==='debt'){ const its=list(k,'items',1), method=getPath(doc(k),'method')||'snowball', extra=num(getPath(doc(k),'extra'));
@@ -2548,39 +2663,39 @@ function parseHash(){
   const h=(location.hash||'').slice(1); let m;
   if(m=/^(day|journal)-(\d{8})$/.exec(h)) return {v:m[1],d:parse(m[2])};
   if(m=/^(week|review|meals|wsched)-(\d{8})$/.exec(h)) return {v:m[1],d:wstart(parse(m[2]))};
-  if(m=/^month-(\d{1,2})$/.exec(h)) return {v:'month',m:Math.min(12,Math.max(1,+m[1]))-1};
+  if(m=/^month-(\d{1,2})$/.exec(h)) return {v:'month',m:Math.min(12,Math.max(0,+m[1]))-1};
   if(m=/^quarter-([1-4])$/.exec(h)) return {v:'quarter',q:+m[1]};
-  if(m=/^(money|habits|workout|wellness)-(\d{1,2})$/.exec(h)) return {v:m[1],m:Math.min(12,Math.max(1,+m[2]))-1};
+  if(m=/^(money|habits|workout|wellness)-(\d{1,2})$/.exec(h)) return {v:m[1],m:Math.min(12,Math.max(0,+m[2]))-1};
   if(m=/^recipes-([a-z0-9]+)$/.exec(h)) return {v:'recipes',id:m[1]};
-  if(m=/^vision-(\d{1,2})$/.exec(h)) return {v:'mvision',m:Math.min(12,Math.max(1,+m[1]))-1};
-  if(m=/^reflect-(\d{1,2})$/.exec(h)) return {v:'mreflect',m:Math.min(12,Math.max(1,+m[1]))-1};
+  if(m=/^vision-(\d{1,2})$/.exec(h)) return {v:'mvision',m:Math.min(12,Math.max(0,+m[1]))-1};
+  if(m=/^reflect-(\d{1,2})$/.exec(h)) return {v:'mreflect',m:Math.min(12,Math.max(0,+m[1]))-1};
   if(m=/^tpl-([a-z0-9]+)$/.exec(h)) return {v:'tpl',id:m[1]};
   if(m=/^page-([a-z0-9]+)$/.exec(h)) return {v:'page',id:m[1]};
   if(['year','setup','recipes','meals','money','habits','workout','wellness','vision','templates','dashboard','organise','recurring','brain'].includes(h)) return {v:h};
-  if(h==='today') return {v:'day',d:today().getFullYear()===YEAR?today():mk(YEAR,0,1)};
+  if(h==='today') return {v:'day',d:inPlan(today())?today():mk(YEAR,0,1)};
   return {v:'dashboard'};
 }
 const sheet=document.getElementById('sheet');
 function render(){
   route=parseHash(); const s=set();
-  const base = route.d || (route.v==='dashboard'?curDay():null) || (route.m!=null? mk(YEAR,route.m,1) : route.q? mk(YEAR,(route.q-1)*3,1) : (today().getFullYear()===YEAR?today():mk(YEAR,0,1)));
-  const fm = base.getFullYear()===YEAR ? base.getMonth() : (base.getFullYear()<YEAR?0:11);
+  const base = route.d || (route.v==='dashboard'?curDay():null) || (route.m!=null? mk(YEAR,route.m,1) : route.q? mk(YEAR,(route.q-1)*3,1) : (inPlan(today())?today():mk(YEAR,0,1)));
+  const fm = base.getFullYear()===YEAR ? base.getMonth() : (base>=mk(YEAR-1,11,1)?-1:base.getFullYear()<YEAR?0:11);
   if(route.v==='meals'&&!route.d) route.d=wstart(base);
   if(['money','habits','workout','wellness'].includes(route.v)&&route.m==null) route.m=fm;
   document.documentElement.classList.toggle('bigtext', !!s.big);
   document.documentElement.dataset.tone = TONES.some(t=>t[0]===s.tone)?s.tone:'breeze';
   document.getElementById('brandName').textContent = s.name ? `${s.name}'s 2027` : 'My 2027';
-  const v=route.v, dayBase = (v==='day'||v==='journal') ? route.d : (today().getFullYear()===YEAR?today():base);
+  const v=route.v, dayBase = (v==='day'||v==='journal') ? route.d : (inPlan(today())?today():base);
   const views=[['dashboard','Dashboard','dashboard'],['year','Year','year vision'],['quarter-'+(Math.floor(fm/3)+1),'Quarter','quarter'],['month-'+(fm+1),'Month','month'],['week-'+key(wstart(base)),'Week','week review wsched'],['day-'+key(dayBase),'Day','day journal']];
   document.getElementById('ttabs').innerHTML = views.map(([h,n,vs])=>`<a href="#${h}" class="${vs.split(' ').includes(v)?'on':''}">${n}</a>`).join('') + `<a href="#today">Today</a>`;
   const addonView=['money','habits','workout','wellness','mvision'].includes(v);
   const qn=Math.floor(fm/3)+1;
-  document.getElementById('stabs').innerHTML = `<div class="ipanel"><a href="#dashboard" title="Home: your dashboard" aria-label="Home"><img src="${ICON['side-home']}" alt=""></a><a href="#quarter-${qn}" title="My goals" aria-label="My goals"><img src="${ICON['side-flag']}" alt=""></a>${s.journal?`<a href="#journal-${key(dayBase)}" title="Journal" aria-label="Journal"><img src="${ICON['side-notebook']}" alt=""></a>`:''}</div>` + `<a class="yr${v==='year'?' on':''}" href="#year"><span>2027</span></a>` + MS.map((n,i)=>`<a class="${(v==='month'||addonView)&&route.m===i?'on':''}" href="#${addonView?(v==='mvision'?'vision':v):'month'}-${i+1}"><span>${n}</span></a>`).join('');
+  document.getElementById('stabs').innerHTML = `<div class="ipanel"><a href="#dashboard" title="Home: your dashboard" aria-label="Home"><img src="${ICON['side-home']}" alt=""></a><a href="#quarter-${qn}" title="My goals" aria-label="My goals"><img src="${ICON['side-flag']}" alt=""></a></div>` + `<a class="dec26${(v==='month'||addonView)&&route.m===-1?' on':''}" href="#${addonView?(v==='mvision'?'vision':v):'month'}-0" title="December 2026"><span>Dec 26</span></a><a class="yr${v==='year'?' on':''}" href="#year"><span>2027</span></a>` + MS.map((n,i)=>`<a class="${(v==='month'||addonView)&&route.m===i?'on':''}" href="#${addonView?(v==='mvision'?'vision':v):'month'}-${i+1}"><span>${n}</span></a>`).join('');
   const monthly=['month','money','habits','workout','wellness','mvision','dashboard'].includes(v), weekly=['week','review','day','journal','meals','wsched'].includes(v);
   const mi=a=>`<a href="#${a.id==='meals'?'meals-'+key(wstart(base)):a.id==='recipes'?'recipes':a.id+'-'+(fm+1)}"><svg viewBox="0 0 24 24">${a.icon}</svg>${a.name}${['money','habits','workout','wellness'].includes(a.id)?` <span class="note" style="margin:0 0 0 auto">${MS[fm]}</span>`:''}</a>`;
   const shown=ADDONS.filter(a=>s.addons[a.id] && (a.id==='recipes' || (a.id==='meals'?weekly:monthly)));
   const here = monthly ? 'm'+(fm+1) : 'year', mine=myPages().filter(x=>(x.loc||'year')===here);
-  document.getElementById('addonsMenu').innerHTML = `<h6>Add-ons</h6>${shown.map(mi).join('')}${mine.length?`<h6 style="margin-top:8px">My pages${monthly?' in '+MONTHS[fm]:''}</h6>${mine.map(x=>`<a href="#page-${x.id}">${art(artFor(x.tpl),'')}<span>${esc(x.title||tplName(x.tpl))}</span></a>`).join('')}`:''}<a href="#templates"><svg viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="17" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Bonus templates</a><a href="#recurring"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 9M20 4v5h-5M20 12a8 8 0 0 1-13.7 5.6L4 15M4 20v-5h5"/></svg>Recurring tasks</a><a href="#brain"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M9.5 3h5"/></svg>Brain dump and focus timer</a><a href="#organise"><svg viewBox="0 0 24 24"><rect x="3.5" y="4" width="7" height="7" rx="1.5"/><rect x="13.5" y="4" width="7" height="7" rx="1.5"/><rect x="3.5" y="13" width="7" height="7" rx="1.5"/><rect x="13.5" y="13" width="7" height="7" rx="1.5"/></svg>Organise my pages</a>${!monthly?'<p class="note" style="padding:4px 10px 2px;max-width:220px">Budget, habits, workouts and wellness are on each month\'s pages.</p>':''}`;
+  document.getElementById('addonsMenu').innerHTML = `<h6>Add-ons</h6>${s.journal?`<a href="${jlink(dayBase)}"><svg viewBox="0 0 24 24">${MIC.journal}</svg>${esc(jbook()?jbook().title||'Journal':'Journal')}</a>`:''}${shown.map(mi).join('')}<a href="#templates" class="nbl"><svg viewBox="0 0 24 24"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H10l2 2.5h5.5A2.5 2.5 0 0 1 20 9v8.5a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5z"/><path d="M8.5 12.5h7M8.5 15.5h4"/></svg>Notes and sections</a>${mine.length?`<h6 style="margin-top:8px">My pages${monthly?' in '+MONTHS[fm]:''}</h6>${mine.map(x=>`<a href="#page-${x.id}">${art(artFor(x.tpl),'')}<span>${esc(x.title||tplName(x.tpl))}</span></a>`).join('')}`:''}<a href="#templates"><svg viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="17" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Bonus templates</a><a href="#recurring"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 9M20 4v5h-5M20 12a8 8 0 0 1-13.7 5.6L4 15M4 20v-5h5"/></svg>Recurring tasks</a><a href="#brain"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M9.5 3h5"/></svg>Brain dump and focus timer</a><a href="#organise"><svg viewBox="0 0 24 24"><rect x="3.5" y="4" width="7" height="7" rx="1.5"/><rect x="13.5" y="4" width="7" height="7" rx="1.5"/><rect x="3.5" y="13" width="7" height="7" rx="1.5"/><rect x="13.5" y="13" width="7" height="7" rx="1.5"/></svg>Organise my pages</a>${!monthly?'<p class="note" style="padding:4px 10px 2px;max-width:220px">Budget, habits, workouts and wellness are on each month\'s pages.</p>':''}`;
   let h='';
   switch(v){
     case 'day': h=vDay(route.d); break; case 'journal': h=vJournal(route.d); break; case 'week': h=vWeek(route.d); break; case 'wsched': h=vWSched(route.d); break; case 'review': h=vReview(route.d); break;
@@ -2661,6 +2776,7 @@ function addGroceries(k){
 sheet.addEventListener('change', async e=>{ const t=e.target; if(!t.dataset||!t.dataset.vimg||!t.files||!t.files[0]) return; const k=t.dataset.vimg; status('Saving photo');
   try{ let src=await resizeImage(t.files[0]); if(SB&&SBUID){ const blob=await (await fetch(src)).blob(), path=`${SBUID}/${k}-${Date.now()}.jpg`; const up=await SB.storage.from('user-uploads').upload(path,blob,{contentType:'image/jpeg'}); if(up.error) throw up.error; const sg=await SB.storage.from('user-uploads').createSignedUrl(path,60*60*24*365*10); if(sg.error) throw sg.error; src=sg.data.signedUrl; } setPath(doc(k),'src',src); saveField(k,'src',src); rerender(); }catch(err){ status('That photo could not be read. Try a JPG or PNG.', true); } });
 document.addEventListener('click', e=>{ const b=e.target.closest('[data-vdel]'); if(!b) return; e.preventDefault(); const k=b.dataset.vdel; setPath(doc(k),'src',''); saveField(k,'src',''); rerender(); });
+document.addEventListener('click', e=>{ const g=e.target.closest('[data-nbgo]'); if(!g) return; e.preventDefault(); const el=document.getElementById(g.dataset.nbgo); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); });
 document.addEventListener('click', e=>{
   const c=e.target.closest('[data-copytpl]'); if(c){ const id=c.dataset.copytpl, pid='p'+Date.now().toString(36); const b=listSnap('pages','list'); const fm=curDay().getMonth();
     list('pages','list').push({id:pid,tpl:id,title:tplName(id),loc:'m'+(fm+1)}); saveList('pages','list',b);
