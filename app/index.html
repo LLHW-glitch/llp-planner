@@ -2832,6 +2832,24 @@ function vBuilder(step){
   const foot=`<div class="bfoot">${step>1?`<a class="pill" href="#builder-${step-1}">‹ Back</a>`:'<span></span>'}<span class="note">${step} of ${N}</span>${step<N?`<a class="pill solid big" href="#builder-${step+1}">${step===1?'Let\'s go':'Next'} ›</a>`:`<button class="pill solid big" data-bdone>Take me to my planner ›</button>`}</div>`;
   return `<div class="builder">${dots}<div class="bq"><h1>${q}</h1><p class="sub">${sub}</p></div><div class="bbody scroll">${body}</div>${foot}${step<N?'<button class="bskip" data-bdone>Skip, I\'ll set it up later</button>':''}</div>`;
 }
+function llpDownload(){
+  let src=SRC0.replace(/<script>[^<]*LLP_SUPA=[\s\S]*?<\/script>/,'').replace(/<script src="[^"]*supabase[^"]*"><\/script>/,'').replace(/<script>window\.LLP_OFFLINE=\{[\s\S]*?\};<\/script>/,'');
+  const data={at:Date.now(),docs:JSON.parse(JSON.stringify(docs))};
+  const inj='<scr'+'ipt>window.LLP_'+'OFFLINE='+JSON.stringify(data).replace(/</g,'\\u003c')+';<\/script>';
+  src=src.replace(/<head>/i,'<head>'+inj);
+  const nm=(set().name?set().name.replace(/[^A-Za-z0-9]+/g,'-')+'-':'My-')+'2027-Planner-'+key(today())+'.html';
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([src],{type:'text/html'})); a.download=nm; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },2000);
+  toast('Your planner is downloading. Open the file any time, even without internet.');
+}
+window.llpDownload=llpDownload;
+async function llpRestore(file){
+  try{ const txt=await file.text(); const m=/window\.LLP_OFFLINE=(\{[\s\S]*?\});<\/script>/.exec(txt); if(!m) throw 0; const data=JSON.parse(m[1]);
+    const when=new Date(data.at||Date.now()); if(!confirm(`Bring in your planner copy from ${fmtLong(when)}? Anything you've written online since then on the same pages will be replaced.`)) return;
+    Object.entries(data.docs||{}).forEach(([k,v])=>{ if(!v||typeof v!=='object') return; docs[k]=JSON.parse(JSON.stringify(v)); delete docs[k]._at; queue(k, flat(docs[k])); });
+    rerender(); toast('Your planner copy is back in. Everything is saving now.');
+  }catch(e){ status('That file is not a planner download. Pick the .html file from "Download my planner".', true); }
+}
+document.addEventListener('change', e=>{ const t=e.target; if(t&&t.dataset&&t.dataset.restore!==undefined&&t.files&&t.files[0]){ llpRestore(t.files[0]); t.value=''; } });
 function vSetup(){
   const s=set(); doc('settings');
   if(!docs.settings.habits || !Object.keys(docs.settings.habits).length){ docs.settings.habits = DEFAULTS.habits.map(x=>({...x})); saveList('settings','habits',{}); }
@@ -3234,6 +3252,7 @@ window.llpSignOut=async()=>{
   try{
     if(window.LLP_SUPA){ await supaBoot(); return; }
     if(window.LLP_OFFLINE){ status('Offline copy: changes save on this device'); if(!location.hash) location.hash='dashboard'; return; }
+    if(/[?&]demo\b/.test(location.search)){ status('Preview: nothing is saved to an account', true); if(!location.hash) location.hash='builder-1'; return; }
     if(!window.claude || !window.claude.use){ status('Not signed in: saved in this browser only', true); return; }
     const [db, user] = await Promise.all([window.claude.use('db'), window.claude.use('user')]);
     if(!db || !user){ status('Not signed in: saved in this browser only', true); return; }
