@@ -1,3 +1,4 @@
+<script>try{var t=localStorage.getItem("llp27-tone");if(t)document.documentElement.dataset.tone=t;}catch(e){}</script>
 <title>Live Love Planner 2027</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1243,14 +1244,22 @@ textarea.paper.grid{background:linear-gradient(var(--rule) 1px,transparent 1px) 
 /* v46: title and year */
 .brand{display:flex;align-items:baseline}
 #brandName{display:inline-flex;align-items:baseline;gap:10px;position:relative}
-.bscr{font-family:var(--script);font-size:36px;color:var(--accent);line-height:1;transform:rotate(-4deg);display:inline-block;margin-right:-2px}
+.bscr{font-family:var(--script);font-size:36px;color:var(--accent);line-height:1;display:inline-block;margin-right:-2px}
 .byr{position:relative;font-family:var(--display);font-size:34px;letter-spacing:.08em;line-height:1}
 .byr svg{position:absolute;left:-2px;right:-6px;bottom:-9px;width:calc(100% + 8px);height:12px;fill:none;stroke:var(--accent);stroke-width:2.2;stroke-linecap:round;opacity:.55}
 .bspk{font-style:normal;color:var(--accent);font-size:13px;align-self:flex-start;margin-left:-4px;opacity:.8}
-.yrtag{font-family:var(--script);font-size:30px;color:var(--accent);line-height:1;margin-left:4px;padding:0 8px 2px;background:linear-gradient(transparent 58%,var(--fill) 58%);border-radius:3px;transform:rotate(-3deg);display:inline-block}
+.yrtag{font-family:var(--script);font-size:30px;color:var(--accent);line-height:1;padding:0 8px 2px;background:linear-gradient(transparent 58%,var(--fill) 58%);border-radius:3px;display:inline-block;margin-left:-7px}
 .lblic{display:inline-grid}
 h2 .lblic{float:right;margin-top:0}
 @media (max-width:760px){.bscr{font-size:28px}.byr{font-size:26px}}
+
+/* v47 */
+.stup{display:flex;gap:10px;align-items:center;border:1.5px dashed var(--line);border-radius:14px;padding:10px 12px;cursor:pointer;background:var(--fill);margin:2px 0 4px}
+.stup:hover{background:var(--light)}
+.stup svg{width:26px;height:26px;flex:none;fill:none;stroke:var(--line);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.stup span{font-size:11.5px;color:var(--muted);line-height:1.35}
+.stup b{display:block;font-size:13px;color:var(--ink);font-weight:600}
+.stimg.own{width:100%;height:auto;border-radius:6px;display:block}
 </style>
 
 <div class="app">
@@ -1368,6 +1377,7 @@ const tmins = t => { const m=/^(\d{1,2}):(\d{2})$/.exec(t||''); return m? (+m[1]
 /* ---------- store ----------
    Saved field by field: each box is written on its own (flat keys like "pri~0~t"), so one save can never wipe another,
    even with the planner open in two places. Lists that change shape (add, delete) write their whole list. */
+const SRC0 = '<!doctype html>'+document.documentElement.outerHTML;   /* this page as loaded, used for the offline download */
 const docs = {}, pend = {}, recent = {}, timers = {};
 let coll = null, signedIn = false;
 function doc(k){ return docs[k] || (docs[k] = {}); }
@@ -2192,16 +2202,17 @@ const stMob=()=>matchMedia('(max-width:980px)').matches;
 let stTab='everyday', stDrag=null, stSel=null;
 const decorating=()=>document.body.classList.contains('decorating');
 const stPage=()=>(location.hash||'#dashboard').split('?')[0];
-function stHtml(s){ if(IMGMAP[s]) return `<img class="stimg" src="${IMGMAP[s][3]}" alt="${esc(IMGMAP[s][1])}" draggable="false">`; if(STK[s]){ const [n,c,i]=STK[s]; return `<span class="stl" style="--c:${c}"><svg viewBox="0 0 24 24">${i}</svg>${n}</span>`; } return `<svg class="std" viewBox="0 0 64 64">${DECO[s]||''}</svg>`; }
+function stHtml(s,x){ if(s==='img') return `<img class="stimg own" src="${esc((x&&x.src)||'')}" alt="My image" draggable="false">`; if(IMGMAP[s]) return `<img class="stimg" src="${IMGMAP[s][3]}" alt="${esc(IMGMAP[s][1])}" draggable="false">`; if(STK[s]){ const [n,c,i]=STK[s]; return `<span class="stl" style="--c:${c}"><svg viewBox="0 0 24 24">${i}</svg>${n}</span>`; } return `<svg class="std" viewBox="0 0 64 64">${DECO[s]||''}</svg>`; }
 function drawStickers(){
   sheet.querySelectorAll('.stlayer').forEach(x=>x.remove());
   const pg=stPage(), W=sheet.clientWidth, l=list('stickers','list',0), mob=stMob(), PX=x=>+(mob&&x.mx!=null?x.mx:x.x), PY=x=>+(mob&&x.my!=null?x.my:x.y), PW=x=>mob?(x.mw!=null?+x.mw:Math.min(92,(+x.w||8)*2.4)):(+x.w||8);
   const lay=document.createElement('div'); lay.className='stlayer';
-  lay.innerHTML=l.map((x,i)=>{ if(!(x&&x.s&&x.pg===pg)) return ''; const isW=x.s.startsWith('w:'), ck=CKIND(x.s), dv=isW?17:ck?({lbl:9,plbl:12,fill:10,note:11,tb:12,tbp:12,num:2.2,ico:4,icot:4,washi:8,quote:8}[ck]||9):7.5; return `<div class="stk${isW?' isw':''}${ck?' isc k-'+ck:''}${x.id===stSel?' sel':''}" data-kind="${ck||''}" data-sti="${i}" data-dv="${dv}" style="left:${PX(x)}%;top:${PY(x)}%;width:${PW(x)*W/100}px;transform:translate(-50%,-50%) rotate(${+x.r||0}deg);font-size:${PW(x)*W/100/dv}px">${isW?wHtml(x,i):ck?cHtml(x,i):stHtml(x.s)}<button class="sx" data-stx="${i}" aria-label="Remove sticker">×</button><span class="srs" data-strs="${i}" aria-label="Resize"></span><span class="srt" data-strt="${i}" aria-label="Rotate">⟳</span></div>`; }).join('');
+  lay.innerHTML=l.map((x,i)=>{ if(!(x&&x.s&&x.pg===pg)) return ''; const isW=x.s.startsWith('w:'), ck=CKIND(x.s), dv=isW?17:ck?({lbl:9,plbl:12,fill:10,note:11,tb:12,tbp:12,num:2.2,ico:4,icot:4,washi:8,quote:8}[ck]||9):7.5; return `<div class="stk${isW?' isw':''}${ck?' isc k-'+ck:''}${x.id===stSel?' sel':''}" data-kind="${ck||''}" data-sti="${i}" data-dv="${dv}" style="left:${PX(x)}%;top:${PY(x)}%;width:${PW(x)*W/100}px;transform:translate(-50%,-50%) rotate(${+x.r||0}deg);font-size:${PW(x)*W/100/dv}px">${isW?wHtml(x,i):ck?cHtml(x,i):stHtml(x.s,x)}<button class="sx" data-stx="${i}" aria-label="Remove sticker">×</button><span class="srs" data-strs="${i}" aria-label="Resize"></span><span class="srt" data-strt="${i}" aria-label="Rotate">⟳</span></div>`; }).join('');
   sheet.appendChild(lay);
 }
 function trayHtml(){ const items=stTab==='labels'||stTab==='notes'||stTab==='icons'?[]:stTab==='planner'?Object.keys(STK):stTab==='widgets'?WIDG.map(w=>'w:'+w[0]):stTab==='shapes'?IMGSTK.filter(x=>x[0].startsWith('shape')).map(x=>x[0]):IMGSTK.filter(x=>x[0].startsWith('misc')).map(x=>x[0]);
   return `<div class="sthead"><b>Stickers</b><button class="pill solid" data-stdone>Done</button></div>
+    <label class="stup"><input type="file" accept="image/*" data-stup hidden><svg viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M3.8 16.5l4.6-4.6 3.4 3.4 2.6-2.6 5.8 5.8M12 2v5M9.8 4.2L12 2l2.2 2.2"/></svg><span><b>Upload your own image</b>A photo, screenshot or your own sticker. It goes on this page.</span></label>
     <div class="seg" style="align-self:stretch;display:flex">${[['everyday','Everyday'],['labels','Labels'],['icons','Icons'],['notes','Notes, tape & quotes'],['shapes','Shapes'],['widgets','Widgets']].map(([v,n])=>`<button style="flex:1" class="${stTab===v?'on':''}" data-sttab="${v}">${n}</button>`).join('')}</div>
     ${stTab==='everyday'||stTab==='labels'||stTab==='icons'?'<input id="stsearch" class="stsearch" placeholder="Search stickers, e.g. coffee" aria-label="Search stickers" autocomplete="off">':''}<p class="note">${stTab==='icons'?'They change colour with your planner. Search for things like dentist, gym or bill.':stTab==='labels'?'They change colour with your planner. Double-click one on the page to write on it. Drop a label on a day in your month view and it shows in that day\'s entries.':stTab==='notes'?'Double-click a note to write on it. Pull the corner of a time block to stretch it over your schedule. Washi tape changes colour with your planner too.':stTab==='everyday'||stTab==='shapes'?'Drag onto any page. Move, resize or turn them however you like.':stTab==='widgets'?'Live widgets you can type in. Currently reading fills itself from your book library.':stTab==='planner'?'Drop one on a day in your month view and it shows in that day\'s entries too.':'Drag onto any page. Move, resize or turn them however you like.'}</p>
     ${stTab==='labels'||stTab==='notes'||stTab==='icons'?`<div class="stscroll">${cTray(stTab)}</div>`:''}<div class="stgrid ${stTab}"${items.length?'':' hidden'}>${items.map(s=>{ const w=s.startsWith('w:')&&WIDG.find(x=>'w:'+x[0]===s); const nm=w?w[1]:STK[s]?STK[s][0]:IMGMAP[s]?IMGMAP[s][1]:s; return `<button class="sti${w?' wti':''}${IMGMAP[s]?' imgi':''}" draggable="true" data-stadd="${s}" data-name="${esc(nm.toLowerCase())}" title="${esc(nm)}">${w?`<span class="wprev"><b>${w[1]}</b>${wi(w[2])}</span>`:stHtml(s)}</button>`; }).join('')}</div>
@@ -2210,8 +2221,8 @@ function openTray(on){ let t=document.getElementById('sttray'); document.body.cl
   if(!on){ if(t) t.remove(); return; }
   if(!t){ t=document.createElement('aside'); t.id='sttray'; t.className='sttray'; document.body.appendChild(t); }
   t.innerHTML=trayHtml(); }
-function addSticker(s,x,y,day){ const b=listSnap('stickers','list'); let extra={}; const ck=CKIND(s); if(ck){ const pre=s.split('|')[1]||''; s='c:'+ck; extra={p:pre}; if(ck==='lbl') extra.t=pre; if(ck==='tb'||ck==='tbp') extra.h=6; }
-  const it=Object.assign({id:'s'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),s,pg:stPage(),x:+x.toFixed(2),y:+y.toFixed(2),w:s.startsWith('w:')?(['w:habits','w:medication','w:eating'].includes(s)?26:24):ck?({lbl:10,plbl:13,fill:11,note:12,tb:16,tbp:16,num:4,ico:6,icot:6,washi:18,quote:12}[ck]):STK[s]?9:IMGMAP[s]?9:8,r:0},extra); if(day) it.day=day; list('stickers','list').push(it); saveList('stickers','list',b); stSel=it.id; drawStickers(); const nm=STK[s]?STK[s][0]:(ck==='lbl'||ck==='plbl')?(it.t||it.p):''; if(day&&nm) toast(`${nm} added to ${fmtShort(parse(day))}`); }
+function addSticker(s,x,y,day,ex){ const b=listSnap('stickers','list'); let extra=Object.assign({},ex||{}); const ck=CKIND(s); if(ck){ const pre=s.split('|')[1]||''; s='c:'+ck; extra={p:pre}; if(ck==='lbl') extra.t=pre; if(ck==='tb'||ck==='tbp') extra.h=6; }
+  const it=Object.assign({id:'s'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),s,pg:stPage(),x:+x.toFixed(2),y:+y.toFixed(2),w:s.startsWith('w:')?(['w:habits','w:medication','w:eating'].includes(s)?26:24):ck?({lbl:10,plbl:13,fill:11,note:12,tb:16,tbp:16,num:4,ico:6,icot:6,washi:18,quote:12}[ck]):STK[s]?9:IMGMAP[s]?9:s==='img'?22:8,r:0},extra); if(day) it.day=day; list('stickers','list').push(it); saveList('stickers','list',b); stSel=it.id; drawStickers(); const nm=STK[s]?STK[s][0]:(ck==='lbl'||ck==='plbl')?(it.t||it.p):''; if(day&&nm) toast(`${nm} added to ${fmtShort(parse(day))}`); }
 document.addEventListener('click',e=>{ const t=e.target.closest&&e.target; if(!t||!t.closest) return;
   if(t.closest('#stickerBtn')){ openTray(!decorating()); return; }
   if(t.closest('[data-stdone]')){ openTray(false); return; }
@@ -2786,11 +2797,29 @@ function vBuilder(step){
   const foot=`<div class="bfoot">${step>1?`<a class="pill" href="#builder-${step-1}">‹ Back</a>`:'<span></span>'}<span class="note">${step} of ${N}</span>${step<N?`<a class="pill solid big" href="#builder-${step+1}">${step===1?'Let\'s go':'Next'} ›</a>`:`<button class="pill solid big" data-bdone>Take me to my planner ›</button>`}</div>`;
   return `<div class="builder">${dots}<div class="bq"><h1>${q}</h1><p class="sub">${sub}</p></div><div class="bbody scroll">${body}</div>${foot}${step<N?'<button class="bskip" data-bdone>Skip, I\'ll set it up later</button>':''}</div>`;
 }
+function llpDownload(){
+  let src=SRC0.replace(/<script>window\.LLP_SUPA=[\s\S]*?<\/script>/,'').replace(/<script src="[^"]*supabase[^"]*"><\/script>/,'').replace(/<script>window\.LLP_OFFLINE=\{[\s\S]*?\};<\/script>/,'');
+  const data={at:Date.now(),docs:JSON.parse(JSON.stringify(docs))};
+  const inj='<scr'+'ipt>window.LLP_'+'OFFLINE='+JSON.stringify(data).replace(/</g,'\\u003c')+';<\/script>';
+  src=src.replace(/<head>/i,'<head>'+inj);
+  const nm=(set().name?set().name.replace(/[^A-Za-z0-9]+/g,'-')+'-':'My-')+'2027-Planner-'+key(today())+'.html';
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([src],{type:'text/html'})); a.download=nm; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },2000);
+  toast('Your planner is downloading. Open the file any time, even without internet.');
+}
+window.llpDownload=llpDownload;
+async function llpRestore(file){
+  try{ const txt=await file.text(); const m=/window\.LLP_OFFLINE=(\{[\s\S]*?\});<\/script>/.exec(txt); if(!m) throw 0; const data=JSON.parse(m[1]);
+    const when=new Date(data.at||Date.now()); if(!confirm(`Bring in your planner copy from ${fmtLong(when)}? Anything you've written online since then on the same pages will be replaced.`)) return;
+    Object.entries(data.docs||{}).forEach(([k,v])=>{ if(!v||typeof v!=='object') return; docs[k]=JSON.parse(JSON.stringify(v)); delete docs[k]._at; queue(k, flat(docs[k])); });
+    rerender(); toast('Your planner copy is back in. Everything is saving now.');
+  }catch(e){ status('That file is not a planner download. Pick the .html file from "Download my planner".', true); }
+}
+document.addEventListener('change', e=>{ const t=e.target; if(t&&t.dataset&&t.dataset.restore!==undefined&&t.files&&t.files[0]){ llpRestore(t.files[0]); t.value=''; } });
 function vSetup(){
   const s=set(); doc('settings');
   if(!docs.settings.habits || !Object.keys(docs.settings.habits).length){ docs.settings.habits = DEFAULTS.habits.map(x=>({...x})); saveList('settings','habits',{}); }
   const hours=Array.from({length:24},(_,i)=>i);
-  const head=`<div class="ph"><h1>Make it yours</h1><span class="sub">Change these any time. Your pages update straight away and nothing you've written is lost.</span><div class="nav">${SB?'<button class="pill" onclick="llpChangePw()">Change password</button><button class="pill" onclick="llpSignOut()">Sign out</button>':''}<a class="pill" href="#builder-1">Use the step by step setup</a><a class="pill solid" href="#year">Go to my planner</a></div></div>`;
+  const head=`<div class="ph"><h1>Make it yours</h1><span class="sub">Change these any time. Your pages update straight away and nothing you've written is lost.</span><div class="nav">${SB?'<button class="pill" onclick="llpChangePw()">Change password</button><button class="pill" onclick="llpSignOut()">Sign out</button>':''}<a class="pill" href="#builder-1">Use the step by step setup</a><button class="pill" onclick="llpDownload()">Download my planner</button><a class="pill solid" href="#year">Go to my planner</a></div></div>`;
   const c1=`<div class="col"><div class="field"><label for="s-name">Your name</label><input type="text" id="s-name" data-k="settings" data-f="name" value="${esc(s.name)}" placeholder="Shown at the top of your planner"></div>
     <div class="field"><label>Week starts on</label><div class="seg">${[[1,'Monday'],[0,'Sunday']].map(([v,n])=>`<button class="${s.ws===v?'on':''}" data-set="settings|ws|${v}">${n}</button>`).join('')}</div></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="field"><label for="s-from">Day starts at</label><select id="s-from" data-k="settings" data-f="from" data-num>${hours.map(x=>`<option value="${x}" ${s.from===x?'selected':''}>${label12(x*60)}</option>`).join('')}</select></div>
@@ -2799,6 +2828,7 @@ function vSetup(){
     <div class="field"><label>Daily page layout</label><div class="seg">${[['d1','Productivity day'],['d2','Balanced day']].map(([v,n])=>`<button class="${(s.dayLayout||'d1')===v?'on':''}" data-set="settings|dayLayout|${v}">${n}</button>`).join('')}</div><p class="note">${(s.dayLayout||'d1')==='d2'?'Schedule and must-dos, plus meals, water, movement, gratitude and one thing just for you.':'Schedule, top 3, and separate personal and work to do lists.'}</p></div>
     <div class="field"><label>Add events to</label><div class="seg">${[['google','Google Calendar'],['apple','Apple Calendar']].map(([v,n])=>`<button class="${(s.cal||'google')===v?'on':''}" data-set="settings|cal|${v}">${n}</button>`).join('')}</div>${s.cal==='apple'?'<p class="note">Apple Calendar uses the Live Love Planners shortcut, the same as your planner.</p>':''}</div>
     <div class="field"><label>Planner colour</label><div class="swatches">${TONES.map(([id,n,l,c])=>`<button class="sw${(TONES.some(t=>t[0]===s.tone)?s.tone:'breeze')===id?' on':''}" data-set="settings|tone|${id}"><i style="background:linear-gradient(135deg,${l} 50%,${c} 50%);border:1px solid ${c}"></i>${n}</button>`).join('')}</div></div>
+    <div class="field"><label>My planner on this device</label><p class="note" style="margin:0 0 6px">Download a copy you can open any time, even with no internet. If you write in it offline, use "Download my planner" inside that copy to save it, then bring it back here.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="pill solid" onclick="llpDownload()">Download my planner</button>${window.LLP_OFFLINE?'':'<label class="pill" style="cursor:pointer">Bring a copy back<input type="file" accept=".html,text/html" data-restore hidden></label>'}</div></div>
     <div class="field"><label>Currency</label><div class="seg">${['£','$','€'].map(v=>`<button class="${s.cur===v?'on':''}" data-set="settings|cur|${v}">${v}</button>`).join('')}</div></div></div>`;
   const tog=(f,on,label)=>`<label class="tog"><input type="checkbox" class="chk" data-k="settings" data-f="${f}" ${on?'checked':''} data-rr> ${label}</label>`;
   const c2=`<div class="col"><div class="blk"><p class="lbl">Daily extras</p><div class="toggles">${tog('journal',s.journal,'Journal page with a daily prompt')}${tog('reminders',s.reminders,'Reminders with calendar links')}${tog('mood',s.mood,'Mood of the day')}${tog('reading',s.reading,'Reading tracker')}${tog('big',s.big,'Larger text')}</div></div>
@@ -2869,7 +2899,7 @@ function render(){
   if(route.v==='meals'&&!route.d) route.d=wstart(base);
   if(['money','habits','workout','wellness'].includes(route.v)&&route.m==null) route.m=fm;
   document.documentElement.classList.toggle('bigtext', !!s.big);
-  document.documentElement.dataset.tone = TONES.some(t=>t[0]===s.tone)?s.tone:'breeze';
+  document.documentElement.dataset.tone = TONES.some(t=>t[0]===s.tone)?s.tone:'breeze'; if(docs.settings&&docs.settings.tone){ try{ localStorage.setItem('llp27-tone',document.documentElement.dataset.tone); }catch(e){} }
   document.getElementById('brandName').innerHTML = `<span class="bscr">${esc(s.name?s.name+'\'s':'My')}</span><span class="byr">2027<svg viewBox="0 0 120 14" aria-hidden="true"><path d="M3 10c22-7 58-9 114-4"/></svg></span><i class="bspk">✦</i>`;
   const v=route.v, dayBase = (v==='day'||v==='journal') ? route.d : (inPlan(today())?today():base);
   const views=[['dashboard','Dashboard','dashboard'],['year','Year','year vision'],['quarter-'+(Math.floor(fm/3)+1),'Quarter','quarter'],['month-'+(fm+1),'Month','month'],['week-'+key(wstart(base)),'Week','week review wsched'],['day-'+key(dayBase),'Day','day journal']];
@@ -2881,7 +2911,7 @@ function render(){
   const mi=a=>`<a href="#${a.id==='meals'?'meals-'+key(wstart(base)):a.id==='recipes'?'recipes':a.id+'-'+(fm+1)}"><svg viewBox="0 0 24 24">${a.icon}</svg>${a.name}${['money','habits','workout','wellness'].includes(a.id)?` <span class="note" style="margin:0 0 0 auto">${MS[fm]}</span>`:''}</a>`;
   const shown=ADDONS.filter(a=>s.addons[a.id] && (a.id==='recipes' || (a.id==='meals'?weekly:monthly)));
   const here = monthly ? 'm'+(fm+1) : 'year', mine=myPages().filter(x=>(x.loc||'year')===here);
-  document.getElementById('addonsMenu').innerHTML = `<h6>Add-ons</h6>${s.journal?`<a href="${jlink(dayBase)}"><svg viewBox="0 0 24 24">${MIC.journal}</svg>Journal</a>`:''}<a href="#sections"><svg viewBox="0 0 24 24"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H10l2 2.5h5.5A2.5 2.5 0 0 1 20 9v8.5a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5z"/><path d="M12 10.5v6M9 13.5h6"/></svg>Custom sections</a>${shown.map(mi).join('')}<a href="#templates" class="nbl" style="display:none"><svg viewBox="0 0 24 24"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H10l2 2.5h5.5A2.5 2.5 0 0 1 20 9v8.5a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5z"/><path d="M8.5 12.5h7M8.5 15.5h4"/></svg>Notes and sections</a>${mine.length?`<h6 style="margin-top:8px">My pages${monthly?' in '+MONTHS[fm]:''}</h6>${mine.map(x=>`<a href="#page-${x.id}">${art(artFor(x.tpl),'')}<span>${esc(x.title||tplName(x.tpl))}</span></a>`).join('')}`:''}<a href="#templates"><svg viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="17" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Bonus templates</a><a href="#recurring"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 9M20 4v5h-5M20 12a8 8 0 0 1-13.7 5.6L4 15M4 20v-5h5"/></svg>Recurring tasks</a><a href="#brain"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M9.5 3h5"/></svg>Brain dump and focus timer</a><a href="#organise"><svg viewBox="0 0 24 24"><rect x="3.5" y="4" width="7" height="7" rx="1.5"/><rect x="13.5" y="4" width="7" height="7" rx="1.5"/><rect x="3.5" y="13" width="7" height="7" rx="1.5"/><rect x="13.5" y="13" width="7" height="7" rx="1.5"/></svg>Organise my pages</a>${!monthly?'<p class="note" style="padding:4px 10px 2px;max-width:220px">Budget, habits, workouts and wellness are on each month\'s pages.</p>':''}`;
+  document.getElementById('addonsMenu').innerHTML = `<h6>Add-ons</h6>${s.journal?`<a href="${jlink(dayBase)}"><svg viewBox="0 0 24 24">${MIC.journal}</svg>Journal</a>`:''}<a href="#sections"><svg viewBox="0 0 24 24"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H10l2 2.5h5.5A2.5 2.5 0 0 1 20 9v8.5a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5z"/><path d="M12 10.5v6M9 13.5h6"/></svg>Custom sections</a>${shown.map(mi).join('')}<a href="#templates" class="nbl" style="display:none"><svg viewBox="0 0 24 24"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H10l2 2.5h5.5A2.5 2.5 0 0 1 20 9v8.5a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5z"/><path d="M8.5 12.5h7M8.5 15.5h4"/></svg>Notes and sections</a>${mine.length?`<h6 style="margin-top:8px">My pages${monthly?' in '+MONTHS[fm]:''}</h6>${mine.map(x=>`<a href="#page-${x.id}">${art(artFor(x.tpl),'')}<span>${esc(x.title||tplName(x.tpl))}</span></a>`).join('')}`:''}<a href="#templates"><svg viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="17" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Bonus templates</a><a href="#" onclick="llpDownload();return false"><svg viewBox="0 0 24 24"><path d="M12 4v11M7.5 10.5L12 15l4.5-4.5M5 19.5h14"/></svg>Download my planner</a><a href="#recurring"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 9M20 4v5h-5M20 12a8 8 0 0 1-13.7 5.6L4 15M4 20v-5h5"/></svg>Recurring tasks</a><a href="#brain"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M9.5 3h5"/></svg>Brain dump and focus timer</a><a href="#organise"><svg viewBox="0 0 24 24"><rect x="3.5" y="4" width="7" height="7" rx="1.5"/><rect x="13.5" y="4" width="7" height="7" rx="1.5"/><rect x="3.5" y="13" width="7" height="7" rx="1.5"/><rect x="13.5" y="13" width="7" height="7" rx="1.5"/></svg>Organise my pages</a>${!monthly?'<p class="note" style="padding:4px 10px 2px;max-width:220px">Budget, habits, workouts and wellness are on each month\'s pages.</p>':''}`;
   let h='';
   switch(v){
     case 'day': h=vDay(route.d); break; case 'journal': h=vJournal(route.d); break; case 'week': h=vWeek(route.d); break; case 'wsched': h=vWSched(route.d); break; case 'review': h=vReview(route.d); break;
@@ -2959,6 +2989,9 @@ function addGroceries(k){
   [...new Set(items)].forEach(x=>{ if(!existing.has(x.toLowerCase())) clean.push({t:x}); });
   doc(k).groc=clean; saveList(k,'groc',b); rerender();
 }
+async function saveImage(file,tag){ let src=await resizeImage(file); if(SB&&SBUID){ const blob=await (await fetch(src)).blob(), path=`${SBUID}/${tag}-${Date.now()}.jpg`; const up=await SB.storage.from('user-uploads').upload(path,blob,{contentType:'image/jpeg'}); if(up.error) throw up.error; const sg=await SB.storage.from('user-uploads').createSignedUrl(path,60*60*24*365*10); if(sg.error) throw sg.error; src=sg.data.signedUrl; } return src; }
+document.addEventListener('change', async e=>{ const t=e.target; if(!t.dataset||t.dataset.stup===undefined||!t.files||!t.files[0]) return; status('Adding your image');
+  try{ const src=await saveImage(t.files[0],'sticker'); addSticker('img',50,45,null,{src}); status('All changes saved'); }catch(err){ status('That image could not be read. Try a JPG or PNG.', true); } t.value=''; });
 sheet.addEventListener('change', async e=>{ const t=e.target; if(!t.dataset||!t.dataset.vimg||!t.files||!t.files[0]) return; const k=t.dataset.vimg; status('Saving photo');
   try{ let src=await resizeImage(t.files[0]); if(SB&&SBUID){ const blob=await (await fetch(src)).blob(), path=`${SBUID}/${k}-${Date.now()}.jpg`; const up=await SB.storage.from('user-uploads').upload(path,blob,{contentType:'image/jpeg'}); if(up.error) throw up.error; const sg=await SB.storage.from('user-uploads').createSignedUrl(path,60*60*24*365*10); if(sg.error) throw sg.error; src=sg.data.signedUrl; } setPath(doc(k),'src',src); saveField(k,'src',src); rerender(); }catch(err){ status('That photo could not be read. Try a JPG or PNG.', true); } });
 document.addEventListener('click', e=>{ const b=e.target.closest('[data-vdel]'); if(!b) return; e.preventDefault(); const k=b.dataset.vdel; setPath(doc(k),'src',''); saveField(k,'src',''); rerender(); });
@@ -3108,7 +3141,8 @@ try{ document.fonts.ready.then(fitAll); }catch(e){}
 window.addEventListener('hashchange',()=>{ menu.hidden=true; closePicker(); document.body.classList.remove('calm'); render(); window.scrollTo(0,0); });
 
 /* ---------- boot ---------- */
-if(!window.LLP_SUPA){ try{ for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(k.startsWith('llp27:')&&k.split(':').length===2) docs[k.slice(6)]=JSON.parse(localStorage.getItem(k)); } }catch(e){} }
+if(window.LLP_OFFLINE){ LSP='llp27off:'+(window.LLP_OFFLINE.at||0)+':'; Object.entries(window.LLP_OFFLINE.docs||{}).forEach(([k,v])=>{ docs[k]=JSON.parse(JSON.stringify(v)); }); }
+if(!window.LLP_SUPA){ try{ for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); const r=k.slice(LSP.length); if(k.startsWith(LSP)&&!r.includes(':')) docs[r]=JSON.parse(localStorage.getItem(k)); } }catch(e){} }
 Object.keys(docs).forEach(k=>{ SHADOW[k]=cl_(docs[k]); });
 status('Connecting', true);
 render();
@@ -3180,6 +3214,7 @@ window.llpSignOut=async()=>{
 (async()=>{
   try{
     if(window.LLP_SUPA){ await supaBoot(); return; }
+    if(window.LLP_OFFLINE){ status('Offline copy: changes save on this device'); if(!location.hash) location.hash='dashboard'; return; }
     if(!window.claude || !window.claude.use){ status('Not signed in: saved in this browser only', true); return; }
     const [db, user] = await Promise.all([window.claude.use('db'), window.claude.use('user')]);
     if(!db || !user){ status('Not signed in: saved in this browser only', true); return; }
