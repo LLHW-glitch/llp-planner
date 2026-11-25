@@ -1147,6 +1147,102 @@ textarea.paper.grid{background:linear-gradient(var(--rule) 1px,transparent 1px) 
 .hmonth th small{display:block;color:var(--muted);font-size:9px}
 .hmonth th.tdy{color:var(--line);font-weight:600}
 @media (max-width:760px){.nbhub,.hhabwrap{grid-template-columns:1fr}.hyear{grid-template-columns:repeat(7,1fr)}}
+
+/* v45: sections, journal log, setup builder */
+.seclist{display:flex;flex-direction:column;gap:7px;overflow-y:auto;min-height:0;padding:2px}
+.secrow{display:flex;align-items:center;gap:10px;border:1px solid var(--rule);border-radius:12px;padding:6px 10px;background:var(--paper,#fff)}
+.secrow.on{border-color:var(--line);background:var(--fill)}
+.secrow .rn{width:28px;height:28px;border-radius:50%;background:var(--light);color:var(--line);display:grid;place-items:center;font-size:12.5px;font-weight:700;flex:none;text-decoration:none}
+.secrow.on .rn{background:var(--line);color:var(--paper,#fff)}
+.secrow input{flex:1;border:0;background:none;font:inherit;font-size:14px;color:inherit;outline:none;padding:4px 0;min-width:0}
+.secright{align-items:center;justify-content:center;gap:16px}
+.seccover{position:relative;width:min(100%,420px);aspect-ratio:3/4;max-height:calc(100% - 70px);border-radius:8px 22px 22px 8px;background:var(--fill);border:1px solid var(--line);box-shadow:inset 14px 0 0 var(--light),0 10px 26px rgba(0,0,0,.07);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:30px;overflow:hidden}
+.seccover .secno{position:absolute;top:22px;right:26px;font-family:var(--display);font-size:40px;color:var(--line);opacity:.7}
+.seccover .art.ghost{position:absolute;width:62%;height:auto;opacity:.12;bottom:-6%;left:-6%}
+.secname{font-family:var(--display);font-size:clamp(26px,3.2vw,40px);line-height:1.1;position:relative;word-break:break-word}
+.secmeta{font-size:12.5px;color:var(--muted);margin-top:10px;position:relative}
+.secbar{display:flex;gap:10px;align-items:center}
+.pill.big{padding:9px 20px;font-size:14px}
+.nbidx a.on{background:var(--line);color:var(--paper,#fff)}
+.jlog{display:flex;flex-direction:column;gap:8px;max-width:860px}
+.jmonth{font-family:var(--display);font-weight:400;font-size:20px;margin:10px 0 2px}
+.jentry{display:flex;gap:16px;border:1px solid var(--rule);border-radius:14px;padding:12px 16px;text-decoration:none;color:inherit;background:var(--paper,#fff)}
+.jentry:hover{background:var(--fill);border-color:var(--line)}
+.jdate{display:flex;flex-direction:column;align-items:center;width:44px;flex:none;font-size:11.5px;color:var(--muted)}
+.jdate b{font-family:var(--display);font-weight:400;font-size:26px;color:var(--ink);line-height:1}
+.jtext{font-size:14px;line-height:1.5;white-space:pre-line;overflow:hidden}
+.jtext i{display:block;color:var(--line);font-size:13px;margin-bottom:2px}
+.jempty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;margin:auto;max-width:380px}
+.jempty svg{width:58px;height:58px;padding:13px;border-radius:18px;background:var(--fill);fill:none;stroke:var(--line);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.builder{display:flex;flex-direction:column;height:100%;min-height:0;max-width:980px;width:100%;margin:0 auto;padding:4px 0 0}
+.bprog{display:flex;gap:6px;justify-content:center;margin-bottom:14px}
+.bprog a{width:26px;height:6px;border-radius:9px;background:var(--rule)}
+.bprog a.done{background:var(--light)}
+.bprog a.on{background:var(--line);width:40px}
+.bq{text-align:center;margin-bottom:16px}
+.bq h1{font-family:var(--display);font-weight:400;font-size:clamp(26px,3vw,36px);margin:0}
+.bq .sub{margin:6px 0 0;color:var(--muted);font-size:14px}
+.bbody{flex:1;min-height:0;padding:4px}
+.bgrid{display:grid;gap:12px}
+.bgrid.tones{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.bgrid.two{grid-template-columns:repeat(2,minmax(0,1fr));max-width:720px;margin:0 auto}
+.bgrid.three{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.bcard{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;border:1.5px solid var(--rule);border-radius:18px;background:var(--paper,#fff);padding:16px 14px;cursor:pointer;font:inherit;color:inherit;transition:border-color .15s,transform .15s,box-shadow .15s}
+.bcard:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,.06)}
+.bcard.on{border-color:var(--line);background:var(--fill);box-shadow:0 0 0 1.5px var(--line) inset}
+.bcard b{font-weight:600;font-size:14.5px}
+.bcard>span:not(.bmini):not(.bic):not(.bweek):not(.blay){font-size:12.5px;color:var(--muted);line-height:1.4}
+.bhide{position:absolute;opacity:0;pointer-events:none}
+.btick{position:absolute;top:10px;right:12px;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-style:normal;font-size:12px;color:transparent}
+.bcard.on .btick{background:var(--line);border-color:var(--line);color:var(--paper,#fff)}
+.bic{width:44px;height:44px;border-radius:14px;background:var(--fill);display:grid;place-items:center}
+.bcard.on .bic{background:var(--paper,#fff)}
+.bic svg{width:24px;height:24px;fill:none;stroke:var(--line);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.bic.big{width:64px;height:64px}.bic.big svg{width:34px;height:34px}
+.bmini{display:grid;grid-template-columns:1fr 12px;grid-template-rows:12px 1fr;width:100%;max-width:150px;aspect-ratio:4/3;border-radius:8px;overflow:hidden;background:#fff;border:1px solid var(--c)}
+.bm-tabs{grid-column:1/-1;display:flex;gap:2px;padding:2px 3px 0;background:#fff}
+.bm-tabs i{flex:1;background:var(--l);border:1px solid var(--c);border-bottom:0;border-radius:3px 3px 0 0}
+.bm-page{display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:min-content;gap:4px;padding:6px;border-top:1px solid var(--c)}
+.bm-page i{display:block;border-radius:2px}
+.bm-h{grid-column:1/-1;height:6px;width:55%;background:var(--c)}
+.bm-b{height:26px;border:1px solid var(--c);background:var(--l)}
+.bm-l{height:2px;background:var(--c);opacity:.5}
+.bm-side{display:flex;flex-direction:column;gap:2px;padding:3px 2px;border-top:1px solid var(--c);border-left:1px solid var(--c);background:#fff}
+.bm-side i{flex:1;background:var(--l);border:1px solid var(--c);border-radius:0 3px 3px 0}
+.bweek{display:flex;gap:5px;margin:6px 0}
+.bweek i{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-style:normal;font-size:12.5px;border:1px solid var(--line);background:var(--paper,#fff)}
+.bweek i:first-child{background:var(--line);color:var(--paper,#fff)}
+.blay{display:grid;grid-template-columns:1.2fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:5px;width:100%;max-width:240px;height:120px;padding:7px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.blay span{border-radius:5px;border:1px solid var(--line);background:var(--fill)}
+.blay .bl-sch{grid-row:1/3;display:flex;flex-direction:column;gap:4px;padding:6px;background:#fff}
+.blay .bl-sch i{flex:1;border-bottom:1px solid var(--rule)}
+.blay.d1 .bl-a{grid-column:2/4}
+.blay.d2 .bl-a{grid-row:1/3}
+.blay.d2 .bl-b,.blay.d2 .bl-c{border-radius:50%;aspect-ratio:1;justify-self:center;align-self:center;width:60%}
+.bname{max-width:460px;margin:20px auto 0;text-align:center;display:flex;flex-direction:column;gap:10px}
+.bname label{font-size:15px}
+.bname input{font:inherit;font-family:var(--display);font-size:28px;text-align:center;border:0;border-bottom:1.5px solid var(--line);background:none;padding:6px;outline:none;color:inherit}
+.bday{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;max-width:760px;margin:0 auto;align-items:start}
+.bday-in{display:flex;flex-direction:column;gap:12px}
+.bsched{border:1px solid var(--line);border-radius:14px;padding:12px 16px;background:#fff;display:flex;flex-direction:column}
+.bsched span{display:flex;align-items:center;gap:10px;height:30px;border-bottom:1px solid var(--rule);font-size:12.5px}
+.bsched b{font-weight:500;width:62px;color:var(--muted)}
+.bsched .more{border:0;color:var(--muted);justify-content:center}
+.bcur{max-width:300px;margin:16px auto 0;text-align:center}
+.bhab{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;max-width:820px;margin:0 auto}
+.bideas{display:flex;flex-wrap:wrap;gap:7px}
+.bideas button{border:1px solid var(--line);border-radius:999px;background:var(--paper,#fff);padding:6px 12px;font:inherit;font-size:13px;cursor:pointer;color:inherit}
+.bideas button:hover{background:var(--fill)}
+.bdone{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;max-width:760px;margin:0 auto;align-items:center}
+.bdone-mini .bmini{max-width:340px;width:100%;margin:0 auto}
+.bsum{display:flex;flex-direction:column;gap:6px}
+.bsum a{display:flex;justify-content:space-between;gap:12px;border:1px solid var(--rule);border-radius:12px;padding:9px 14px;text-decoration:none;color:inherit;font-size:13.5px}
+.bsum a:hover{background:var(--fill)}
+.bsum span{color:var(--muted)}
+.bsum b{font-weight:500;text-align:right}
+.bfoot{display:flex;justify-content:space-between;align-items:center;padding:14px 4px 4px}
+.bskip{align-self:center;border:0;background:none;color:var(--muted);font:inherit;font-size:12.5px;text-decoration:underline;cursor:pointer;margin-top:2px}
+@media (max-width:760px){.bgrid.two,.bday,.bhab,.bdone{grid-template-columns:1fr}}
 </style>
 
 <div class="app">
@@ -1479,7 +1575,7 @@ function vReview(ws){
 }
 function vDay(d){
   const k='d'+key(d), s=set(), wk=wstart(d);
-  const head=`<div class="ph"><h1>${fmtLong(d)}</h1>${nav('day-'+key(add(d,-1)),'day-'+key(add(d,1)),`${s.journal?`<a class="pill" href="${jlink(d)}">Journal</a>`:''}<a class="pill" href="#week-${key(wk)}">Week ${weekNo(wk)}</a>`)}</div>`;
+  const head=`<div class="ph"><h1>${fmtLong(d)}</h1>${nav('day-'+key(add(d,-1)),'day-'+key(add(d,1)),`${s.journal?`<a class="pill" href="#journal-${key(d)}">Journal</a>`:''}<a class="pill" href="#week-${key(wk)}">Week ${weekNo(wk)}</a>`)}</div>`;
   const st=stepOf(s), slots=[]; for(let t=s.from*60; t<s.to*60; t+=st) slots.push(t);
   let sched=`<div class="sched" style="grid-template-rows:repeat(${slots.length},minmax(0,1fr))">`;
   slots.forEach(t=>{ const v=getPath(doc(k),'sched.t'+hm(t))||'';
@@ -1505,13 +1601,22 @@ function vDay(d){
     return page(head,'minmax(0,1.15fr) minmax(0,1fr) minmax(0,1fr)', c1b+c2b+c3b); }
   return page(head,'minmax(0,1.2fr) minmax(0,1fr) minmax(0,.95fr)', c1+c2+c3);
 }
-function jbook(){ const s=set(); if(s.jmode!=='book') return null; return myPages().find(x=>x.id===s.jbook)||myPages().find(x=>x.tpl==='njournal')||null; }
-function jlink(d){ const b=jbook(); return b?'#page-'+b.id:'#journal-'+key(d); }
+function jbook(){ return null; }
+function jlink(d){ return '#journal'; }
 function jmodeBar(){ const s=set(), books=myPages().filter(x=>x.tpl==='njournal');
   return `<div class="jmode"><label class="pill">Keep my journal <select data-k="settings" data-f="jmode" style="border:0;background:none;font:inherit;color:inherit"><option value="daily" ${s.jmode!=='book'?'selected':''}>behind each daily page</option><option value="book" ${s.jmode==='book'?'selected':''}>as a named journal</option></select></label>${s.jmode==='book'?(books.length?`<label class="pill">Use <select data-k="settings" data-f="jbook" style="border:0;background:none;font:inherit;color:inherit">${books.map(b=>`<option value="${b.id}" ${(jbook()||{}).id===b.id?'selected':''}>${esc(b.title||'Journal')}</option>`).join('')}</select></label>`:'')+`<button class="pill solid" data-copytpl="njournal">+ New journal</button>`:''}</div>`; }
+function vJLog(){
+  const t=curDay(), out=[]; for(let d=mk(YEAR,11,31); d>=mk(YEAR-1,11,1); d=add(d,-1)){ const x=getPath(docs['d'+key(d)]||{},'journal'); if(x&&String(x).trim()) out.push([d,String(x).trim()]); }
+  const doy=d=>Math.round((d - mk(d.getFullYear(),0,1))/864e5), wrote=out.some(([d])=>sameDay(d,t));
+  const head=`<div class="ph"><h1>My journal</h1><span class="sub">${out.length?`${out.length} entr${out.length===1?'y':'ies'} so far`:'Your entries will appear here'}</span><div class="nav"><a class="pill solid" href="#journal-${key(t)}">${wrote?'Open today\'s entry':'+ Write today\'s entry'}</a></div></div>`;
+  if(!out.length) return head+`<div class="jempty"><svg viewBox="0 0 24 24">${MIC.journal}</svg><p class="hmsg">A little space just for you</p><p class="note">There's a new prompt every day. Write a line or a page, then find every entry here.</p><a class="pill solid" href="#journal-${key(t)}">Start today's entry</a></div>`;
+  let lastM=''; const cards=out.map(([d,x])=>{ const mh=MONTHS[d.getMonth()]+' '+d.getFullYear(); const sep=mh!==lastM?`<h3 class="jmonth">${mh}</h3>`:''; lastM=mh;
+    return sep+`<a class="jentry" href="#journal-${key(d)}"><span class="jdate"><b>${d.getDate()}</b>${DAYS[d.getDay()].slice(0,3)}</span><span class="jtext"><i>${esc(PROMPTS[doy(d)%PROMPTS.length])}</i>${esc(x.length>220?x.slice(0,220)+'…':x)}</span></a>`; }).join('');
+  return head+`<div class="scroll" style="flex:1;min-height:0"><div class="jlog">${cards}</div></div>`;
+}
 function vJournal(d){
   const k='d'+key(d), doy=Math.round((d - mk(d.getFullYear(),0,1))/864e5);
-  const head=`<div class="ph"><h1>Journal</h1><span class="sub">${fmtLong(d)}</span>${nav('journal-'+key(add(d,-1)),'journal-'+key(add(d,1)),`${jmodeBar()}<a class="pill" href="#day-${key(d)}">‹ Back to day</a>`)}</div>`;
+  const head=`<div class="ph"><h1>Journal</h1><span class="sub">${fmtLong(d)}</span>${nav('journal-'+key(add(d,-1)),'journal-'+key(add(d,1)),`<a class="pill" href="#journal">‹ All entries</a><a class="pill" href="#day-${key(d)}">Go to this day</a>`)}</div>`;
   return page(head,'minmax(0,1fr)', `<div class="col"><p class="prompt">${esc(PROMPTS[doy%PROMPTS.length])}</p>${area(k,'journal','','lined')}</div>`);
 }
 
@@ -2477,13 +2582,34 @@ function vTemplates(){
   const head=`<div class="ph"><h1>Bonus templates</h1><span class="sub">Open one to use it, or add copies anywhere in your planner</span><div class="nav"><a class="pill" href="#organise">Organise my pages</a></div></div>`;
   return head+`<div class="scroll" style="flex:1;min-height:0"><div class="tplhub" style="flex:none">${TPL.map(([cat,l])=>`<div class="col" style="gap:0"><div class="banner" style="padding:10px 14px;margin-bottom:10px">${art('svg:'+CATSVG[cat])}<b style="font-family:var(--display);font-weight:400;font-size:21px;position:relative">${cat}</b></div>${l.map(([id,n,d])=>`<a href="#tpl-${id}"><b>${n}</b><span>${d}</span></a>`).join('')}</div>`).join('')}</div>`+nbHub()+'</div>';
 }
+const SECN=8;
+function secList(){ return list('sections','list',SECN); }
+let secSel=1;
+function secCover(n,x,pages){ const nm=x.name||'Section '+n;
+  return `<div class="seccover"><span class="secno">${String(n).padStart(2,'0')}</span>${art('svg:nb','ghost')}<div class="secname">${esc(nm)}</div><span class="secmeta">${pages} page${pages===1?'':'s'} · ${(PAPERS.find(p=>p[0]===(x.paper||'lined'))||[])[1]} paper</span></div>`; }
+function vSections(n){
+  if(n) secSel=n; const l=secList(); if(secSel<1||secSel>l.length) secSel=1;
+  const head=`<div class="ph"><h1>My sections</h1><span class="sub">Name a section, then open it to start writing</span><div class="nav"><button class="pill" data-add="sections|list">+ Add a section</button></div></div>`;
+  const left=`<div class="col"><div class="seclist">${l.map((x,i)=>`<div class="secrow${i+1===secSel?' on':''}"><a class="rn" href="#sections-${i+1}" aria-label="Section ${i+1}">${i+1}</a><input data-k="sections" data-f="list.${i}.name" value="${esc(x.name)}" placeholder="Name section ${i+1}" aria-label="Name of section ${i+1}" data-secfocus="${i+1}"></div>`).join('')}</div></div>`;
+  const x=l[secSel-1], pages=Math.max(1,list('sec'+secSel,'pp',0).length);
+  const right=`<div class="col secright">${secCover(secSel,x,pages)}<div class="secbar"><label class="pill">Paper <select data-k="sections" data-f="list.${secSel-1}.paper" style="border:0;background:none;font:inherit;color:inherit">${PAPERS.map(([v,nm])=>`<option value="${v}" ${(x.paper||'lined')===v?'selected':''}>${nm}</option>`).join('')}</select></label><a class="pill solid big" href="#sec-${secSel}-1">Open section ›</a></div></div>`;
+  return page(head,'minmax(0,.8fr) minmax(0,2fr)', left+right);
+}
+function vSecPage(n,p){
+  const l=secList(); if(n<1||n>l.length) return vSections(1); const x=l[n-1], k='sec'+n, pp=list(k,'pp',1); if(p<1) p=1; if(p>pp.length) p=pp.length;
+  const paper=x.paper||'lined', pg=pp[p-1], f=`pp.${p-1}`;
+  const head=`<div class="ph"><h1>${esc(x.name||'Section '+n)}</h1><span class="sub">Page ${p} of ${pp.length}</span>${nav(p>1?`sec-${n}-${p-1}`:'',p<pp.length?`sec-${n}-${p+1}`:'',`<a class="pill" href="#sections-${n}">‹ All sections</a>`)}</div>`;
+  const tabs=`<div class="nbtools"><span class="nbidx">${pp.map((q,i)=>`<a href="#sec-${n}-${i+1}" class="${i+1===p?'on':''}">${esc(q.t||'Page '+(i+1))}</a>`).join('')}</span><button class="pill" data-secadd="${n}" style="margin-left:auto">+ Add a page</button>${pp.length>1?`<button class="pill" data-secdel="${n}|${p}" style="color:var(--warn);border-color:var(--warn)">Delete page</button>`:''}</div>`;
+  const body=paper==='cornell'?`<div class="cornell"><textarea class="paper lined" data-k="${k}" data-f="${f}.cue" placeholder="Cues and questions" aria-label="Cues">${esc(pg.cue)}</textarea><textarea class="paper lined" data-k="${k}" data-f="${f}.x" aria-label="Notes">${esc(pg.x)}</textarea><textarea class="paper lined sum" data-k="${k}" data-f="${f}.sum" placeholder="Summary" aria-label="Summary">${esc(pg.sum)}</textarea></div>`:`<textarea class="paper ${paper}" data-k="${k}" data-f="${f}.x" aria-label="Notes">${esc(pg.x)}</textarea>`;
+  return head+tabs+`<div class="nbpages scroll"><div class="nbpage"><div class="nbhead"><input class="nbtitle" data-k="${k}" data-f="${f}.t" value="${esc(pg.t)}" placeholder="Page title" aria-label="Page title"></div>${body}</div></div>`;
+}
 function nbHub(){
   const mine=t=>myPages().filter(x=>t.includes(x.tpl)), link=x=>`<a class="nbmine" href="#page-${x.id}">${esc(x.title||tplName(x.tpl))}</a>`;
   const notes=mine(['nlined','ndots','ngrid','ncornell','nblank']), secs=mine(['section']), jr=mine(['njournal']), s=set();
   const card=(title,ic,sub,inner)=>`<div class="nbcard"><div class="nbcardh"><svg viewBox="0 0 24 24">${ic}</svg><div><b>${title}</b><span>${sub}</span></div></div>${inner}</div>`;
   return `<div class="nbhub">${card('Notes','<rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M8.5 8h7M8.5 11.5h7M8.5 15h4"/>','Pick a paper, then add a copy and name it',`<div class="nbpaper">${NTPL.slice(0,5).map(([id,n])=>`<a href="#tpl-${id}" title="${n}"><i class="nbsw p-${id.slice(1)}"></i>${n.replace(' notes','')}</a>`).join('')}</div>${notes.length?`<p class="nbl2">My notes</p><div class="nblist">${notes.map(link).join('')}</div>`:''}`)}
-  ${card('Custom sections','<path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H10l2 2.5h5.5A2.5 2.5 0 0 1 20 9v8.5a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5z"/><path d="M12 10.5v6M9 13.5h6"/>','Your own named sections, with as many pages as you like',`${secs.length?`<div class="nblist">${secs.map(link).join('')}</div>`:'<p class="note">Make a section for anything: a course, a project, the kids, a side hustle.</p>'}<button class="pill solid" data-copytpl="section">+ New section</button>`)}
-  ${card('Journal',MIC.journal,s.jmode==='book'?'Kept as a named journal':'Kept behind each daily page',`<div class="nblist"><a class="nbmine" href="#journal-${key(curDay())}">Today's journal page</a>${jr.map(link).join('')}</div><button class="pill" data-copytpl="njournal">+ New named journal</button>`)}</div>`;
+  ${card('Custom sections','<path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H10l2 2.5h5.5A2.5 2.5 0 0 1 20 9v8.5a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5z"/><path d="M12 10.5v6M9 13.5h6"/>','Your own named sections, with as many pages as you like',`${(()=>{ const l=secList().map((x,i)=>[x,i]).filter(([x])=>x.name); return l.length?`<div class="nblist">${l.map(([x,i])=>`<a class="nbmine" href="#sections-${i+1}">${i+1}. ${esc(x.name)}</a>`).join('')}</div>`:'<p class="note">Make a section for anything: a course, a project, the kids, a side hustle.</p>'; })()}<a class="pill solid" href="#sections">Open my sections</a>`)}
+  ${card('Journal',MIC.journal,'A daily prompt and a log of every entry',`<div class="nblist"><a class="nbmine" href="#journal-${key(curDay())}">Today's entry</a><a class="nbmine" href="#journal">All my entries</a>${jr.map(link).join('')}</div>`)}</div>`;
 }
 function myPages(){ return list('pages','list',0).filter(x=>x&&x.id); }
 function vPage(pid){ const l=myPages(); const i=list('pages','list').findIndex(x=>x&&x.id===pid); const pg=l.find(x=>x.id===pid);
@@ -2609,11 +2735,53 @@ function vTpl(id, k, pg){
 }
 
 /* ---------- settings ---------- */
+const BSTEPS=['Welcome','Colour','Week','Daily page','Your day','Calendar','Extras','Add-ons','Habits','Ready'];
+function vBuilder(step){
+  const s=set(); doc('settings'); const N=BSTEPS.length; step=Math.max(1,Math.min(N,step));
+  if(step===9 && (!docs.settings.habits || !Object.keys(docs.settings.habits).length)){ docs.settings.habits = DEFAULTS.habits.map(x=>({...x})); saveList('settings','habits',{}); }
+  const tone=TONES.find(t=>t[0]===s.tone)||TONES.find(t=>t[0]==='breeze');
+  const card=(on,inner,attrs)=>`<button class="bcard${on?' on':''}" ${attrs}>${inner}</button>`;
+  const tcard=(f,on,ic,t,d)=>`<label class="bcard${on?' on':''}"><input type="checkbox" class="bhide" data-k="settings" data-f="${f}" ${on?'checked':''} data-rr><span class="bic"><svg viewBox="0 0 24 24">${ic}</svg></span><b>${t}</b><span>${d}</span><i class="btick">✓</i></label>`;
+  const mini=([id,n,l,c])=>`<span class="bmini" style="--l:${l};--c:${c}"><span class="bm-tabs"><i></i><i></i><i></i><i></i></span><span class="bm-page"><i class="bm-h"></i><i class="bm-b"></i><i class="bm-b"></i><i class="bm-l"></i><i class="bm-l"></i></span><span class="bm-side"><i></i><i></i><i></i></span></span>`;
+  const hours=Array.from({length:24},(_,i)=>i);
+  let q='',sub='',body='';
+  if(step===1){ q='Hello! Let\'s set up your planner'; sub='A few quick questions, one at a time. You can change any of it later in settings.';
+    body=`<div class="bname"><label for="b-name">What should we call you?</label><input type="text" id="b-name" data-k="settings" data-f="name" value="${esc(s.name)}" placeholder="Your first name" autocomplete="given-name"><p class="note">It goes at the top of your planner: "${esc(s.name||'Chris')}'s 2027".</p></div>`; }
+  if(step===2){ q='Pick your colour'; sub='Tap one to see your whole planner change.';
+    body=`<div class="bgrid tones">${TONES.map(t=>card(t[0]===tone[0],`${mini(t)}<b>${t[1]}</b>`,`data-set="settings|tone|${t[0]}"`)).join('')}</div>`; }
+  if(step===3){ q='Which day does your week start on?'; sub='This sets your weeks, month calendars and habit tracker.';
+    const row=o=>`<span class="bweek">${o.map((d,i)=>`<i class="${d==='S'?'we':''}">${d}</i>`).join('')}</span>`;
+    body=`<div class="bgrid two">${card(s.ws===1,`${row(['M','T','W','T','F','S','S'])}<b>Monday</b>`,'data-set="settings|ws|1"')}${card(s.ws===0,`${row(['S','M','T','W','T','F','S'])}<b>Sunday</b>`,'data-set="settings|ws|0"')}</div>`; }
+  if(step===4){ q='How do you like your daily page?'; sub='Both have a full schedule. The difference is what sits next to it.';
+    const lay=(cls)=>`<span class="blay ${cls}"><span class="bl-sch">${'<i></i>'.repeat(8)}</span><span class="bl-a"></span><span class="bl-b"></span><span class="bl-c"></span></span>`;
+    body=`<div class="bgrid two">${card((s.dayLayout||'d1')==='d1',`${lay('d1')}<b>Productivity day</b><span>Top 3, then separate personal and work to do lists</span>`,'data-set="settings|dayLayout|d1"')}${card(s.dayLayout==='d2',`${lay('d2')}<b>Balanced day</b><span>Must-dos, plus meals, water, movement, gratitude and one thing just for you</span>`,'data-set="settings|dayLayout|d2"')}</div>`; }
+  if(step===5){ q='When does your day start and end?'; sub='Your daily schedule only shows these hours.';
+    const slots=[]; for(let m=s.from*60;m<s.to*60 && slots.length<9;m+=stepOf(s)) slots.push(label12(m));
+    body=`<div class="bday"><div class="bday-in"><div class="field"><label for="b-from">Day starts at</label><select id="b-from" data-k="settings" data-f="from" data-num>${hours.map(x=>`<option value="${x}" ${s.from===x?'selected':''}>${label12(x*60)}</option>`).join('')}</select></div><div class="field"><label for="b-to">Day ends at</label><select id="b-to" data-k="settings" data-f="to" data-num>${hours.slice(1).concat([24]).map(x=>`<option value="${x}" ${s.to===x?'selected':''}>${x===24?'Midnight':label12(x*60)}</option>`).join('')}</select></div><div class="field"><label>Time blocks</label><div class="seg">${[[60,'Hourly'],[30,'Half-hourly']].map(([v,n])=>`<button class="${stepOf(s)===v?'on':''}" data-set="settings|step|${v}" ${v===30&&s.to-s.from>12?'disabled':''}>${n}</button>`).join('')}</div>${s.to-s.from>12?'<p class="note">Half-hour blocks work when your day is 12 hours or less.</p>':''}</div></div><div class="bsched">${slots.map(t=>`<span><b>${t}</b><i></i></span>`).join('')}${slots.length===9?'<span class="more">and so on</span>':''}</div></div>`; }
+  if(step===6){ q='Which calendar do you use?'; sub='Reminders and events get a button that adds them straight to it.';
+    const ic='<rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4M9 14.5l2 2 4-4"/>';
+    body=`<div class="bgrid two">${card((s.cal||'google')==='google',`<span class="bic big"><svg viewBox="0 0 24 24">${ic}</svg></span><b>Google Calendar</b><span>Opens Google Calendar with the event filled in</span>`,'data-set="settings|cal|google"')}${card(s.cal==='apple',`<span class="bic big"><svg viewBox="0 0 24 24">${ic}</svg></span><b>Apple Calendar</b><span>Uses the Live Love Planners shortcut on iPhone, iPad and Mac</span>`,'data-set="settings|cal|apple"')}</div>`; }
+  if(step===7){ q='What would you like on your daily pages?'; sub='Pick as many as you like.';
+    body=`<div class="bgrid three">${tcard('journal',s.journal,MIC.journal,'Journal','A daily prompt and a log of every entry')}${tcard('reminders',s.reminders,'<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>','Reminders','With a button to add them to your calendar')}${tcard('mood',s.mood,'<circle cx="12" cy="12" r="8.5"/><path d="M8.5 14c1.8 2 5.2 2 7 0M9 9.5h.01M15 9.5h.01"/>','Mood of the day','Tap how you feel and see your month')}${tcard('reading',s.reading,'<path d="M5 4h10a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h10"/>','Reading tracker','Your current book and pages read')}${tcard('big',s.big,'<path d="M4 18L8.5 6 13 18M5.7 14h5.6M15 18l2.8-7.5L20.6 18M15.9 16h3.8"/>','Larger text','Easier on the eyes')}</div>`; }
+  if(step===8){ q='Add the extras you\'ll actually use'; sub='They live under the + at the top. Budget, habits, workouts and wellness get a page for every month.';
+    const D={meals:'Plan the week and make a shopping list',recipes:'Save favourites and add them to meals',money:'Bills, spending and savings each month',habits:'Tick habits off and watch your streaks',workout:'Log workouts and how they felt',wellness:'Water, sleep and mood each day'};
+    body=`<div class="bgrid three">${ADDONS.map(a=>tcard('addons.'+a.id,s.addons[a.id],a.icon,a.name,D[a.id]||'')).join('')}</div>${s.addons.money?`<div class="field bcur"><label>Your currency</label><div class="seg">${['£','$','€'].map(v=>`<button class="${s.cur===v?'on':''}" data-set="settings|cur|${v}">${v}</button>`).join('')}</div></div>`:''}`; }
+  if(step===9){ q='Which habits do you want to build?'; sub='Start small. Three or four is plenty, and you can change them any time.';
+    const have=new Set(set().habits.filter(x=>x&&x.t).map(x=>x.t.toLowerCase()));
+    const ideas=['Drink water','Move for 20 minutes','Read','No phone after 9pm','Make the bed','Take my vitamins','Walk outside','Journal','In bed by 10:30','Stretch'].filter(x=>!have.has(x.toLowerCase()));
+    body=`<div class="bhab"><div class="blk">${checklist('settings','habits',{min:1,numbered:true,ph:'A habit'})}</div><div><p class="lbl">Ideas <span class="hint">tap to add</span></p><div class="bideas">${ideas.map(x=>`<button data-bhab="${esc(x)}">+ ${esc(x)}</button>`).join('')}</div></div></div>`; }
+  if(step===10){ q=`You're all set${s.name?', '+esc(s.name):''}!`; sub='Here\'s your planner. Everything here can be changed in settings (the cog at the top).';
+    const pick=[['Colour',tone[1]],['Week starts',s.ws===1?'Monday':'Sunday'],['Daily page',(s.dayLayout||'d1')==='d2'?'Balanced day':'Productivity day'],['Your day',`${label12(s.from*60)} to ${s.to===24?'midnight':label12(s.to*60)}`],['Calendar',(s.cal||'google')==='apple'?'Apple':'Google'],['Add-ons',ADDONS.filter(a=>s.addons[a.id]).map(a=>a.name).join(', ')||'None']];
+    body=`<div class="bdone"><span class="bdone-mini">${mini(tone)}</span><div class="bsum">${pick.map(([a,b],i)=>`<a href="#builder-${[2,3,4,5,6,8][i]}"><span>${a}</span><b>${esc(b)}</b></a>`).join('')}</div></div>`; }
+  const dots=`<div class="bprog">${BSTEPS.map((t,i)=>`<a href="#builder-${i+1}" class="${i+1===step?'on':i+1<step?'done':''}" title="${t}"></a>`).join('')}</div>`;
+  const foot=`<div class="bfoot">${step>1?`<a class="pill" href="#builder-${step-1}">‹ Back</a>`:'<span></span>'}<span class="note">${step} of ${N}</span>${step<N?`<a class="pill solid big" href="#builder-${step+1}">${step===1?'Let\'s go':'Next'} ›</a>`:`<button class="pill solid big" data-bdone>Take me to my planner ›</button>`}</div>`;
+  return `<div class="builder">${dots}<div class="bq"><h1>${q}</h1><p class="sub">${sub}</p></div><div class="bbody scroll">${body}</div>${foot}${step<N?'<button class="bskip" data-bdone>Skip, I\'ll set it up later</button>':''}</div>`;
+}
 function vSetup(){
   const s=set(); doc('settings');
   if(!docs.settings.habits || !Object.keys(docs.settings.habits).length){ docs.settings.habits = DEFAULTS.habits.map(x=>({...x})); saveList('settings','habits',{}); }
   const hours=Array.from({length:24},(_,i)=>i);
-  const head=`<div class="ph"><h1>Make it yours</h1><span class="sub">Change these any time. Your pages update straight away and nothing you've written is lost.</span><div class="nav">${SB?'<button class="pill" onclick="llpChangePw()">Change password</button><button class="pill" onclick="llpSignOut()">Sign out</button>':''}<a class="pill solid" href="#year">Go to my planner</a></div></div>`;
+  const head=`<div class="ph"><h1>Make it yours</h1><span class="sub">Change these any time. Your pages update straight away and nothing you've written is lost.</span><div class="nav">${SB?'<button class="pill" onclick="llpChangePw()">Change password</button><button class="pill" onclick="llpSignOut()">Sign out</button>':''}<a class="pill" href="#builder-1">Use the step by step setup</a><a class="pill solid" href="#year">Go to my planner</a></div></div>`;
   const c1=`<div class="col"><div class="field"><label for="s-name">Your name</label><input type="text" id="s-name" data-k="settings" data-f="name" value="${esc(s.name)}" placeholder="Shown at the top of your planner"></div>
     <div class="field"><label>Week starts on</label><div class="seg">${[[1,'Monday'],[0,'Sunday']].map(([v,n])=>`<button class="${s.ws===v?'on':''}" data-set="settings|ws|${v}">${n}</button>`).join('')}</div></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="field"><label for="s-from">Day starts at</label><select id="s-from" data-k="settings" data-f="from" data-num>${hours.map(x=>`<option value="${x}" ${s.from===x?'selected':''}>${label12(x*60)}</option>`).join('')}</select></div>
@@ -2674,7 +2842,12 @@ function parseHash(){
   if(m=/^vision-(\d{1,2})$/.exec(h)) return {v:'mvision',m:Math.min(12,Math.max(0,+m[1]))-1};
   if(m=/^reflect-(\d{1,2})$/.exec(h)) return {v:'mreflect',m:Math.min(12,Math.max(0,+m[1]))-1};
   if(m=/^tpl-([a-z0-9]+)$/.exec(h)) return {v:'tpl',id:m[1]};
+  if(m=/^sec-(\d{1,2})-(\d{1,3})$/.exec(h)) return {v:'secpage',n:+m[1],p:+m[2]};
+  if(m=/^sections-(\d{1,2})$/.exec(h)) return {v:'sections',n:+m[1]};
+  if(m=/^builder-(\d{1,2})$/.exec(h)) return {v:'builder',step:+m[1]};
   if(m=/^page-([a-z0-9]+)$/.exec(h)) return {v:'page',id:m[1]};
+  if(h==='journal') return {v:'jlog'};
+  if(['sections','builder'].includes(h)) return {v:h};
   if(['year','setup','recipes','meals','money','habits','workout','wellness','vision','templates','dashboard','organise','recurring','brain'].includes(h)) return {v:h};
   if(h==='today') return {v:'day',d:inPlan(today())?today():mk(YEAR,0,1)};
   return {v:'dashboard'};
@@ -2699,14 +2872,14 @@ function render(){
   const mi=a=>`<a href="#${a.id==='meals'?'meals-'+key(wstart(base)):a.id==='recipes'?'recipes':a.id+'-'+(fm+1)}"><svg viewBox="0 0 24 24">${a.icon}</svg>${a.name}${['money','habits','workout','wellness'].includes(a.id)?` <span class="note" style="margin:0 0 0 auto">${MS[fm]}</span>`:''}</a>`;
   const shown=ADDONS.filter(a=>s.addons[a.id] && (a.id==='recipes' || (a.id==='meals'?weekly:monthly)));
   const here = monthly ? 'm'+(fm+1) : 'year', mine=myPages().filter(x=>(x.loc||'year')===here);
-  document.getElementById('addonsMenu').innerHTML = `<h6>Add-ons</h6>${s.journal?`<a href="${jlink(dayBase)}"><svg viewBox="0 0 24 24">${MIC.journal}</svg>${esc(jbook()?jbook().title||'Journal':'Journal')}</a>`:''}${shown.map(mi).join('')}<a href="#templates" class="nbl"><svg viewBox="0 0 24 24"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H10l2 2.5h5.5A2.5 2.5 0 0 1 20 9v8.5a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5z"/><path d="M8.5 12.5h7M8.5 15.5h4"/></svg>Notes and sections</a>${mine.length?`<h6 style="margin-top:8px">My pages${monthly?' in '+MONTHS[fm]:''}</h6>${mine.map(x=>`<a href="#page-${x.id}">${art(artFor(x.tpl),'')}<span>${esc(x.title||tplName(x.tpl))}</span></a>`).join('')}`:''}<a href="#templates"><svg viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="17" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Bonus templates</a><a href="#recurring"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 9M20 4v5h-5M20 12a8 8 0 0 1-13.7 5.6L4 15M4 20v-5h5"/></svg>Recurring tasks</a><a href="#brain"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M9.5 3h5"/></svg>Brain dump and focus timer</a><a href="#organise"><svg viewBox="0 0 24 24"><rect x="3.5" y="4" width="7" height="7" rx="1.5"/><rect x="13.5" y="4" width="7" height="7" rx="1.5"/><rect x="3.5" y="13" width="7" height="7" rx="1.5"/><rect x="13.5" y="13" width="7" height="7" rx="1.5"/></svg>Organise my pages</a>${!monthly?'<p class="note" style="padding:4px 10px 2px;max-width:220px">Budget, habits, workouts and wellness are on each month\'s pages.</p>':''}`;
+  document.getElementById('addonsMenu').innerHTML = `<h6>Add-ons</h6>${s.journal?`<a href="${jlink(dayBase)}"><svg viewBox="0 0 24 24">${MIC.journal}</svg>Journal</a>`:''}<a href="#sections"><svg viewBox="0 0 24 24"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H10l2 2.5h5.5A2.5 2.5 0 0 1 20 9v8.5a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5z"/><path d="M12 10.5v6M9 13.5h6"/></svg>Custom sections</a>${shown.map(mi).join('')}<a href="#templates" class="nbl" style="display:none"><svg viewBox="0 0 24 24"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H10l2 2.5h5.5A2.5 2.5 0 0 1 20 9v8.5a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5z"/><path d="M8.5 12.5h7M8.5 15.5h4"/></svg>Notes and sections</a>${mine.length?`<h6 style="margin-top:8px">My pages${monthly?' in '+MONTHS[fm]:''}</h6>${mine.map(x=>`<a href="#page-${x.id}">${art(artFor(x.tpl),'')}<span>${esc(x.title||tplName(x.tpl))}</span></a>`).join('')}`:''}<a href="#templates"><svg viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="17" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Bonus templates</a><a href="#recurring"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 9M20 4v5h-5M20 12a8 8 0 0 1-13.7 5.6L4 15M4 20v-5h5"/></svg>Recurring tasks</a><a href="#brain"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M9.5 3h5"/></svg>Brain dump and focus timer</a><a href="#organise"><svg viewBox="0 0 24 24"><rect x="3.5" y="4" width="7" height="7" rx="1.5"/><rect x="13.5" y="4" width="7" height="7" rx="1.5"/><rect x="3.5" y="13" width="7" height="7" rx="1.5"/><rect x="13.5" y="13" width="7" height="7" rx="1.5"/></svg>Organise my pages</a>${!monthly?'<p class="note" style="padding:4px 10px 2px;max-width:220px">Budget, habits, workouts and wellness are on each month\'s pages.</p>':''}`;
   let h='';
   switch(v){
     case 'day': h=vDay(route.d); break; case 'journal': h=vJournal(route.d); break; case 'week': h=vWeek(route.d); break; case 'wsched': h=vWSched(route.d); break; case 'review': h=vReview(route.d); break;
     case 'month': h=vMonth(route.m); break; case 'quarter': h=vQuarter(route.q); break; case 'setup': h=vSetup(); break;
     case 'meals': h=vMeals(route.d); break; case 'recipes': h=vRecipes(route.id); break; case 'money': h=vMoney(route.m); break;
     case 'habits': h=vHabits(route.m); break; case 'workout': h=vWorkout(route.m); break; case 'wellness': h=vWellness(route.m); break;
-    case 'dashboard': h=vDash(); break; case 'year': h=vYear(); break; case 'vision': h=vVision(); break; case 'mvision': h=vMVision(route.m); break; case 'mreflect': h=vMReflect(route.m); break; case 'templates': h=vTemplates(); break; case 'tpl': h=vTpl(route.id); break; case 'page': h=vPage(route.id); break; case 'organise': h=vOrganise(); break; case 'recurring': h=vRecurring(); break; case 'brain': h=vBrain(); break;
+    case 'dashboard': h=vDash(); break; case 'year': h=vYear(); break; case 'vision': h=vVision(); break; case 'mvision': h=vMVision(route.m); break; case 'mreflect': h=vMReflect(route.m); break; case 'templates': h=vTemplates(); break; case 'tpl': h=vTpl(route.id); break; case 'page': h=vPage(route.id); break; case 'organise': h=vOrganise(); break; case 'sections': h=vSections(route.n); break; case 'secpage': h=vSecPage(route.n,route.p); break; case 'jlog': h=vJLog(); break; case 'builder': h=vBuilder(route.step||1); break; case 'recurring': h=vRecurring(); break; case 'brain': h=vBrain(); break;
     default: h=vDash();
   }
   sheet.innerHTML=h;
@@ -2780,6 +2953,13 @@ function addGroceries(k){
 sheet.addEventListener('change', async e=>{ const t=e.target; if(!t.dataset||!t.dataset.vimg||!t.files||!t.files[0]) return; const k=t.dataset.vimg; status('Saving photo');
   try{ let src=await resizeImage(t.files[0]); if(SB&&SBUID){ const blob=await (await fetch(src)).blob(), path=`${SBUID}/${k}-${Date.now()}.jpg`; const up=await SB.storage.from('user-uploads').upload(path,blob,{contentType:'image/jpeg'}); if(up.error) throw up.error; const sg=await SB.storage.from('user-uploads').createSignedUrl(path,60*60*24*365*10); if(sg.error) throw sg.error; src=sg.data.signedUrl; } setPath(doc(k),'src',src); saveField(k,'src',src); rerender(); }catch(err){ status('That photo could not be read. Try a JPG or PNG.', true); } });
 document.addEventListener('click', e=>{ const b=e.target.closest('[data-vdel]'); if(!b) return; e.preventDefault(); const k=b.dataset.vdel; setPath(doc(k),'src',''); saveField(k,'src',''); rerender(); });
+document.addEventListener('click', e=>{ const b=e.target.closest('[data-bhab]'); if(!b) return; e.preventDefault(); const bf=listSnap('settings','habits'); const l=list('settings','habits',0); const i=l.findIndex(x=>!x||!x.t); if(i>-1) l[i]={t:b.dataset.bhab}; else l.push({t:b.dataset.bhab}); saveList('settings','habits',bf); rerender(); });
+document.addEventListener('click', e=>{ const a=e.target.closest('[data-secadd],[data-secdel],[data-bdone]'); if(!a) return; e.preventDefault();
+  if(a.dataset.bdone!==undefined){ setPath(doc('settings'),'built',true); saveField('settings','built',true); if(getPath(docs.settings,'name')===undefined){ setPath(docs.settings,'name',''); } location.hash='dashboard'; return; }
+  if(a.dataset.secadd){ const n=+a.dataset.secadd, k='sec'+n, b=listSnap(k,'pp'); const l=list(k,'pp',1); l.push({}); saveList(k,'pp',b); location.hash=`sec-${n}-${l.length}`; return; }
+  const [n,p]=a.dataset.secdel.split('|').map(Number), k='sec'+n, b=listSnap(k,'pp'), l=list(k,'pp',1); if(l.length<2) return; if(!confirm('Delete this page? This can\'t be undone.')) return; l.splice(p-1,1); saveList(k,'pp',b); location.hash=`sec-${n}-${Math.max(1,p-1)}`; if(p===1) rerender(); });
+document.addEventListener('input', e=>{ const t=e.target.closest&&e.target.closest('[data-secfocus]'); if(!t) return; const c=document.querySelector('.secname'); if(c) c.textContent=t.value||('Section '+t.dataset.secfocus); });
+document.addEventListener('focusin', e=>{ const t=e.target.closest&&e.target.closest('[data-secfocus]'); if(!t) return; const n=+t.dataset.secfocus; if(n!==secSel){ secSel=n; document.querySelectorAll('.secrow').forEach((r,i)=>r.classList.toggle('on',i+1===n)); const c=document.querySelector('.secright'); if(c){ const x=secList()[n-1]; c.querySelector('.seccover').outerHTML=secCover(n,x,Math.max(1,list('sec'+n,'pp',0).length)); const sel=c.querySelector('select'); sel.dataset.f=`list.${n-1}.paper`; sel.value=x.paper||'lined'; c.querySelector('a.big').setAttribute('href',`#sec-${n}-1`); } } });
 document.addEventListener('click', e=>{ const g=e.target.closest('[data-nbgo]'); if(!g) return; e.preventDefault(); const el=document.getElementById(g.dataset.nbgo); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); });
 document.addEventListener('click', e=>{
   const c=e.target.closest('[data-copytpl]'); if(c){ const id=c.dataset.copytpl, pid='p'+Date.now().toString(36); const b=listSnap('pages','list'); const fm=curDay().getMonth();
@@ -2931,7 +3111,7 @@ function startSync(){
         if(JSON.stringify(o)!==JSON.stringify(docs[id]||{})){ docs[id]=o; backup(id); changed=true; } SHADOW[id]=cl_(o); });
       if(first){ first=false; const seen=new Set((snap.docs||[]).map(d=>d.id)); Object.keys(docs).forEach(id=>{ if(!seen.has(id) && Object.keys(flat(docs[id])).length) queue(id, flat(docs[id])); }); }
       const a=document.activeElement, typing = a && a.closest && a.closest('#sheet') && /INPUT|TEXTAREA|SELECT/.test(a.tagName);
-      if(!booted){ booted=true; if(!Object.keys(pend).length) status('All changes saved'); if(!location.hash && !(docs.settings && docs.settings.name!==undefined)) location.hash='setup'; rerender(); }
+      if(!booted){ booted=true; if(!Object.keys(pend).length) status('All changes saved'); if(!location.hash && !(docs.settings && (docs.settings.built || docs.settings.name!==undefined))) location.hash='builder'; rerender(); }
       else if(changed && !typing) rerender();
     }, ()=>status('Could not load, check your connection', true));
 }
