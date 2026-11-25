@@ -89,7 +89,7 @@ const LINKS = JSON.parse(fs.readFileSync('assets/links-D1W1.json', 'utf8'));
 const MASTER = S.master || 'assets/master-D1W1.pdf';
 const SECTION = { goals: [16, 26], projects: [27, 37], bonus: [614, 706] };
 const inc = n => !Object.entries(SECTION).some(([k, [a, b]]) => n >= a && n <= b && S[k] === false);
-const STATIC = [1, 2, 3, ...range(4, 37), ...range(583, 706)].filter(inc);
+const STATIC = [2, 3, ...range(4, 37), ...range(583, 706)].filter(inc);
 function range(a, b) { const r = []; for (let i = a; i <= b; i++) r.push(i); return r; }
 // her page number -> page id in this PDF (or null if that page isn't in it)
 const ORIG = (() => {
@@ -107,6 +107,7 @@ const ORIG = (() => {
 function origId(n) {
   const v = ORIG[n];
   if (n === 3) return 'index';
+  if (n === 1) return 'p1';
   if (v == null) return STATIC.includes(n) ? 'p' + n : null;
   if (typeof v === 'string') { if (/^d\d/.test(v)) return HAS.has(v.slice(1)) ? v : null; if (/^(mc|db|fin|ref)\d/.test(v)) return HASM.has(+v.replace(/\D+/, '')) ? v : null; return v; }
   const mon = key(mondayOf(v.week)), c = MC.find(c => c.m === v.m && c.weeks.some(w => key(w) === mon)) || MC.find(c => c.weeks.some(w => key(w) === mon));
@@ -133,22 +134,57 @@ function svgFile(n) {
   s = tint(s).replace('width="612" height="792" viewBox="0 0 612 792"', 'width="577pt" height="771pt" viewBox="0 21 577 771"');
   fs.writeFileSync(f, s); return f;
 }
-function svgPage(n) { return page(n === 3 ? 'index' : 'p' + n, '', null); }
+const ICONSLOTS = JSON.parse(fs.readFileSync('assets/icon-slots.json', 'utf8'));
+const ICONPATHS = JSON.parse(fs.readFileSync('assets/icons/paths.json', 'utf8'));
+// crisp line icons (Tabler, MIT licence) in place of the small raster pictures on the index and section pages
+function icons(n) {
+  return (ICONSLOTS[n] || []).map(([x, y, w, h, label]) => { const s = w * .62, cx = x + w / 2, cy = y + h / 2;
+    return `<svg class="svg" style="left:${cx - w * .36}pt;top:${cy - h * .36}pt;width:${w * .72}pt;height:${h * .72}pt" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.2" fill="${PALE}"/><g transform="translate(3.6 3.6) scale(.7)" fill="none" stroke="${INK}" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">${ICONPATHS[label] || ''}</g></svg>`; }).join('');
+}
+// her pages: artwork goes underneath (splice.py), so this page has a see-through sheet and just adds icons and the frame
+// ---------- COVER (built in code, no tabs) ----------
+function cover() {
+  const sp = (x, y, r, f) => `<path d="M${x} ${y - r}Q${x} ${y} ${x + r} ${y}Q${x} ${y} ${x} ${y + r}Q${x} ${y} ${x - r} ${y}Q${x} ${y} ${x} ${y - r}Z" fill="${f ? G : 'none'}" stroke="${G}" stroke-width=".9" stroke-linejoin="round"/>`;
+  const art = `<svg class="svg" style="left:0;top:0;width:612pt;height:792pt" viewBox="0 0 612 792">
+    <rect x="30" y="30" width="552" height="732" rx="16" fill="none" stroke="${G}" stroke-width=".8"/>
+    <rect x="38" y="38" width="536" height="716" rx="11" fill="none" stroke="${G}" stroke-width=".4" opacity=".7"/>
+    <path d="M150 520C230 496 382 496 462 520" fill="none" stroke="${G}" stroke-width=".7" stroke-dasharray="1 5" stroke-linecap="round"/>
+    ${sp(306, 196, 15, false)}${sp(270, 214, 6, false)}${sp(344, 210, 5, true)}${sp(152, 300, 7, false)}${sp(462, 288, 9, false)}${sp(118, 560, 5, true)}${sp(496, 590, 6, false)}
+    <circle cx="214" cy="250" r="1.6" fill="${G}"/><circle cx="402" cy="246" r="1.6" fill="${G}"/><circle cx="120" cy="420" r="1.3" fill="${G}"/><circle cx="492" cy="430" r="1.3" fill="${G}"/><circle cx="306" cy="640" r="1.3" fill="${G}"/>
+  </svg>`;
+  return `<section class="page cover" id="p1"><div class="cvbg"></div>${art}
+    <div class="cvbrand">LIVE LOVE PLANNERS</div>
+    <div class="cvyear">2027</div><div class="cvword">Planner</div>
+    <div class="cvline"><span>This planner belongs to</span><i></i></div>
+    <a class="cvgo" href="#index">Start here &rsaquo;</a></section>`;
+}
+function svgPage(n) { return `<section class="page st" id="${n === 3 ? 'index' : 'p' + n}">${frame(null, true)}${icons(n)}</section>`; }
 
 // ---------- shared frame ----------
 // Shapes + shadows are drawn once per state into one background image (keeps the PDF small); text and links stay vector on top.
 function frameShapes(active) {
+  // tabs drawn as real tab shapes: curved shoulders, soft edge line and a light vector shadow
+  const edge = TABEDGE || mix(MINT, G, .72), shade = 'rgba(0,0,0,.10)';
+  let sv = '';
+  // top tabs: folder tabs with curved shoulders, overlapping slightly
+  for (let i = 9; i >= 0; i--) { const X = i * 58.9, W = 58.9, d = `M${X - 5} 21.5C${X + 1} 21.5 ${X + 2} 4.5 ${X + 9} 3.2L${X + W - 9} 3.2C${X + W - 2} 4.5 ${X + W - 1} 21.5 ${X + W + 5} 21.5Z`;
+    sv += `<path d="${d}" transform="translate(.6 .4)" fill="${shade}"/><path d="${d}" fill="${MINT}" stroke="${edge}" stroke-width=".6"/>`; }
+  // side tabs: rounded tabs whose top curve tucks over the tab above (drawn top to bottom so each overlaps the last)
+  const x0 = 588.5, Wt = 22.5, H = 53.15;
+  for (let i = 0; i < 13; i++) { const Y = 101 + i * H, on = active !== null && i - 1 === active;
+    const d = `M${x0} ${Y - 7}C${x0 + 9} ${Y - 7} ${x0 + 9} ${Y + 1} ${x0 + 15} ${Y + 1}L${x0 + Wt - 4} ${Y + 1}Q${x0 + Wt} ${Y + 1} ${x0 + Wt} ${Y + 5}L${x0 + Wt} ${Y + H - 4}Q${x0 + Wt} ${Y + H} ${x0 + Wt - 4} ${Y + H}L${x0} ${Y + H}Z`;
+    sv += `<path d="${d}" transform="translate(.7 .7)" fill="${shade}"/><path d="${d}" fill="${on ? PAPER : MINT}" stroke="${edge}" stroke-width=".6"/>`; }
   let h = '<div class="marble"></div><div class="sheet"></div>';
-  for (let i = 0; i < 10; i++) h += `<div class="ttab" style="left:${i * 58.9}pt"></div>`;
+  h += `<svg class="svg" style="left:0;top:0;width:612pt;height:792pt" viewBox="0 0 612 792">${sv}</svg>`;
   h += `<div class="ipanel"></div>`;
-  for (let i = 0; i < 13; i++) h += `<div class="stab${active !== null && i - 1 === active ? ' on' : ''}" style="top:${101 + i * 53.15}pt"></div>`;
   return h;
 }
-function frame(active = null) {
-  let h = `<img class="fbg" src="assets/frame-${TN}-${active === null ? 'x' : active}.png">`;
+const SIDEICONS = {"home": "<path d=\"M5 12l-2 0l9 -9l9 9l-2 0\" /><path d=\"M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7\" /><path d=\"M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6\" />", "flag": "<path d=\"M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0v9a5 5 0 0 1 -7 0a5 5 0 0 0 -7 0v-9z\" /><path d=\"M5 21v-7\" />", "projects": "<path d=\"M9 4h3l2 2h5a2 2 0 0 1 2 2v7a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2\" /><path d=\"M17 17v2a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2h2\" />", "notebook": "<path d=\"M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-11a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1m3 0v18\" /><path d=\"M13 8l2 0\" /><path d=\"M13 12l2 0\" />", "sticker": "<path d=\"M20 12l-2 .5a6 6 0 0 1 -6.5 -6.5l.5 -2l8 8\" /><path d=\"M20 12a8 8 0 1 1 -8 -8\" />"};
+function frame(active = null, open = false) {
+  let h = `<img class="fbg" src="assets/frame-${TN}-${open ? 's' : active === null ? 'x' : active}.png">`;
   for (let i = 0; i < 10; i++) h += A(origId(584 + i) ? '#' + origId(584 + i) : null, 'ttab t', `left:${i * 58.9}pt`, String(i + 1));
   ['home', 'flag', 'projects', 'notebook', 'sticker'].forEach((n, i) =>
-    h += A(n === 'home' ? '#index' : (origId({ flag: 16, projects: 27, notebook: 583, sticker: 650 }[n]) ? '#' + origId({ flag: 16, projects: 27, notebook: 583, sticker: 650 }[n]) : null), 'sicon', `top:${23 + i * 15.6}pt`, `<img src="assets/side-${n}.png">`));
+    h += A(n === 'home' ? '#index' : (origId({ flag: 16, projects: 27, notebook: 583, sticker: 650 }[n]) ? '#' + origId({ flag: 16, projects: 27, notebook: 583, sticker: 650 }[n]) : null), 'sicon', `top:${23 + i * 15.6}pt`, `<svg viewBox="0 0 24 24" style="width:13pt;height:13pt;display:block;margin:1.5pt auto 0" fill="none" stroke="${INK}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${SIDEICONS[n]}</svg>`));
   ['2027', ...MS].forEach((l, i) => {
     const href = i === 0 ? '#' + (origId(6) || 'index') : mHref('mc', i - 1);
     h += A(href, 'stab t', `top:${101 + i * 53.15}pt`, `<span>${l}</span>`);
@@ -466,14 +502,14 @@ a{color:inherit;text-decoration:none}
 .page>*{position:absolute}
 .marble{left:588pt;top:0;width:24pt;height:21pt;background:url(assets/marble.png) center/cover}
 .sheet{left:0;top:21pt;width:588.5pt;height:771pt;background:${PAPER};box-shadow:1.5pt 0 2pt rgba(0,0,0,.22),0 -1pt 2pt rgba(0,0,0,.15)}
-.ttab{top:0;width:62pt;height:21pt;background:${MINT};border-top-right-radius:5pt;box-shadow:inset -1pt -1.5pt 1.5pt rgba(0,0,0,.18),1pt 0 1.5pt rgba(0,0,0,.18);font-size:9.5pt;line-height:20pt;text-align:center;padding-right:6pt;color:${TABINK};${TABEDGE ? `border:.75pt solid ${TABEDGE};border-left:0;border-bottom:0` : ''}}
-.ipanel{left:588.5pt;top:21pt;width:22pt;height:84pt;background:${PAPER};border-radius:0 5pt 0 0;clip-path:polygon(0 0,100% 0,100% 88%,0 100%);box-shadow:1pt 1pt 2pt rgba(0,0,0,.2)}
+.ttab{top:0;width:58.9pt;height:21pt;font-size:8.5pt;line-height:22pt;text-align:center;color:${TABINK};letter-spacing:.4pt}
+.ipanel{left:586pt;top:21pt;width:25pt;height:80pt;background:${PAPER};border-radius:0 6pt 6pt 0}
 .sicon{left:592.5pt;width:18pt;height:16pt}.sicon img{width:18pt;height:16pt;display:block}
-.stab{left:588.5pt;width:23pt;height:52pt;background:${MINT};border-bottom-right-radius:5pt;${TABEDGE ? `border:.75pt solid ${TABEDGE};border-left:0;` : ''}box-shadow:inset 1.5pt 0 2pt rgba(0,0,0,.16),0 1pt 1.5pt rgba(0,0,0,.2)}
-.stab.on{background:${PAPER};box-shadow:1pt 1pt 2pt rgba(0,0,0,.22);z-index:2}
+.stab{left:588.5pt;width:22.5pt;height:53pt}
+.stab.on{z-index:2}
 .fbg{left:0;top:0;width:612pt;height:792pt}
 .t{background:none!important;box-shadow:none!important}
-.stab span{color:${TABINK};position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(90deg);font-size:9.5pt;white-space:nowrap}
+.stab span{color:${TABINK};position:absolute;left:50%;top:54%;transform:translate(-50%,-50%) rotate(90deg);font-size:7.4pt;letter-spacing:1.1pt;text-transform:uppercase;white-space:nowrap}
 .foot{left:0;width:612pt;top:774pt;text-align:center;font-size:7pt;font-style:italic;color:#b4b4b4}
 .h1{left:47pt;font-family:Head;font-size:19.5pt;letter-spacing:.2pt;white-space:nowrap}
 .lbl{font-size:9.6pt;white-space:nowrap}.lbl b{font-weight:700}
@@ -566,7 +602,13 @@ a{color:inherit;text-decoration:none}
 .kv{left:375pt;width:187pt;height:12pt}.kv span{position:absolute;left:0;top:0;font-size:7.6pt;color:${GREY};font-style:italic;line-height:12pt}
 .kv::after{content:'';position:absolute;left:56pt;right:0;top:12pt;border-top:.75pt solid ${G}}
 .drop{width:10pt;height:10pt;border:.75pt solid ${G};border-radius:50% 50% 50% 0;transform:rotate(-45deg)}.drop.on{background:${SOFT}}
-.svgpg{left:0;top:21pt;width:577pt;height:771pt}.lk{display:block}
+.page.st{background:transparent}
+.page.cover{background:${PAPER}}.cvbg{left:0;top:0;width:612pt;height:792pt;background:radial-gradient(70% 55% at 50% 40%,${MINT},${PALE} 70%,${PAPER})}
+.cvbrand{left:0;width:612pt;top:96pt;text-align:center;font-size:9pt;letter-spacing:5.5pt;color:${G}}
+.cvyear{left:0;width:612pt;top:318pt;text-align:center;font-family:Head;font-size:118pt;line-height:1;letter-spacing:4pt;color:${INK}}
+.cvword{left:0;width:612pt;top:432pt;text-align:center;font-family:Script;font-size:50pt;line-height:1;color:${G}}
+.cvline{left:156pt;width:300pt;top:612pt;text-align:center;font-size:8.5pt;letter-spacing:1.6pt;text-transform:uppercase;color:${GREY}}.cvline i{display:block;margin:26pt auto 0;width:240pt;border-top:.75pt solid ${G}}
+.cvgo{left:256pt;width:100pt;top:690pt;height:24pt;line-height:24pt;text-align:center;border:.75pt solid ${G};border-radius:12pt;font-size:9pt;letter-spacing:.6pt;color:${INK};text-decoration:none;background:${PAPER}}.svgpg{left:0;top:21pt;width:577pt;height:771pt}.lk{display:block}
 .stk{position:absolute;transform-origin:center center}
 ${TN === 'afterdark' ? '.sicon img,.micon img,.clip img,.btn img,.cat img{filter:invert(.92)}.nthumb img{filter:grayscale(1) contrast(3) invert(1)}.nthumb i{mix-blend-mode:darken;background:#555}' : ''}.stk img{display:block;width:100%}
 `;
@@ -649,7 +691,7 @@ const stickersFor = id => STK.filter(s => s.pages.includes(id)).map(s => `<div c
 (async () => {
   const browser = await chromium.launch();
   if (S.data) await loadData(browser);
-  let body = [1, 2].filter(inc).map(svgPage).join('') + (PAGES.length ? indexPage() : svgPage(3)) + STATIC.filter(n => n >= 4 && n <= 37).map(svgPage).join(''), n = STATIC.filter(n => n <= 37).length;
+  let body = cover() + [2].filter(inc).map(svgPage).join('') + (PAGES.length ? indexPage() : svgPage(3)) + STATIC.filter(n => n >= 4 && n <= 37).map(svgPage).join(''), n = STATIC.filter(n => n <= 37).length;
   for (const c of MC) {
     body += monthCal(c) + dashboard(c) + finances(c) + reflection(c); n += 4;
     for (const w of c.weeks) { body += weekly(c, w) + review(c, w); n += 2; }
@@ -657,20 +699,20 @@ const stickersFor = id => STK.filter(s => s.pages.includes(id)).map(s => `<div c
   }
   body += STATIC.filter(n => n >= 583).map(svgPage).join(''); n += STATIC.filter(n => n >= 583).length;
   // drop each page's stickers in just before its closing tag
-  body = body.replace(/<section class="page" id="([^"]+)">([\s\S]*?)<\/section>/g, (m, id, inner) => `<section class="page" id="${id}">${inner}${stickersFor(id)}</section>`);
+  body = body.replace(/<section class="(page[^"]*)" id="([^"]+)">([\s\S]*?)<\/section>/g, (m, cls, id, inner) => `<section class="${cls}" id="${id}">${inner}${stickersFor(id)}</section>`);
   const css = cssFn();
   const bp = await browser.newPage({ viewport: { width: 816, height: 1056 }, deviceScaleFactor: 3.125 });
-  for (const a of [null, ...Array(12).keys()]) {
+  for (const a of [null, 's', ...Array(12).keys()]) {
     const f = `assets/frame-${TN}-${a === null ? 'x' : a}.png`;
     if (fs.existsSync(f)) continue;
-    fs.writeFileSync('fb.html', `<!doctype html><html><head><style>${css}</style></head><body><section class="page">${frameShapes(a)}</section></body></html>`);
-    await bp.goto('file://' + path.resolve('fb.html')); await bp.screenshot({ path: f });
+    fs.writeFileSync('fb.html', `<!doctype html><html><head><style>${css}${a === 's' ? '.page{background:transparent!important}.sheet{display:none}html,body{background:transparent}' : ''}</style></head><body><section class="page">${frameShapes(a === 's' ? null : a)}</section></body></html>`);
+    await bp.goto('file://' + path.resolve('fb.html')); await bp.screenshot({ path: f, omitBackground: a === 's' });
   }
   await bp.close();
   // hand over to splice.py: which of her pages go where, where her links point, and the colourway
   const linkmap = {}; for (let k = 1; k <= TITLES.length; k++) { const id = origId(k); if (id) linkmap[k] = id; }
-  const order = [...body.matchAll(/<section class="page" id="([^"]+)"/g)].map(m => m[1]);
-  fs.writeFileSync(`planner-${S.name}.splice.json`, JSON.stringify({ master: MASTER, static: STATIC, linkmap, order, colours: { G, MINT, RULE, WHEEL, PAPER, INK } }));
+  const order = [...body.matchAll(/<section class="page[^"]*" id="([^"]+)"/g)].map(m => m[1]);
+  fs.writeFileSync(`planner-${S.name}.splice.json`, JSON.stringify({ master: MASTER, static: STATIC, linkmap, order, colours: { G, MINT, RULE, WHEEL, SOFT, PALE, PAPER, INK } }));
   const out = `planner-${S.name}.html`;
   fs.writeFileSync(out, `<!doctype html><html><head><meta charset="utf-8"><style>${css}</style></head><body>${body}</body></html>`);
   const p = await browser.newPage();

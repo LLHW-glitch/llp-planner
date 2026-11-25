@@ -7,7 +7,7 @@ import json, sys, pikepdf
 out, cfg = sys.argv[1], json.load(open(sys.argv[2]))
 C = cfg['colours']
 rgb = lambda h: [int(h[i:i+2], 16) / 255 for i in (1, 3, 5)]
-G, MINT, RULE, WHEEL = (rgb(C[k]) for k in ('G', 'MINT', 'RULE', 'WHEEL'))
+G, MINT, RULE, WHEEL, SOFT, PALE = (rgb(C[k]) for k in ('G', 'MINT', 'RULE', 'WHEEL', 'SOFT', 'PALE'))
 mix = lambda a, b, t: [a[i] * t + b[i] * (1 - t) for i in range(3)]
 
 def tint(vals, stroke):
@@ -16,9 +16,11 @@ def tint(vals, stroke):
     if v < .02 or v > .985: return None               # black text, white paper
     if abs(v - .1059) < .006: return G                  # her accent colour (lines, boxes)
     if abs(v - .247) < .01: return None                 # grey text
-    if stroke: return WHEEL if v < .6 else RULE         # softer lines
+    if stroke: return [1, 1, 1] if v < .6 else RULE   # grey shadow lines beside boxes disappear; pale lines stay pale
     if v < .55: return None                             # mid grey text and placeholders
-    return mix(MINT, [1, 1, 1], max(0, min(1, (.98 - v) / .38)))
+    if v < .82: return SOFT                             # stronger accents (week numbers, highlighted bands)
+    if v < .95: return MINT
+    return PALE
 
 def recolour(stream_owner, pdf, done):
     key = stream_owner.objgen
@@ -34,16 +36,34 @@ def recolour(stream_owner, pdf, done):
     stream_owner.write(pikepdf.unparse_content_stream(ops)) if isinstance(stream_owner, pikepdf.Stream) else None
     return ops
 
+def n_is_light(v):
+    return max(v) - min(v) < .02 and .55 < sum(v) / 3 < .985
+
 def recolour_form(x, pdf, done):
     if x.objgen in done: return
     done.add(x.objgen)
-    ops = []
+    ops = []; fill = None; fillop = 'scn'; mapped = None; size = 10; tm = 1
     for operands, op in pikepdf.parse_content_stream(x):
         o = str(op)
         if o in ('scn', 'SCN', 'sc', 'SC', 'rg', 'RG') and len(operands) == 3 and not any(isinstance(v, pikepdf.Name) for v in operands):
-            n = tint([float(v) for v in operands], o.isupper())
+            vals = [float(v) for v in operands]
+            n = tint(vals, o.isupper())
+            if not o.isupper(): fill, fillop, mapped = vals, o, n
             if n: operands = [round(v, 4) for v in n]
+        elif o == 'Tf': size = abs(float(operands[1]))
+        elif o == 'Tm': tm = abs(float(operands[3])) or abs(float(operands[1])) or 1
+        if o in ('Tj', 'TJ', "'", '"') and fill and n_is_light(fill) and size * tm < 20:
+            # light grey text (week numbers and similar) becomes the accent colour so it stays readable
+            ops.append(([round(v, 4) for v in G], pikepdf.Operator(fillop)))
+            ops.append((operands, op))
+            ops.append(([round(v, 4) for v in (mapped or fill)], pikepdf.Operator(fillop)))
+            continue
         ops.append((operands, op))
+    xo = (x.get('/Resources') or {}).get('/XObject') or {}
+    def pic(name):
+        im = xo.get(name)
+        return im is not None and im.get('/Subtype') == '/Image' and 60 <= int(im.Width) <= 200
+    ops = [(a, o) for a, o in ops if not (str(o) == 'Do' and pic(a[0]))]
     x.write(pikepdf.unparse_content_stream(ops))
     for k, y in ((x.get('/Resources') or {}).get('/XObject') or {}).items():
         if y.get('/Subtype') == '/Form': recolour_form(y, pdf, done)
@@ -69,8 +89,8 @@ for n in cfg['static']:
     form = doc.copy_foreign(master.pages[n - 1].as_form_xobject())
     recolour_form(form, doc, done)
     name = page.add_resource(form, pikepdf.Name.XObject, prefix='LLP')
-    page.contents_add(doc.make_stream(b'q\n'), prepend=True)   # isolate Chromium's own drawing state
-    page.contents_add(doc.make_stream(b'\nQ q 0 0 577 771 re W n ' + str(name).encode() + b' Do Q'), prepend=False)
+    # her artwork first (clipped to the paper), then the code page on top: see-through paper, tabs, icons
+    page.contents_add(doc.make_stream(b'q 0 0 574.8 771 re W n ' + str(name).encode() + b' Do Q\n'), prepend=True)
     placed += 1
     ann = page.obj.get('/Annots')
     if ann is None: page.obj['/Annots'] = ann = doc.make_indirect(pikepdf.Array()) if False else pikepdf.Array()
