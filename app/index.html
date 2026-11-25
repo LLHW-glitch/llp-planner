@@ -1506,7 +1506,7 @@ function micons(m,on){
 }
 /* ---------- planner views ---------- */
 function vYear(){
-  const head=`<div class="ph"><h1>2027 at a glance</h1><span class="sub">Tap a month, week number or day to open it</span></div>`;
+  const head=`<div class="ph"><h1>2027 at a glance</h1><span class="sub">Tap a month, week number or day to open it</span><div class="nav"><a class="pill solid" href="#month-0">Start early: December 2026 ›</a></div></div>`;
   const left=`<div class="yeargrid">${MONTHS.map((_,m)=>`<div>${miniCal(m)}</div>`).join('')}</div>`;
   const right=`<div class="col"><div class="blk grow scroll"><p class="lbl">My 2027 goals</p>${checklist('year','goals',{min:6,ph:'A goal for this year',round:true})}</div>
     <div class="blk"><p class="lbl">Word for the year</p>${inp('year','word','One word to guide your year')}</div>
@@ -2907,7 +2907,7 @@ function render(){
   document.getElementById('ttabs').innerHTML = views.map(([h,n,vs])=>`<a href="#${h}" class="${vs.split(' ').includes(v)?'on':''}">${n}</a>`).join('') + `<a href="#today">Today</a>`;
   const addonView=['money','habits','workout','wellness','mvision'].includes(v);
   const qn=Math.floor(fm/3)+1;
-  document.getElementById('stabs').innerHTML = `<div class="ipanel"><a href="#dashboard" title="Home: your dashboard" aria-label="Home"><img src="${ICON['side-home']}" alt=""></a><a href="#quarter-${qn}" title="My goals" aria-label="My goals"><img src="${ICON['side-flag']}" alt=""></a></div>` + `<a class="dec26${(v==='month'||addonView)&&route.m===-1?' on':''}" href="#${addonView?(v==='mvision'?'vision':v):'month'}-0" title="December 2026"><span>Dec 26</span></a><a class="yr${v==='year'?' on':''}" href="#year"><span>2027</span></a>` + MS.map((n,i)=>`<a ${s.tone==='rainbow'?`style="--tab:${RAINBOW[i][0]};--tab-edge:${RAINBOW[i][1]}"`:''} class="${(v==='month'||addonView)&&route.m===i?'on':''}" href="#${addonView?(v==='mvision'?'vision':v):'month'}-${i+1}"><span>${n}</span></a>`).join('');
+  document.getElementById('stabs').innerHTML = `<div class="ipanel"><a href="#dashboard" title="Home: your dashboard" aria-label="Home"><img src="${ICON['side-home']}" alt=""></a><a href="#quarter-${qn}" title="My goals" aria-label="My goals"><img src="${ICON['side-flag']}" alt=""></a></div>` + `<a class="yr${v==='year'?' on':''}" href="#year"><span>2027</span></a>` + MS.map((n,i)=>`<a ${s.tone==='rainbow'?`style="--tab:${RAINBOW[i][0]};--tab-edge:${RAINBOW[i][1]}"`:''} class="${(v==='month'||addonView)&&route.m===i?'on':''}" href="#${addonView?(v==='mvision'?'vision':v):'month'}-${i+1}"><span>${n}</span></a>`).join('');
   const monthly=['month','money','habits','workout','wellness','mvision','dashboard'].includes(v), weekly=['week','review','day','journal','meals','wsched'].includes(v);
   const mi=a=>`<a href="#${a.id==='meals'?'meals-'+key(wstart(base)):a.id==='recipes'?'recipes':a.id+'-'+(fm+1)}"><svg viewBox="0 0 24 24">${a.icon}</svg>${a.name}${['money','habits','workout','wellness'].includes(a.id)?` <span class="note" style="margin:0 0 0 auto">${MS[fm]}</span>`:''}</a>`;
   const shown=ADDONS.filter(a=>s.addons[a.id] && (a.id==='recipes' || (a.id==='meals'?weekly:monthly)));
