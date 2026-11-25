@@ -1243,6 +1243,18 @@ textarea.paper.grid{background:linear-gradient(var(--rule) 1px,transparent 1px) 
 .bfoot{display:flex;justify-content:space-between;align-items:center;padding:14px 4px 4px}
 .bskip{align-self:center;border:0;background:none;color:var(--muted);font:inherit;font-size:12.5px;text-decoration:underline;cursor:pointer;margin-top:2px}
 @media (max-width:760px){.bgrid.two,.bday,.bhab,.bdone{grid-template-columns:1fr}}
+
+/* v46: title and year */
+.brand{display:flex;align-items:baseline}
+#brandName{display:inline-flex;align-items:baseline;gap:10px;position:relative}
+.bscr{font-family:var(--script);font-size:36px;color:var(--accent);line-height:1;transform:rotate(-4deg);display:inline-block;margin-right:-2px}
+.byr{position:relative;font-family:var(--display);font-size:34px;letter-spacing:.08em;line-height:1}
+.byr svg{position:absolute;left:-2px;right:-6px;bottom:-9px;width:calc(100% + 8px);height:12px;fill:none;stroke:var(--accent);stroke-width:2.2;stroke-linecap:round;opacity:.55}
+.bspk{font-style:normal;color:var(--accent);font-size:13px;align-self:flex-start;margin-left:-4px;opacity:.8}
+.yrtag{font-family:var(--script);font-size:30px;color:var(--accent);line-height:1;margin-left:4px;padding:0 8px 2px;background:linear-gradient(transparent 58%,var(--fill) 58%);border-radius:3px;transform:rotate(-3deg);display:inline-block}
+.lblic{display:inline-grid}
+h2 .lblic{float:right;margin-top:0}
+@media (max-width:760px){.bscr{font-size:28px}.byr{font-size:26px}}
 </style>
 
 <div class="app">
@@ -1458,7 +1470,6 @@ const MIC={
 function micons(m,on){
   const q=Math.floor(m/3)+1, items=[['month',MIC.cal,'Month calendar','#month-'+(m+1)]];
   if(set().addons.money) items.push(['money',MIC.money,'Budget','#money-'+(m+1)]);
-  if(set().addons.habits) items.push(['habits',MIC.habits,'Habit tracker','#habits-'+(m+1)]);
   items.push(['mvision',MIC.moon,'Vision board','#vision-'+(m+1)]);
   items.push(['reflect',MIC.reflect,'Monthly reflection','#reflect-'+(m+1)]);
   return `<span class="micons">${m<0?'':`<a class="qpill${on==='quarter'?' on':''}" href="#quarter-${q}" title="Quarter ${q} goals">Quarter ${q}</a>`}${items.map(([id,ic,t,h])=>`<a href="${h}" class="${id===on?'on':''}" title="${t}" aria-label="${t}"><svg viewBox="0 0 24 24">${ic}</svg></a>`).join('')}</span>`;
@@ -1506,7 +1517,7 @@ function monthEntries(m){
 }
 function vMonth(m){
   const k='m'+(m+1), t=today(), order = set().ws===1?[1,2,3,4,5,6,0]:[0,1,2,3,4,5,6];
-  const head=`<div class="ph"><h1>${MONTHS[m]}</h1><span class="sub">${mk(YEAR,m,1).getFullYear()}</span>${nav(m>-1?'month-'+m:'',m<11?'month-'+(m+2):'',micons(m,'month'))}</div>`;
+  const head=`<div class="ph"><h1>${MONTHS[m]}</h1><span class="yrtag">${mk(YEAR,m,1).getFullYear()}</span>${nav(m>-1?'month-'+m:'',m<11?'month-'+(m+2):'',micons(m,'month'))}</div>`;
   const ENT=monthEntries(m);
   let cal=`<div class="blk"><table class="mcal"><tr><th style="width:26px"></th>${order.map(d=>`<th>${DAYS[d]}</th>`).join('')}</tr>`;
   monthWeeks(m).forEach(w=>{ cal+=`<tr><td class="wk"><a href="#week-${key(w)}">Week ${weekNo(w)}</a></td>`;
@@ -1753,9 +1764,11 @@ function confetti(){
 }
 const doy = d => Math.round((d - mk(d.getFullYear(),0,1))/864e5)+1;
 /* ---------- dashboard ---------- */
-const inPlan = t => t>=mk(YEAR-1,11,1) && t<=mk(YEAR,11,31);
-const mIdx = d => d.getFullYear()<YEAR ? -1 : d.getMonth();   /* month index used in routes and keys: Dec 2026 is -1 */
-function curDay(){ const t=today(); return inPlan(t)?t:mk(YEAR,0,1); }
+const PLAN0 = () => wstart(mk(YEAR-1,11,1));   /* first day of the first week of the planner */
+const inPlan = t => t>=PLAN0() && t<=mk(YEAR,11,31);
+const planDay = t => inPlan(t) ? t : t<PLAN0() ? PLAN0() : mk(YEAR,11,31);
+const mIdx = d => d<mk(YEAR,0,1) ? -1 : d.getMonth();   /* month index used in routes and keys: Dec 2026 is -1 */
+function curDay(){ return planDay(today()); }
 function parseMD(str){ if(!str) return null; let m=/^\s*([A-Za-z]{3})[a-z]*\.?\s+(\d{1,2})/.exec(str); if(m){ const mi=MS.findIndex(x=>x.toLowerCase()===m[1].toLowerCase()); if(mi>-1) return mk(YEAR,mi,+m[2]); }
   m=/^\s*(\d{1,2})[\/.](\d{1,2})/.exec(str); if(m) return mk(YEAR,+m[2]-1,+m[1]); m=/^\s*(\d{1,2})\s+([A-Za-z]{3})/.exec(str); if(m){ const mi=MS.findIndex(x=>x.toLowerCase()===m[2].toLowerCase()); if(mi>-1) return mk(YEAR,mi,+m[1]); } return null; }
 function deadlines(from){
@@ -1774,13 +1787,13 @@ function donut(parts,size=150){ const tot=parts.reduce((a,p)=>a+p.v,0)||1, r=siz
   return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="transform:rotate(-90deg);flex:none">${parts.filter(p=>p.v>0).map(p=>{ const len=p.v/tot*c; const el=`<circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${p.c}" stroke-width="20" stroke-dasharray="${Math.max(0,len-2)} ${c}" stroke-dashoffset="${-off}"/>`; off+=len; return el; }).join('')||`<circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="var(--mint)" stroke-width="20"/>`}</svg>`; }
 const VART='<svg class="vart" viewBox="0 0 220 260" aria-hidden="true"><defs><mask id="vm1"><rect width="220" height="260" fill="#fff"/><circle cx="128" cy="86" r="40" fill="#000"/></mask><mask id="vm2"><circle cx="108" cy="102" r="46" fill="#fff"/></mask></defs><g class="vl"><circle cx="108" cy="102" r="46" mask="url(#vm1)"/><circle cx="128" cy="86" r="40" mask="url(#vm2)"/><path d="M160 37Q160 50 173 50Q160 50 160 63Q160 50 147 50Q160 50 160 37Z"/><path d="M52 56Q52 64 60 64Q52 64 52 72Q52 64 44 64Q52 64 52 56Z"/><path d="M178 125Q178 132 185 132Q178 132 178 139Q178 132 171 132Q178 132 178 125Z"/><path d="M66 160Q66 170 76 170Q66 170 66 180Q66 170 56 170Q66 170 66 160Z"/><path d="M150 182Q150 188 156 188Q150 188 150 194Q150 188 144 188Q150 188 150 182Z"/><path class="vd" d="M52 64L92 40L160 50L188 92L178 132"/><path class="vd" d="M30 222C70 196 120 214 196 176"/><circle cx="92" cy="40" r="2.2" class="vf"/><circle cx="188" cy="92" r="2.2" class="vf"/><circle cx="40" cy="120" r="1.8" class="vf"/><circle cx="120" cy="230" r="1.8" class="vf"/><circle cx="196" cy="214" r="1.6" class="vf"/><circle cx="24" cy="40" r="1.6" class="vf"/><path d="M196 167Q196 176 205 176Q196 176 196 185Q196 176 187 176Q196 176 196 167Z"/></g></svg>';
 function vDash(){
-  const s=set(), d=curDay(), m=d.getMonth(), dk='d'+key(d), mk_='m'+(m+1), hk=hbKey(d);
+  const s=set(), d=curDay(), m=mIdx(d), dk='d'+key(d), mk_='m'+(m+1), hk=hbKey(d);
   const hr=new Date().getHours(), hello=hr<12?'Good morning':hr<18?'Good afternoon':'Good evening';
   const pri=list(dk,'pri',3), sched=Object.entries(doc(dk).sched||{}).filter(([k,v])=>v&&String(v).trim()).map(([k,v])=>({k,t:+k.slice(1,3)*60+ +k.slice(3,5),v,done:getPath(doc(dk),'schedc.'+k)===true})).sort((a,b)=>a.t-b.t);
   const recs=recurOn(d).map(r=>({rec:r, t:r.time?tmins(r.time):-1, v:r.t, done:getPath(doc(dk),'rc.'+r.id)===true}));
   const agendaItems=[...recs,...sched].sort((a,b)=>a.t-b.t);
   const items=pri.filter(x=>x.t).length+agendaItems.length, done=pri.filter(x=>x.t&&x.c).length+agendaItems.filter(x=>x.done).length, left=items-done;
-  const head=`<div class="dhead"><div><p class="dsub">${DAYS[d.getDay()]}, ${MONTHS[m]} ${d.getDate()}, ${YEAR}</p><h1>${hello}${s.name?', '+esc(s.name):''}</h1><p class="dsub2">${items?(left?`You have ${left} thing${left>1?'s':''} left today.`:'Everything for today is done.'):'Add your top 3 and schedule to see your day here.'}</p></div></div>`;
+  const head=`<div class="dhead"><div><p class="dsub">${DAYS[d.getDay()]}, ${MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}</p><h1>${hello}${s.name?', '+esc(s.name):''}</h1><p class="dsub2">${items?(left?`You have ${left} thing${left>1?'s':''} left today.`:'Everything for today is done.'):'Add your top 3 and schedule to see your day here.'}</p></div></div>`;
   // agenda
   const chips=pri.map((x,i)=>`<label class="pchip${x.c?' done':''}">${chk(dk,`pri.${i}.c`,true,'Done',true)}<span>${i+1}. </span>${x.t?esc(x.t):'<em>Add a priority</em>'}</label>`).join('');
   const agenda=`<div class="card" style="grid-column:1;grid-row:1 / span 2"><h2>Today's agenda <a class="more" href="#day-${key(d)}">Daily page ›</a></h2>
@@ -1791,7 +1804,7 @@ function vDash(){
   const tick=(hi,dd)=>getPath(doc(hbKey(dd)),`g.h${hi}.d${dd.getDate()}`)===true;
   const pills=hs.map((x,hi)=>{ const on=tick(hi,d); let st=0; for(let i=on?0:1;i<366;i++){ if(tick(hi,add(d,-i))) st++; else break; } return `<button class="hpill${on?' on':''}" data-set="${hk}|g.h${hi}.d${d.getDate()}|${on?'':'true'}"><i></i>${esc(x.t)}${st?`<small>${st}d</small>`:''}</button>`; }).join('');
   const weekGrid=`<table class="hweek"><tr><th></th>${wk.map(dd=>`<th>${DAYS[dd.getDay()][0]}</th>`).join('')}</tr>${hs.map((x,hi)=>`<tr><td>${esc(x.t)}</td>${wk.map(dd=>`<td><button class="${tick(hi,dd)?'on':''}" data-set="${hbKey(dd)}|g.h${hi}.d${dd.getDate()}|${tick(hi,dd)?'':'true'}" aria-label="${esc(x.t)} ${fmtShort(dd)}"></button></td>`).join('')}</tr>`).join('')}</table>`;
-  const habits=`<div class="card" style="grid-column:2;grid-row:1"><h2>Habits today <a class="more" href="#habits-${m+1}">All habits ›</a></h2>${hs.length?`<div class="hpills">${pills}</div><p class="note" style="margin:6px 0 4px">Tap to tick. The small number is your streak.</p>${weekGrid}`:`<p class="empty">Add the habits you want to build in <a href="#setup">settings</a>.</p>`}</div>`;
+  const habits=`<div class="card" style="grid-column:2;grid-row:1"><h2>Habits today <a class="lblic" href="#habits-${mIdx(d)+1}" title="Open my habit tracker" aria-label="Open my habit tracker"><svg viewBox="0 0 24 24">${MIC.habits}</svg></a></h2>${hs.length?`<div class="hpills">${pills}</div><p class="note" style="margin:6px 0 4px">Tap to tick. The small number is your streak.</p>${weekGrid}`:`<p class="empty">Add the habits you want to build in <a href="#setup">settings</a>.</p>`}</div>`;
   // this month
   const qn=Math.floor(m/3)+1, qg=list('q'+qn,'goals',3).filter(g=>g&&g.t);
   const month=`<div class="card" style="grid-column:3;grid-row:1"><h2>${MONTHS[m]} <a class="more" href="#month-${m+1}">Open month ›</a></h2>${area(mk_,'focus',"This month's focus")}<p class="lbl" style="margin:8px 0 2px">Top priorities</p>${checklist(mk_,'pri',{min:3,numbered:true,fixed:true})}${qg.length?`<p class="lbl" style="margin:8px 0 4px">Q${qn} goals</p>${qg.map(g=>{ const st=(g.steps||[]).filter(x=>x&&x.t), dn=st.filter(x=>x.c).length, pc=st.length?Math.round(dn/st.length*100):0; return `<div class="hbar" style="grid-template-columns:minmax(0,1fr) 70px 34px"><span>${esc(g.t)}</span><span class="bar"><i style="width:${pc}%"></i></span><b>${pc}%</b></div>`; }).join('')}`:''}</div>`;
@@ -2849,19 +2862,19 @@ function parseHash(){
   if(h==='journal') return {v:'jlog'};
   if(['sections','builder'].includes(h)) return {v:h};
   if(['year','setup','recipes','meals','money','habits','workout','wellness','vision','templates','dashboard','organise','recurring','brain'].includes(h)) return {v:h};
-  if(h==='today') return {v:'day',d:inPlan(today())?today():mk(YEAR,0,1)};
+  if(h==='today') return {v:'day',d:planDay(today())};
   return {v:'dashboard'};
 }
 const sheet=document.getElementById('sheet');
 function render(){
   route=parseHash(); const s=set();
-  const base = route.d || (route.v==='dashboard'?curDay():null) || (route.m!=null? mk(YEAR,route.m,1) : route.q? mk(YEAR,(route.q-1)*3,1) : (inPlan(today())?today():mk(YEAR,0,1)));
-  const fm = base.getFullYear()===YEAR ? base.getMonth() : (base>=mk(YEAR-1,11,1)?-1:base.getFullYear()<YEAR?0:11);
+  const base = route.d || (route.v==='dashboard'?curDay():null) || (route.m!=null? mk(YEAR,route.m,1) : route.q? mk(YEAR,(route.q-1)*3,1) : planDay(today()));
+  const fm = base.getFullYear()===YEAR ? base.getMonth() : (base>=PLAN0()?-1:base.getFullYear()<YEAR?0:11);
   if(route.v==='meals'&&!route.d) route.d=wstart(base);
   if(['money','habits','workout','wellness'].includes(route.v)&&route.m==null) route.m=fm;
   document.documentElement.classList.toggle('bigtext', !!s.big);
   document.documentElement.dataset.tone = TONES.some(t=>t[0]===s.tone)?s.tone:'breeze';
-  document.getElementById('brandName').textContent = s.name ? `${s.name}'s 2027` : 'My 2027';
+  document.getElementById('brandName').innerHTML = `<span class="bscr">${esc(s.name?s.name+'\'s':'My')}</span><span class="byr">2027<svg viewBox="0 0 120 14" aria-hidden="true"><path d="M3 10c22-7 58-9 114-4"/></svg></span><i class="bspk">✦</i>`;
   const v=route.v, dayBase = (v==='day'||v==='journal') ? route.d : (inPlan(today())?today():base);
   const views=[['dashboard','Dashboard','dashboard'],['year','Year','year vision'],['quarter-'+(Math.floor(fm/3)+1),'Quarter','quarter'],['month-'+(fm+1),'Month','month'],['week-'+key(wstart(base)),'Week','week review wsched'],['day-'+key(dayBase),'Day','day journal']];
   document.getElementById('ttabs').innerHTML = views.map(([h,n,vs])=>`<a href="#${h}" class="${vs.split(' ').includes(v)?'on':''}">${n}</a>`).join('') + `<a href="#today">Today</a>`;
