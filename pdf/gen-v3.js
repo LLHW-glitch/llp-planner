@@ -135,11 +135,11 @@ function svgFile(n) {
   fs.writeFileSync(f, s); return f;
 }
 const ICONSLOTS = JSON.parse(fs.readFileSync('assets/icon-slots.json', 'utf8'));
-const ICONPATHS = JSON.parse(fs.readFileSync('assets/icons/paths.json', 'utf8'));
+const TRACED = JSON.parse(fs.readFileSync('assets/icons/traced.json', 'utf8'));
 // crisp line icons (Tabler, MIT licence) in place of the small raster pictures on the index and section pages
 function icons(n) {
-  return (ICONSLOTS[n] || []).map(([x, y, w, h, label]) => { const s = w * .62, cx = x + w / 2, cy = y + h / 2;
-    return `<svg class="svg" style="left:${cx - w * .36}pt;top:${cy - h * .36}pt;width:${w * .72}pt;height:${h * .72}pt" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.2" fill="${PALE}"/><g transform="translate(3.6 3.6) scale(.7)" fill="none" stroke="${INK}" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">${ICONPATHS[label] || ''}</g></svg>`; }).join('');
+  return (ICONSLOTS[n] || []).map(([x, y, w, h, label]) => { const t = TRACED[label.replace(/\//g, '-').replace(/ /g, '_')]; if (!t) return '';
+    return `<svg class="svg" style="left:${x}pt;top:${y}pt;width:${w}pt;height:${h}pt" viewBox="0 0 ${t.w} ${t.h}"><path d="${t.d}" fill="${INK}" fill-rule="evenodd"/></svg>`; }).join('');
 }
 // her pages: artwork goes underneath (splice.py), so this page has a see-through sheet and just adds icons and the frame
 // ---------- COVER (built in code, no tabs) ----------
@@ -169,11 +169,12 @@ function frameShapes(active) {
   // top tabs: folder tabs with curved shoulders, overlapping slightly
   for (let i = 9; i >= 0; i--) { const X = i * 58.9, W = 58.9, d = `M${X - 5} 21.5C${X + 1} 21.5 ${X + 2} 4.5 ${X + 9} 3.2L${X + W - 9} 3.2C${X + W - 2} 4.5 ${X + W - 1} 21.5 ${X + W + 5} 21.5Z`;
     sv += `<path d="${d}" transform="translate(.6 .4)" fill="${shade}"/><path d="${d}" fill="${MINT}" stroke="${edge}" stroke-width=".6"/>`; }
-  // side tabs: rounded tabs whose top curve tucks over the tab above (drawn top to bottom so each overlaps the last)
-  const x0 = 588.5, Wt = 22.5, H = 53.15;
-  for (let i = 0; i < 13; i++) { const Y = 101 + i * H, on = active !== null && i - 1 === active;
-    const d = `M${x0} ${Y - 7}C${x0 + 9} ${Y - 7} ${x0 + 9} ${Y + 1} ${x0 + 15} ${Y + 1}L${x0 + Wt - 4} ${Y + 1}Q${x0 + Wt} ${Y + 1} ${x0 + Wt} ${Y + 5}L${x0 + Wt} ${Y + H - 4}Q${x0 + Wt} ${Y + H} ${x0 + Wt - 4} ${Y + H}L${x0} ${Y + H}Z`;
-    sv += `<path d="${d}" transform="translate(.7 .7)" fill="${shade}"/><path d="${d}" fill="${on ? PAPER : MINT}" stroke="${edge}" stroke-width=".6"/>`; }
+  // side tabs: the same tab shape as the top tabs, turned on its side. The open section's tab is drawn last so its whole shape shows
+  const x0 = 588.5, H = 53.15, side = (Y, fill) => { const d = `M${x0} ${Y - 5}C${x0} ${Y + 1} ${x0 + 17} ${Y + 2} ${x0 + 18.6} ${Y + 9}L${x0 + 18.6} ${Y + H - 9}C${x0 + 17} ${Y + H - 2} ${x0} ${Y + H - 1} ${x0} ${Y + H + 5}Z`;
+    return `<path d="${d}" transform="translate(.6 .5)" fill="${shade}"/><path d="${d}" fill="${fill}" stroke="${edge}" stroke-width=".6"/>`; };
+  let act = '';
+  for (let i = 12; i >= 0; i--) { const on = active !== null && i - 1 === active; if (on) act = side(101 + i * H, PAPER); else sv += side(101 + i * H, MINT); }
+  sv += act;
   let h = '<div class="marble"></div><div class="sheet"></div>';
   h += `<svg class="svg" style="left:0;top:0;width:612pt;height:792pt" viewBox="0 0 612 792">${sv}</svg>`;
   h += `<div class="ipanel"></div>`;
@@ -505,7 +506,7 @@ a{color:inherit;text-decoration:none}
 .ttab{top:0;width:58.9pt;height:21pt;font-size:8.5pt;line-height:22pt;text-align:center;color:${TABINK};letter-spacing:.4pt}
 .ipanel{left:586pt;top:21pt;width:25pt;height:80pt;background:${PAPER};border-radius:0 6pt 6pt 0}
 .sicon{left:592.5pt;width:18pt;height:16pt}.sicon img{width:18pt;height:16pt;display:block}
-.stab{left:588.5pt;width:22.5pt;height:53pt}
+.stab{left:588.5pt;width:19pt;height:53pt}
 .stab.on{z-index:2}
 .fbg{left:0;top:0;width:612pt;height:792pt}
 .t{background:none!important;box-shadow:none!important}
@@ -514,23 +515,23 @@ a{color:inherit;text-decoration:none}
 .h1{left:47pt;font-family:Head;font-size:19.5pt;letter-spacing:.2pt;white-space:nowrap}
 .lbl{font-size:9.6pt;white-space:nowrap}.lbl b{font-weight:700}
 .svg{position:absolute;overflow:visible}
-.bx{border:.75pt solid ${G}}.bx.mint{background:${FILL}}.bx.sh{box-shadow:.6pt .6pt 0 ${G}}.bx.rnd{border-radius:8pt}
+.bx{border:.75pt solid ${G}}.bx.mint{background:${FILL}}.bx.sh{}.bx.rnd{border-radius:8pt}
 .micon{top:44pt;height:18pt}.micon img{width:100%;height:18pt;display:block}
 .msw{top:51pt;width:22pt;text-align:center;font-size:8.6pt;color:#c4c4c4}.msw.on{color:${INK};font-weight:700}
 .box{position:absolute;border:.75pt solid ${G}}.box>*{position:absolute}
 .bh{left:0;right:0;top:0;height:22.5pt;background:${FILL};border-bottom:.75pt solid ${G};text-align:center;font-weight:500;font-size:9.6pt;line-height:22pt}
 .li{left:0;right:0;text-align:center;font-size:9.6pt;line-height:14pt}
-.cs{left:9pt;width:197pt;height:20pt;background:${PALE};border:.6pt solid ${G};box-shadow:inset -1.2pt -1.2pt 0 ${G};font-size:9.6pt;line-height:19pt;padding-left:6pt}
+.cs{left:9pt;width:197pt;height:20pt;background:${PALE};border:.75pt solid ${G};font-size:9.6pt;line-height:19pt;padding-left:6pt}
 .btn{left:292pt;width:275pt;height:30pt;border:.75pt solid ${G};border-radius:7pt;display:flex;align-items:center;justify-content:center;gap:5pt;font-size:9.6pt}
 .mcal{width:68.7pt;text-align:center;font-size:9.6pt;line-height:14pt}
-.cat{top:282pt;width:61pt;height:61pt;border:.9pt solid ${G};border-radius:7pt;overflow:hidden;display:flex;align-items:center;justify-content:center}.cat img{width:54pt;height:53pt}
+.cat{top:282pt;width:61pt;height:61pt;border:.75pt solid ${G};border-radius:7pt;overflow:hidden;display:flex;align-items:center;justify-content:center}.cat img{width:54pt;height:53pt}
 .catl{top:351pt;width:64pt;height:23pt;border:.75pt solid ${G};border-radius:4pt;font-size:8.6pt;display:flex;align-items:center;justify-content:center;text-align:center;line-height:9pt}
 .nthumb{width:51pt;height:29pt;overflow:hidden;isolation:isolate}.nthumb img{width:51pt;height:29pt;display:block;filter:grayscale(1) contrast(3)}.nthumb i{position:absolute;inset:0;background:${G};mix-blend-mode:lighten}
 .npill{width:69pt;height:24pt;border:.75pt solid ${G};border-radius:10pt;font-size:7.6pt;line-height:8pt;display:flex;align-items:center;justify-content:center;text-align:center;padding:0 3pt}
 .pill{height:13.5pt;border:.75pt solid ${G};border-radius:7pt;font-size:7.6pt;font-weight:500;text-align:center;line-height:12.5pt;white-space:nowrap}
 .clip{left:487pt;top:49pt;width:20pt;height:19pt}.clip img{width:20pt;height:19pt;display:block}
 .focus{left:47pt;top:98pt;width:299pt;height:35.5pt;background:${FILL};border:.75pt solid ${G}}
-.srow{left:47pt;width:299pt;border-top:.75pt solid ${G}}.srow i{position:absolute;left:41pt;right:0;top:50%;border-top:.75pt dotted #c9c9c9}
+.srow{left:47pt;width:299pt;border-top:.75pt solid ${G}}.srow i{position:absolute;left:41pt;right:0;top:50%;border-top:.75pt dotted ${G}}
 .svl{left:86pt;border-left:.75pt solid ${G}}
 .hour{left:47pt;width:39pt;display:flex;align-items:center;justify-content:center;font-size:9.4pt}.hour.sm{font-size:7.8pt}
 .pri{height:16pt;border-bottom:.75pt solid ${G};font-size:9.6pt;line-height:15pt;padding-left:6pt}
@@ -539,8 +540,8 @@ a{color:inherit;text-decoration:none}
 .todo::before{content:'';position:absolute;left:4pt;top:2.5pt;width:8pt;height:8pt;border:.75pt solid ${G}}
 .todo::after{content:'';position:absolute;left:17pt;right:0;bottom:1pt;border-bottom:.75pt solid ${G}}
 .todo.big::before{width:10pt;height:10pt;left:1pt;top:2pt}.todo.big::after{left:17pt;bottom:0}
-.ngrid{border:.9pt solid ${G};border-radius:4pt;background-image:linear-gradient(${RULE} .6pt,transparent .6pt),linear-gradient(90deg,${RULE} .6pt,transparent .6pt);background-size:14.4pt 14.4pt;background-position:-1pt -1pt}
-.wline{left:47pt;width:304pt;border-top:.6pt solid #8a8a8a}.wline.g{border-top:1.2pt solid ${G}}
+.ngrid{border:.75pt solid ${G};border-radius:4pt;background-image:linear-gradient(${RULE} .6pt,transparent .6pt),linear-gradient(90deg,${RULE} .6pt,transparent .6pt);background-size:14.4pt 14.4pt;background-position:-1pt -1pt}
+.wline{left:47pt;width:304pt;border-top:.75pt solid ${G}}.wline.g{border-top:.75pt solid ${G}}
 .wday{left:52pt;width:30pt;font-size:9.6pt;line-height:11pt;text-align:center}
 .wday b{display:block;font-weight:400;font-family:Head;font-size:13pt;line-height:13pt}.wday b.out{color:#b3b3b3}
 .ht-h{top:405pt;width:10pt;text-align:center;font-size:9.6pt}
@@ -551,10 +552,10 @@ a{color:inherit;text-decoration:none}
 .mc-w{left:386pt;width:22pt;text-align:center;font-size:8.6pt;font-style:italic;color:${WHEEL};line-height:14pt}
 .mc-d{width:20pt;text-align:center;font-size:9.6pt;line-height:14pt}.mc-d.out{color:#b3b3b3}
 .dh{top:89pt;width:72pt;text-align:center;font-size:9.6pt}
-.cal{left:47.8pt;width:518.4pt;border:.9pt solid ${G}}
+.cal{left:47.8pt;width:518.4pt;border:.75pt solid ${G}}
 .calh{left:47.8pt;width:518.4pt;border-top:.75pt solid ${G}}
-.calv{border-left:.6pt solid #8a8a8a}
-.calw{left:47.8pt;width:14.4pt;background:${FILL};border-right:.75pt solid ${G};border-top:.75pt solid ${G};margin-top:-.75pt}
+.calv{border-left:.75pt solid ${G}}
+.calw{left:47.8pt;width:14.4pt;background:${FILL};border:.75pt solid ${G};border-bottom:0;box-sizing:border-box}
 .calw span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-90deg);font-size:9.4pt;white-space:nowrap}
 .calc{width:72pt}.calc b{position:absolute;right:4.5pt;top:3pt;font-weight:400;font-size:9.6pt}.calc b.out{color:#b3b3b3}
 .crow{left:47pt;width:251.5pt;height:12pt}
@@ -566,21 +567,21 @@ a{color:inherit;text-decoration:none}
 .idate::before{content:'';position:absolute;left:0;width:57.5pt;top:0;border-top:.75pt solid ${G}}
 .idate::after{content:'';position:absolute;left:73pt;right:0;top:0;border-top:.75pt solid ${G}}
 .idate i{position:absolute;left:24pt;top:4pt;font-style:normal;font-size:8pt}
-.hth{left:328pt;width:221pt;height:17.5pt;background:${FILL};border:.75pt solid ${G};position:absolute}
-.tb{position:absolute;border-collapse:collapse;table-layout:fixed;border:.9pt solid ${G}}
-.tb th{background:${FILL};font-weight:400;font-size:9.4pt;border:.6pt solid ${G};padding:0}
-.tb td{border:.5pt solid ${G};font-size:9.4pt;padding:0;text-align:center}
+.hth{left:328pt;width:221pt;height:17.75pt;background:${FILL};border:.75pt solid ${G};position:absolute}
+.tb{position:absolute;border-collapse:collapse;table-layout:fixed;border:.75pt solid ${G}}
+.tb th{background:${FILL};font-weight:400;font-size:9.4pt;border:.75pt solid ${G};padding:0}
+.tb td{border:.75pt solid ${G};font-size:9.4pt;padding:0;text-align:center}
 .tb td.m{background:${FILL}}
 .tb td.tot{text-align:right;padding-right:3pt}
-.tb.hab td{font-size:7.6pt;font-style:italic;color:${GREY};border-color:#a8a8a8;border-width:.4pt}
+.tb.hab td{font-size:7.6pt;font-style:italic;color:${GREY};border-color:${G};border-width:.75pt}
 .tb.hab{border:.75pt solid ${G}}
 .ln{border-top:.75pt solid ${G}}
 .instr{left:130pt;width:385pt;top:334.5pt;text-align:center;font-size:9.6pt;font-style:italic;color:${GREY};line-height:12.4pt}
-.lw{height:19.96pt;border:.6pt solid ${G};margin-top:-.3pt}.lw.a{font-size:9.6pt;text-align:center;line-height:19pt}
+.lw{height:20.71pt;border:.75pt solid ${G}}.lw.a{font-size:9.6pt;text-align:center;line-height:19pt}
 .script{width:157.7pt;height:66.7pt;display:flex;align-items:center;justify-content:center;font-family:Script;font-size:15pt;color:${SOFT}}
 .acc{left:150pt;width:116pt;top:126.5pt;text-align:right;font-size:6.6pt;font-style:italic;color:${GREY}}
 .prod{left:47pt;top:237.6pt;width:513.3pt;height:18.4pt;border:.75pt solid ${G};border-radius:9.2pt;display:flex}
-.prod span{flex:1;text-align:center;font-size:9pt;font-style:italic;color:${GREY};line-height:17pt;border-left:.6pt solid #a8a8a8}.prod span:first-child{border:none}
+.prod span{flex:1;text-align:center;font-size:9pt;font-style:italic;color:${GREY};line-height:17pt;border-left:.75pt solid ${G}}.prod span:first-child{border:none}
 .nrow{left:47pt;width:245pt;height:12.4pt}
 .nrow i{position:absolute;left:0;top:0;width:12.4pt;height:12.4pt;border:.75pt solid ${G};border-radius:50%;font-style:normal;font-size:7.4pt;text-align:center;line-height:11pt}
 .nrow::after{content:'';position:absolute;left:16.5pt;right:0;top:11.6pt;border-top:.75pt solid ${G}}
@@ -602,7 +603,7 @@ a{color:inherit;text-decoration:none}
 .kv{left:375pt;width:187pt;height:12pt}.kv span{position:absolute;left:0;top:0;font-size:7.6pt;color:${GREY};font-style:italic;line-height:12pt}
 .kv::after{content:'';position:absolute;left:56pt;right:0;top:12pt;border-top:.75pt solid ${G}}
 .drop{width:10pt;height:10pt;border:.75pt solid ${G};border-radius:50% 50% 50% 0;transform:rotate(-45deg)}.drop.on{background:${SOFT}}
-.page.st{background:transparent}
+.page.st{background:transparent}.page.st .foot{display:none}
 .page.cover{background:${PAPER}}.cvbg{left:0;top:0;width:612pt;height:792pt;background:radial-gradient(70% 55% at 50% 40%,${MINT},${PALE} 70%,${PAPER})}
 .cvbrand{left:0;width:612pt;top:96pt;text-align:center;font-size:9pt;letter-spacing:5.5pt;color:${G}}
 .cvyear{left:0;width:612pt;top:318pt;text-align:center;font-family:Head;font-size:118pt;line-height:1;letter-spacing:4pt;color:${INK}}

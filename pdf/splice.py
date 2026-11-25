@@ -43,6 +43,7 @@ def recolour_form(x, pdf, done):
     if x.objgen in done: return
     done.add(x.objgen)
     ops = []; fill = None; fillop = 'scn'; mapped = None; size = 10; tm = 1
+    lw = 1; seg = []
     for operands, op in pikepdf.parse_content_stream(x):
         o = str(op)
         if o in ('scn', 'SCN', 'sc', 'SC', 'rg', 'RG') and len(operands) == 3 and not any(isinstance(v, pikepdf.Name) for v in operands):
@@ -50,6 +51,17 @@ def recolour_form(x, pdf, done):
             n = tint(vals, o.isupper())
             if not o.isupper(): fill, fillop, mapped = vals, o, n
             if n: operands = [round(v, 4) for v in n]
+        elif o == 'w':
+            lw = float(operands[0])
+            if lw > .8: operands = [0.75]                    # one line weight throughout
+        elif o in ('m', 'l'): seg.append([float(v) for v in operands])
+        elif o == 'S' and len(seg) == 2 and lw <= .55 and abs(seg[0][1] - seg[1][1]) < .01 and abs(seg[0][0] - seg[1][0]) > 500:
+            seg = []; ops.append(([], pikepdf.Operator('n'))); continue   # thin full-width rule that doubles up with a box edge
+        elif o in ('S', 's', 'f', 'B', 'b', 'f*', 'n', 'B*', 'b*'): seg = []
+        elif o == 're':
+            x_, y_, w_, h_ = (float(v) for v in operands)
+            if 1 < abs(h_) < 2.7 and abs(w_) > 15: operands = [x_, y_ + (h_ - .75 * (1 if h_ > 0 else -1)) / 2, w_, .75 * (1 if h_ > 0 else -1)]   # heavy rules drawn as bars
+            elif 1 < abs(w_) < 2.7 and abs(h_) > 15: operands = [x_ + (w_ - .75 * (1 if w_ > 0 else -1)) / 2, y_, .75 * (1 if w_ > 0 else -1), h_]
         elif o == 'Tf': size = abs(float(operands[1]))
         elif o == 'Tm': tm = abs(float(operands[3])) or abs(float(operands[1])) or 1
         if o in ('Tj', 'TJ', "'", '"') and fill and n_is_light(fill) and size * tm < 20:
