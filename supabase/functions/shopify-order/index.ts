@@ -2,7 +2,7 @@
 // Secrets (Supabase > Edge Functions > Secrets):
 //   SHOPIFY_WEBHOOK_SECRET  the signing key shown under Shopify Settings > Notifications > Webhooks
 //   RESEND_API_KEY          from resend.com (sending domain liveloveplanners.com verified)
-//   MAIL_FROM               optional, default "Christina at Live Love Planners <hello@liveloveplanners.com>"
+//   MAIL_FROM               optional, default "Christina at Live Love Planners <hello@updates.liveloveplanners.com>"
 //   PLANNER_PRODUCT_IDS     optional, comma separated Shopify product ids; if empty, any item with "online planner" in its title counts
 //   APP_URL                 optional, default https://llp-planner-app.vercel.app
 import { createClient } from "jsr:@supabase/supabase-js@2";
@@ -87,7 +87,7 @@ Deno.serve(async (req) => {
     method: "POST",
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      from: Deno.env.get("MAIL_FROM") ?? "Christina at Live Love Planners <hello@liveloveplanners.com>",
+      from: Deno.env.get("MAIL_FROM") ?? "Christina at Live Love Planners <hello@updates.liveloveplanners.com>",
       to: [to], reply_to: "hello@liveloveplanners.com",
       subject: "Your 2027 planner is ready", html, text,
     }),
