@@ -54,8 +54,8 @@ Tested end to end on 27 Nov with a £0 test order (#1010, archived). That test u
 
 ## To do before launch (30 Nov)
 
-- [ ] **Online Planner product listing** in Shopify, £19.99, digital, "Online Planner" in the title (in progress 27 Nov)
-- [ ] **app.liveloveplanners.com**: added in Vercel, needs a CNAME `app` → `01597a70a22763d5.vercel-dns-017.com.` at Hostinger (Christina signs in). Then update the Supabase Site URL and redirect URLs, the link in the Shopify planner email, and the `APP_URL` default in `shopify-order`.
+- [ ] **Online Planner product listing**: "2027 Online Planner" saved as a **draft** in Shopify (27 Nov): £19.99, not a physical product, inventory not tracked, type Digital Planner, full description. Christina is dragging in the 6 images (`/mnt/user-data/outputs/online-planner-listing/`, also sent in chat). Then set it to Active. The description's "Have a play with it first" link points to app.liveloveplanners.com/?demo, so it only works once the domain is live.
+- [ ] **app.liveloveplanners.com**: added to the Vercel project (27 Nov) and added to the Supabase redirect URLs. Still to do: the CNAME `app` → `01597a70a22763d5.vercel-dns-017.com.` at Hostinger (waiting on Christina to sign in), then once it shows Valid in Vercel, switch the Supabase Site URL, the "Open my planner" link in the Shopify planner email and the `APP_URL` default in `shopify-order`. Keep llp-planner-app.vercel.app working as well.
 - [ ] **Christina: upgrade Supabase to Pro** ($25/month) for daily backups. She said she'll do it before launch.
 - [ ] Final test: real checkout of the listing (with a 100% discount code), check the one email arrives with a working code, sign up as a new customer, then archive the order and delete the test discount.
 - [ ] Remove the unused `app_config` table in Supabase (needs Christina to approve).
