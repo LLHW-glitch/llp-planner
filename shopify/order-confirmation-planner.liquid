@@ -1,0 +1,51 @@
+{%- comment -%} LLP online planner: when the order has an "Online Planner" item, this replaces Shopify's standard confirmation. The access code is HMAC_SHA256(key = the order's confirmation number, "<order id>-<n>"), the same sum the planner server does. {%- endcomment -%}
+{%- assign llp_n = 0 -%}{%- for li in line_items -%}{%- assign llp_t = li.title | downcase -%}{%- if llp_t contains 'online planner' -%}{%- assign llp_n = llp_n | plus: li.quantity -%}{%- endif -%}{%- endfor -%}
+{%- if llp_n > 0 -%}
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>Your 2027 planner is ready</title></head>
+<body style="margin:0;padding:0;background:#f7f1ec;-webkit-text-size-adjust:100%">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0">Your access code is inside. Three quick steps and you're planning.</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f7f1ec"><tr><td align="center" style="padding:32px 14px">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:540px">
+<tr><td align="center" style="padding:0 0 18px;font-family:Georgia,'Times New Roman',serif;font-size:15px;letter-spacing:3px;color:#b07a8c;text-transform:uppercase">Live Love Planners</td></tr>
+<tr><td style="background:#ffffff;border-radius:22px;border:1px solid #f0e4e8;overflow:hidden">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+<tr><td style="height:8px;background:#f6d3de;background-image:linear-gradient(90deg,#f6d3de,#fbe7c9,#d7eee5,#dcefff,#f2eafb);font-size:0;line-height:0">&nbsp;</td></tr>
+<tr><td style="padding:36px 36px 30px;font-family:Helvetica,Arial,sans-serif;color:#3a3236;font-size:15.5px;line-height:1.65">
+<h1 style="margin:0 0 6px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:31px;line-height:1.2;color:#2b2427;text-align:center">{% if customer.first_name != blank %}{{ customer.first_name }}, your{% else %}Your{% endif %} 2027 planner is ready</h1>
+<p style="margin:0 0 6px;text-align:center;color:#e88ba8;font-size:18px;letter-spacing:6px">&#10022; &#10022; &#10022;</p>
+<p style="margin:18px 0 0;text-align:center">Thank you so much for your order. Here's everything you need to get started.</p>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0 6px;background:#fbf3f5;border:1.5px dashed #e88ba8;border-radius:18px"><tr><td align="center" style="padding:20px 16px">
+<p style="margin:0 0 8px;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:#b07a8c">Your access code{% if llp_n > 1 %}s (one per planner){% endif %}</p>
+{%- assign llp_i = 0 -%}{%- for li in line_items -%}{%- assign llp_t = li.title | downcase -%}{%- if llp_t contains 'online planner' -%}{%- for q in (1..li.quantity) -%}{%- assign llp_i = llp_i | plus: 1 -%}{%- assign llp_msg = order.id | append: '-' | append: llp_i -%}{%- assign llp_h = llp_msg | hmac_sha256: confirmation_number | upcase -%}
+<p style="margin:4px 0;font-family:'Courier New',Courier,monospace;font-size:24px;font-weight:bold;letter-spacing:2px;color:#2b2427">LLP27-{{ llp_h | slice: 0, 4 }}-{{ llp_h | slice: 4, 4 }}-{{ llp_h | slice: 8, 4 }}</p>
+{%- endfor -%}{%- endif -%}{%- endfor -%}
+</td></tr></table>
+<table role="presentation" cellpadding="0" cellspacing="0" style="margin:24px auto 26px"><tr><td align="center" style="border-radius:999px;background:#e88ba8"><a href="https://llp-planner-app.vercel.app" target="_blank" style="display:inline-block;padding:15px 36px;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:bold;color:#ffffff;text-decoration:none;border-radius:999px">Open my planner</a></td></tr></table>
+<p style="margin:0 0 10px;font-family:Georgia,'Times New Roman',serif;font-size:20px;color:#2b2427">Getting in</p>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:15px;line-height:1.55">
+<tr><td valign="top" style="width:34px;padding:0 0 12px"><span style="display:inline-block;width:24px;height:24px;line-height:24px;border-radius:50%;background:#f6d3de;color:#b05a7a;text-align:center;font-size:13px;font-weight:bold">1</span></td><td style="padding:0 0 12px">Tap <b>Open my planner</b> and type <b>{{ email }}</b>.</td></tr>
+<tr><td valign="top" style="width:34px;padding:0 0 12px"><span style="display:inline-block;width:24px;height:24px;line-height:24px;border-radius:50%;background:#fbe7c9;color:#a8742a;text-align:center;font-size:13px;font-weight:bold">2</span></td><td style="padding:0 0 12px">Tap <b>Email me a sign-in link</b>, then click the link that lands in your inbox.</td></tr>
+<tr><td valign="top" style="width:34px;padding:0 0 4px"><span style="display:inline-block;width:24px;height:24px;line-height:24px;border-radius:50%;background:#d7eee5;color:#3f8d70;text-align:center;font-size:13px;font-weight:bold">3</span></td><td style="padding:0 0 4px">Pop in your code. A few quick questions about your colour, your week and your daily page, and it's all yours.</td></tr>
+</table>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:22px 0 0;background:#f7f9fd;border-radius:16px"><tr><td style="padding:16px 20px;font-size:14px;line-height:1.6;color:#4a4044">
+<p style="margin:0 0 6px;font-family:Georgia,'Times New Roman',serif;font-size:17px;color:#2b2427">&#9825; Keep it one tap away</p>
+<p style="margin:0">Once you're in, add it to your home screen (iPhone: Share, then <i>Add to Home Screen</i>) or bookmark it on your computer.</p>
+</td></tr></table>
+<p style="margin:24px 0 0">If anything doesn't work, just reply to this email and I'll sort it.</p>
+<p style="margin:22px 0 0">Happy planning,<br><span style="font-family:Georgia,'Times New Roman',serif;font-size:23px;font-style:italic;color:#b07a8c">Christina x</span></p>
+</td></tr>
+<tr><td style="padding:0 36px 30px;font-family:Helvetica,Arial,sans-serif">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #f0e4e8;font-size:13.5px;color:#6b6166">
+<tr><td colspan="2" style="padding:18px 0 8px;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#b07a8c">Order {{ order_name }}</td></tr>
+{%- for li in line_items %}
+<tr><td style="padding:4px 0">{{ li.title }}{% if li.variant_title != blank %} ({{ li.variant_title }}){% endif %} &times; {{ li.quantity }}</td><td align="right" style="padding:4px 0;white-space:nowrap">{{ li.final_line_price | money }}</td></tr>
+{%- endfor %}
+{%- if discounts_amount > 0 %}<tr><td style="padding:4px 0">Discount</td><td align="right" style="padding:4px 0">-{{ discounts_amount | money }}</td></tr>{% endif %}
+<tr><td style="padding:8px 0 0;font-weight:bold;color:#2b2427">Total</td><td align="right" style="padding:8px 0 0;font-weight:bold;color:#2b2427;white-space:nowrap">{{ total_price | money_with_currency }}</td></tr>
+</table>
+</td></tr>
+</table></td></tr>
+<tr><td align="center" style="padding:20px 20px 0;font-family:Helvetica,Arial,sans-serif;font-size:12px;line-height:1.6;color:#a3979c"><a href="https://liveloveplanners.com" target="_blank" style="color:#b07a8c;text-decoration:none">liveloveplanners.com</a></td></tr>
+</table></td></tr></table></body></html>
+{%- else -%}
