@@ -77,6 +77,10 @@ Tested end to end on 27 Nov with a £0 test order (#1010, archived). That test u
 - [ ] Final test: real checkout of the listing (with a 100% discount code), check the one email arrives with a working code, sign up as a new customer, then archive the order and delete the test discount.
 - [ ] Remove the unused `app_config` table in Supabase (needs Christina to approve).
 
+## Test page (not live yet)
+
+- https://app.liveloveplanners.com/test?demo&v=59 is `app/test.html` (v59): Seasons colourway (each month its own palette), written schedule slots filled like a highlighter, ticks pop, "x of 3 done" ring on top priorities. Waiting on Christina's go-ahead to make it the real app. Then copy v59 into `app/index.html` and delete `app/test.html`.
+
 ## Later
 
 - Nightly backup to outside storage (GitHub Action with `pg_dump`). Needs the database connection string added as a GitHub secret by Christina.
