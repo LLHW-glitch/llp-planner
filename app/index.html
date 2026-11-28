@@ -1322,6 +1322,24 @@ h2 .lblic{float:right;margin-top:0}
 .bprev-in{position:absolute;top:0;left:0;width:1280px;height:760px;transform-origin:top left;display:flex;flex-direction:column;padding:18px 24px 14px;background:var(--paper);pointer-events:none;text-align:left}
 .bset{border:0;background:none;color:var(--accent);text-decoration:underline;font:inherit;font-size:13px;cursor:pointer;text-align:left;padding:6px 2px}
 
+/* v59 interactive touches */
+.slot{transition:background-color .25s}
+.slot .sc .chk{box-sizing:border-box;width:14px;height:14px;min-width:14px;max-width:14px;min-height:14px;max-height:14px;padding:0;justify-self:center;align-self:center}
+.slot.filled{background:linear-gradient(90deg,color-mix(in srgb,var(--line) 26%,var(--paper)) 0 4px,color-mix(in srgb,var(--light) 75%,var(--paper)) 4px)}
+.slot.filled>input{font-weight:500}
+.slot.filled.done>input{color:var(--muted);text-decoration:line-through;font-weight:400}
+.row .line,.row .mini-in{transition:color .3s}
+.row.inked .chk{animation:tickpop .45s cubic-bezier(.3,1.6,.5,1)}
+@keyframes tickpop{0%{transform:scale(.7)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
+.row.inked .line{animation:inkfade .5s ease-out}
+@keyframes inkfade{from{color:var(--ink)}}
+.pdone{display:inline-flex;align-items:center;gap:5px;margin-left:8px;font-size:11px;font-weight:500;color:var(--muted);vertical-align:middle;letter-spacing:0;text-transform:none}
+.pdone:empty{display:none}
+.pdone svg{width:15px;height:15px;transform:rotate(-90deg)}
+.pdone circle{fill:none;stroke:var(--rule);stroke-width:2.6}
+.pdone circle.fg{stroke:var(--line);stroke-linecap:round;transition:stroke-dashoffset .5s ease}
+.pdone.all{color:var(--accent)}
+@media (prefers-reduced-motion:reduce){.row.inked .chk,.row.inked .line{animation:none}}
 /* v56 mobile pass */
 .wknotes{flex:none}.wknotes .box{min-height:70px;height:70px}
 .fmts input.chk{border:1.5px solid var(--line);flex:none}
@@ -1574,6 +1592,7 @@ function undo(){ if(!HIST.length) return; const g=HIST[HIST.length-1].g; undoing
 function updUndo(){ const b=document.getElementById('undoBtn'); if(b) b.disabled=!HIST.length; }
 document.addEventListener('keydown',e=>{ if((e.metaKey||e.ctrlKey)&&!e.shiftKey&&e.key.toLowerCase()==='z'){ const a=document.activeElement; if(a&&(a.tagName==='INPUT'||a.tagName==='TEXTAREA'||a.isContentEditable)) return; e.preventDefault(); undo(); } });
 document.addEventListener('click',e=>{ if(e.target.closest&&e.target.closest('#undoBtn')) undo(); });
+document.addEventListener('input',e=>{ const sl=e.target.closest&&e.target.closest('.slot'); if(sl&&e.target.tagName==='INPUT'&&e.target.type!=='checkbox') sl.classList.toggle('filled',!!e.target.value.trim()); });
 document.addEventListener('input',e=>{ const t=e.target; if(t.dataset&&t.dataset.k==='recipes'&&/^list\.\d+\.name$/.test(t.dataset.f||'')){ const b=document.querySelector('.rnlist button.on b'); if(b) b.textContent=t.value||'Untitled recipe'; } });
 const listSnap = (k,f) => flat(getPath(doc(k),f), f.split('.').join('~'));
 async function flush(k){
@@ -1599,6 +1618,8 @@ const chk = (k,f,round,label='Done',rr) => `<input type="checkbox" class="chk${r
 function rowsHtml(k,f,l,{ph='',round=false,numbered=false,fixed=false}={}){
   return l.map((r,i)=>`<div class="row${r.c?' done':''}">${numbered?`<span class="n">${i+1}.</span>`:chk(k,`${f}.${i}.c`,round)}${inp(k,`${f}.${i}.t`,i===0?ph:'')}${fixed?'':`<button class="del" data-del="${k}|${f}|${i}" aria-label="Remove">×</button>`}</div>`).join('');
 }
+function pdone(blk){ const rows=[...blk.querySelectorAll('.row')], tot=rows.filter(r=>{ const i=r.querySelector('input:not([type=checkbox]),textarea'); return i&&i.value.trim(); }).length||rows.length, d=rows.filter(r=>{ const c=r.querySelector('input[type=checkbox]'); return c&&c.checked; }).length, f=tot?Math.min(1,d/tot):0, C=2*Math.PI*7;
+  return `<span class="pdone${d&&d>=tot?' all':''}"><svg viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><circle class="fg" cx="9" cy="9" r="7" style="stroke-dasharray:${C};stroke-dashoffset:${C*(1-f)}"/></svg>${d} of ${tot} done</span>`; }
 function checklist(k,f,o={}){
   const l=list(k,f,o.min??5);
   return `<div class="rows">${rowsHtml(k,f,l,o)}</div>${o.fixed?'':`<button class="add" data-add="${k}|${f}">+ Add</button>`}`;
@@ -1752,10 +1773,10 @@ function vDay(d){
   let sched=`<div class="sched" style="--sr:repeat(${slots.length},minmax(0,1fr));grid-template-rows:var(--sr)">`;
   slots.forEach(t=>{ const v=getPath(doc(k),'sched.t'+hm(t))||'';
     const dn_=getPath(doc(k),'schedc.t'+hm(t))===true;
-    sched+=`<div class="slot${st<60&&t%60===0?' mid':''}${dn_?' done':''}"><span class="t${t%60?' h':''}">${label12(t)}</span><span class="sc">${chk(k,'schedc.t'+hm(t),false,'Done '+label12(t),true)}</span><input data-k="${k}" data-f="sched.t${hm(t)}" value="${esc(v)}" aria-label="${label12(t)}"><a class="gcal${v?' has':''}" data-gs="${k}|${key(d)}|${t}|${st}" href="${calLink(v,d,t,st)}" ${set().cal==='apple'?'':'target="_blank" '}rel="noopener" title="Add to my calendar" aria-label="Add ${label12(t)} to my calendar">${icoCal}</a></div>`; });
+    sched+=`<div class="slot${st<60&&t%60===0?' mid':''}${dn_?' done':''}${v?' filled':''}"><span class="t${t%60?' h':''}">${label12(t)}</span><span class="sc">${chk(k,'schedc.t'+hm(t),false,'Done '+label12(t),true)}</span><input data-k="${k}" data-f="sched.t${hm(t)}" value="${esc(v)}" aria-label="${label12(t)}"><a class="gcal${v?' has':''}" data-gs="${k}|${key(d)}|${t}|${st}" href="${calLink(v,d,t,st)}" ${set().cal==='apple'?'':'target="_blank" '}rel="noopener" title="Add to my calendar" aria-label="Add ${label12(t)} to my calendar">${icoCal}</a></div>`; });
   sched+='</div>';
   const c1=`<div class="col"><div class="blk"><p class="lbl">Today's focus</p>${area(k,'focus','The one thing that would make today a win')}</div><div class="blk grow"><p class="lbl">Schedule <span class="hint">Tap the calendar on a block to add it to ${s.cal==='apple'?'Apple Calendar':'Google Calendar'}</span><button class="add r" style="padding:0;margin-left:auto" data-copytom="${key(d)}">Copy to tomorrow ›</button></p>${sched}</div></div>`;
-  const c2=`<div class="col">${recurBlock(k,d)}<div class="blk"><p class="lbl">Top 3 priorities</p>${checklist(k,'pri',{min:3,fixed:true})}</div><div class="blk grow scroll"><p class="lbl">Personal to do</p>${bdRows(d,'personal')}${checklist(k,'ptodo',{min:6})}</div><div class="blk grow scroll"><p class="lbl">Work to do</p>${bdRows(d,'work')}${checklist(k,'wtodo',{min:6})}</div></div>`;
+  const c2=`<div class="col">${recurBlock(k,d)}<div class="blk"><p class="lbl">Top 3 priorities <span class="pdone"></span></p>${checklist(k,'pri',{min:3,fixed:true})}</div><div class="blk grow scroll"><p class="lbl">Personal to do</p>${bdRows(d,'personal')}${checklist(k,'ptodo',{min:6})}</div><div class="blk grow scroll"><p class="lbl">Work to do</p>${bdRows(d,'work')}${checklist(k,'wtodo',{min:6})}</div></div>`;
   const wk_='wellness'+(d.getMonth()+1), wf_='days.d'+d.getDate(), mood=getPath(doc(wk_),wf_+'.mood');
   const moodBlk = s.mood && d.getFullYear()===YEAR ? `<div class="blk"><p class="lbl">Mood of the day</p><div class="moodpick">${[['Low','😞'],['Meh','😕'],['OK','😐'],['Good','🙂'],['Great','😄']].map(([x,e])=>`<button class="${mood===x?'on':''}" data-set="${wk_}|${wf_}.mood|${mood===x?'':x}" aria-label="${x}"><span>${e}</span>${x}</button>`).join('')}</div></div>` : '';
   const readBlk = s.reading ? readCard(k,d) : '';
@@ -1763,7 +1784,7 @@ function vDay(d){
   if(s.dayLayout==='d2'){ const ws=wstart(d), mkk='meals'+key(ws), di=Math.round((d-ws)/864e5), w=+getPath(doc(wk_),wf_+'.water')||0;
     const meal=(m,n)=>`<label class="d2m"><span>${n}</span><input data-k="${mkk}" data-f="days.d${di}.${m}" value="${esc(getPath(doc(mkk),`days.d${di}.${m}`))}" aria-label="${n}"></label>`;
     const c1b=c1.replace("Today's focus","Intention for the day").replace('The one thing that would make today a win','How do you want today to feel?');
-    const c2b=`<div class="col">${recurBlock(k,d)}<div class="blk"><p class="lbl">Absolutely must get done</p>${checklist(k,'pri',{min:3,fixed:true})}</div><div class="blk grow scroll"><p class="lbl">To do</p>${bdRows(d,'personal')}${bdRows(d,'work')}${checklist(k,'ptodo',{min:readBlk?5:8})}</div>${readBlk}<div class="blk grow"><p class="lbl">Notes</p>${area(k,'notes','','box white fill')}</div></div>`;
+    const c2b=`<div class="col">${recurBlock(k,d)}<div class="blk"><p class="lbl">Absolutely must get done <span class="pdone"></span></p>${checklist(k,'pri',{min:3,fixed:true})}</div><div class="blk grow scroll"><p class="lbl">To do</p>${bdRows(d,'personal')}${bdRows(d,'work')}${checklist(k,'ptodo',{min:readBlk?5:8})}</div>${readBlk}<div class="blk grow"><p class="lbl">Notes</p>${area(k,'notes','','box white fill')}</div></div>`;
     const c3b=`<div class="col">${moodBlk}<div class="blk"><p class="lbl">Meals <a class="lblic" href="#meals-${key(ws)}" data-mealfrom="${key(d)}" title="Open meal planner" aria-label="Open meal planner"><svg viewBox="0 0 24 24"><path d="M7 3v8a2 2 0 0 0 4 0V3M9 11v10M16 21V3c2.5 1.5 3 4.5 3 8h-3"/></svg></a></p><div class="d2meals">${meal('b','Breakfast')}${meal('l','Lunch')}${meal('d','Dinner')}${meal('s','Snacks')}</div></div>
       <div class="blk"><p class="lbl">Water</p><div class="water d2w">${Array.from({length:8},(_,j)=>`<button class="${j<w?'on':''}" data-set="${wk_}|${wf_}.water|${j+1===w?j:j+1}" aria-label="${j+1} glasses"></button>`).join('')}</div></div>
       <div class="blk"><p class="lbl">Movement</p><div class="row" style="gap:10px">${inp(k,'move.t','Walk, yoga, gym...')}<input class="line" style="width:70px;flex:none" data-k="${k}" data-f="move.mins" value="${esc(getPath(doc(k),'move.mins'))}" placeholder="Mins" aria-label="Minutes"></div></div>
@@ -3079,6 +3100,7 @@ function render(){
   }
   sheet.innerHTML=h; fitPrev();
   if(stMob()) sheet.querySelectorAll('table.hab,table.tbl').forEach(t=>{ const pe=t.parentElement; if(pe.classList.contains('scroll')||pe.classList.contains('tscroll')) return; const w=document.createElement('div'); w.className='tscroll'; t.replaceWith(w); w.appendChild(t); });
+  sheet.querySelectorAll('.pdone').forEach(pc=>{ const b=pc.closest('.blk'); if(b) pc.outerHTML=pdone(b); });
   requestAnimationFrame(()=>{ fitAll(); drawStickers(); });
 }
 function fitAll(){
@@ -3110,7 +3132,7 @@ function onField(t){
   const k=t.dataset.k, f=t.dataset.f; let v = t.type==='checkbox' ? t.checked : t.value;
   if(t.dataset.num!==undefined) v=+v;
   setPath(doc(k),f,v); saveField(k,f,v);
-  if(t.type==='checkbox'){ const r=t.closest('.row'); if(r) r.classList.toggle('done',t.checked); }
+  if(t.type==='checkbox'){ const r=t.closest('.row'); if(r){ r.classList.toggle('done',t.checked); if(t.checked){ r.classList.add('inked'); setTimeout(()=>r.classList.remove('inked'),700); } } const pc=t.closest('.blk')&&t.closest('.blk').querySelector('.pdone'); if(pc) pc.outerHTML=pdone(t.closest('.blk')); }
   if(t.dataset.money!==undefined && route.v==='money'){ const el=document.getElementById('mtiles'); if(el) el.innerHTML=moneyTiles(route.m); }
   refreshLinks();
 }

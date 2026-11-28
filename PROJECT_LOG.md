@@ -60,6 +60,10 @@ Tested end to end on 27 Nov with a £0 test order (#1010, archived). That test u
 - Notes box on the Week list layout.
 - Add-ons menu no longer lists Journal, Custom sections, Meal planner or Recipes. Meal planner and My recipes are in Bonus templates under Health & fitness. Journal and Custom sections already have their own cards on the Bonus templates page, and are reachable from day and week pages.
 
+### v60 (28 Nov)
+- Written schedule slots fill like a highlighter, ticks pop, "x of 3 done" ring on top priorities. Schedule tick box kept square and centred (it stretched in Safari).
+- Tried a "Seasons" colourway (each month its own palette): Christina didn't like it, removed.
+
 ### Behind the scenes
 - Supabase: tables, row level security, `apply_patch`, `redeem_code`, history table, storage for images, PDF job queue (for the parked PDF product).
 - Resend set up (API key `LLP Planner`, sending only). Supabase auth emails use custom SMTP through Resend, 30 emails an hour.
@@ -76,10 +80,6 @@ Tested end to end on 27 Nov with a £0 test order (#1010, archived). That test u
 - [ ] **Christina: upgrade Supabase to Pro** ($25/month) for daily backups. She said she'll do it before launch.
 - [ ] Final test: real checkout of the listing (with a 100% discount code), check the one email arrives with a working code, sign up as a new customer, then archive the order and delete the test discount.
 - [ ] Remove the unused `app_config` table in Supabase (needs Christina to approve).
-
-## Test page (not live yet)
-
-- https://app.liveloveplanners.com/test?demo&v=59 is `app/test.html` (v59): Seasons colourway (each month its own palette), written schedule slots filled like a highlighter, ticks pop, "x of 3 done" ring on top priorities. Waiting on Christina's go-ahead to make it the real app. Then copy v59 into `app/index.html` and delete `app/test.html`.
 
 ## Later
 
