@@ -46,7 +46,7 @@ Tested end to end on 27 Nov with a £0 test order (#1010, archived). That test u
 - No green flash on refresh (colour remembered on the device).
 
 ### Mobile pass (v56, 28 Nov)
-- Apple Calendar buttons now open an event file (`/api/ics`) that iPhone, iPad and Mac offer to add to Calendar. No Shortcut and no Goodnotes involved.
+- Apple Calendar buttons run the new "LLP Planner Calendar" shortcut (v57): opens Calendar at that date and time, no Goodnotes. Install link goes in `APPLE_SC_URL` in the app once Christina shares it. (`app/api/ics.js` is left in place, unused.)
 - Setup builder page previews no longer jumble on phones.
 - Month, budget, vision board and reflection headers: icons sit on the title line. Day names are 3 letters on phones.
 - Year page: two neat mini calendars per row on phones; "December 2026 ›" button on the title line.
@@ -67,7 +67,8 @@ Tested end to end on 27 Nov with a £0 test order (#1010, archived). That test u
 
 - [ ] **Online Planner product listing**: "2027 Online Planner" saved as a **draft** in Shopify (27 Nov): £19.99, not a physical product, inventory not tracked, type Digital Planner, full description. Christina is dragging in the 6 images (`/mnt/user-data/outputs/online-planner-listing/`, also sent in chat). Then set it to Active. The description's "Have a play with it first" link points to app.liveloveplanners.com/?demo, so it only works once the domain is live.
 - [x] **app.liveloveplanners.com** live (28 Nov): DNS added, Vercel valid, Supabase Site URL switched, "Open my planner" in the Shopify email switched. (`shopify-order` only mentions the URL in its switched-off email; repo updated, not redeployed.)
-- [ ] Christina to check the v56 mobile fixes on her phone, including an Apple Calendar button (set Apple Calendar in settings first).
+- [ ] Christina builds the "LLP Planner Calendar" shortcut and sends the iCloud share link; Claude adds it to `APPLE_SC_URL` so customers get an install link in settings.
+- [ ] Christina to check the v56 mobile fixes on her phone.
 - [ ] **Christina: upgrade Supabase to Pro** ($25/month) for daily backups. She said she'll do it before launch.
 - [ ] Final test: real checkout of the listing (with a 100% discount code), check the one email arrives with a working code, sign up as a new customer, then archive the order and delete the test discount.
 - [ ] Remove the unused `app_config` table in Supabase (needs Christina to approve).
@@ -89,7 +90,7 @@ Tested end to end on 27 Nov with a £0 test order (#1010, archived). That test u
 - Use app.liveloveplanners.com.
 - Mobile has to look as good as desktop: it's a main selling point.
 - Vision boards are one big board you add photos to, not fixed photo boxes.
-- Apple Calendar must not go through the Live Love Planners Shortcut (that opens Goodnotes).
+- Apple Calendar uses its own shortcut that opens Calendar at the date and time (not the Live Love Planners one, which opens Goodnotes).
 - Launch 30 Nov 2026. She'll upgrade Supabase herself before then.
 - Rainbow: white background, colour in the tabs and sections, headers stay black.
 - The setup builder only asks the few things that matter. Everything else is preset and lives in settings.
