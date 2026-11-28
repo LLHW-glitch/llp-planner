@@ -1538,7 +1538,7 @@ function gcal(title, dt, startMins, len){
   const end = e>=1440 ? key(add(dt,1))+'T'+hm(e-1440)+'00' : key(dt)+'T'+hm(e)+'00';
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title||'Planner')}&dates=${key(dt)}T${hm(startMins)}00/${end}`;
 }
-const APPLE_SC='LLP Planner Calendar', APPLE_SC_URL='';   /* APPLE_SC_URL: iCloud install link for the shortcut, once Christina shares it */
+const APPLE_SC='LLP Planner Calendar', APPLE_SC_URL='https://www.icloud.com/shortcuts/5b5fedb0059044f3ae59f8624c2758ff';   /* APPLE_SC_URL: iCloud install link for the shortcut, once Christina shares it */
 function calLink(title, dt, startMins, len){
   if(set().cal==='apple') return `shortcuts://run-shortcut?name=${encodeURIComponent(APPLE_SC)}&input=text&text=${key(dt).slice(0,4)}-${key(dt).slice(4,6)}-${key(dt).slice(6,8)}T${pad(Math.floor(startMins/60))}:${pad(startMins%60)}:00`;
   return gcal(title, dt, startMins, len);
@@ -2956,7 +2956,7 @@ function vBuilder(step){
     const row=o=>`<span class="bweek">${o.map(d=>`<i>${d}</i>`).join('')}</span>`;
     const ic='<rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4M9 14.5l2 2 4-4"/>';
     body=`<p class="bsubq">Which day does your week start on?</p><div class="bgrid two">${card(s.ws===1,`${row(['M','T','W','T','F','S','S'])}<b>Monday</b>`,'data-set="settings|ws|1"')}${card(s.ws===0,`${row(['S','M','T','W','T','F','S'])}<b>Sunday</b>`,'data-set="settings|ws|0"')}</div>
-      <p class="bsubq">Which calendar do you use? <span>Reminders and events get a button that adds them straight to it.</span></p><div class="bgrid two">${card((s.cal||'google')==='google',`<span class="bic"><svg viewBox="0 0 24 24">${ic}</svg></span><b>Google Calendar</b>`,'data-set="settings|cal|google"','row')}${card(s.cal==='apple',`<span class="bic"><svg viewBox="0 0 24 24">${ic}</svg></span><b>Apple Calendar</b>`,'data-set="settings|cal|apple"','row')}</div>`; }
+      <p class="bsubq">Which calendar do you use? <span>Reminders and events get a button that adds them straight to it.</span></p><div class="bgrid two">${card((s.cal||'google')==='google',`<span class="bic"><svg viewBox="0 0 24 24">${ic}</svg></span><b>Google Calendar</b>`,'data-set="settings|cal|google"','row')}${card(s.cal==='apple',`<span class="bic"><svg viewBox="0 0 24 24">${ic}</svg></span><b>Apple Calendar</b>`,'data-set="settings|cal|apple"','row')}</div>${s.cal==='apple'?`<p class="note" style="text-align:center;margin-top:10px">Apple Calendar uses a free shortcut that opens your calendar at the right day and time. <a href="${APPLE_SC_URL}" target="_blank" rel="noopener">Add the shortcut</a> on each iPhone, iPad or Mac you plan on (one time only).</p>`:''}`; }
   if(step===4){ q='Choose your daily page'; sub='This is exactly how it looks. Tap the one you like.';
     body=`<div class="bgrid two wide">${pcard((s.dayLayout||'d1')==='d1',`${bPreview(()=>vDay(sample),{dayLayout:'d1'})}<b>Productivity day</b><span>Schedule, top 3, personal and work to do lists</span>`,'data-set="settings|dayLayout|d1"')}${pcard(s.dayLayout==='d2',`${bPreview(()=>vDay(sample),{dayLayout:'d2'})}<b>Balanced day</b><span>Schedule, must-dos, meals, water, movement and gratitude</span>`,'data-set="settings|dayLayout|d2"')}</div>`; }
   if(step===5){ q='Choose your weekly page'; sub='You can flip between them any time with the switch at the top of each week.';

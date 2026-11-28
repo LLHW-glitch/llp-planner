@@ -75,7 +75,7 @@ Tested end to end on 27 Nov with a £0 test order (#1010, archived). That test u
 
 - [ ] **Online Planner product listing**: "2027 Online Planner" saved as a **draft** in Shopify (27 Nov): £19.99, not a physical product, inventory not tracked, type Digital Planner, full description. Christina is dragging in the 6 images (`/mnt/user-data/outputs/online-planner-listing/`, also sent in chat). Then set it to Active. The description's "Have a play with it first" link points to app.liveloveplanners.com/?demo, so it only works once the domain is live.
 - [x] **app.liveloveplanners.com** live (28 Nov): DNS added, Vercel valid, Supabase Site URL switched, "Open my planner" in the Shopify email switched. (`shopify-order` only mentions the URL in its switched-off email; repo updated, not redeployed.)
-- [ ] Christina builds the "LLP Planner Calendar" shortcut and sends the iCloud share link; Claude adds it to `APPLE_SC_URL` so customers get an install link in settings.
+- [x] "LLP Planner Calendar" shortcut made (on her iPhone; her Mac's iCloud sync for Shortcuts is off). Share link https://www.icloud.com/shortcuts/5b5fedb0059044f3ae59f8624c2758ff is in `APPLE_SC_URL` (v61): "Add the shortcut" shows in Settings and in the setup builder when Apple Calendar is picked.
 - [ ] Christina to check the v56 mobile fixes on her phone.
 - [ ] **Christina: upgrade Supabase to Pro** ($25/month) for daily backups. She said she'll do it before launch.
 - [ ] Final test: real checkout of the listing (with a 100% discount code), check the one email arrives with a working code, sign up as a new customer, then archive the order and delete the test discount.
