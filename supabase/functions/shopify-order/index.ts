@@ -70,7 +70,7 @@ Deno.serve(async (req) => {
         from: "Christina at Live Love Planners <hello@updates.liveloveplanners.com>",
         to: [to], reply_to: "liveloveplanners21@gmail.com",
         subject: "Your 2027 planner is ready",
-        text: `Your access code${codes.length > 1 ? "s" : ""}:\n${codes.join("\n")}\n\nOpen https://llp-planner-app.vercel.app and sign in with this email address.\n\nChristina x`,
+        text: `Your access code${codes.length > 1 ? "s" : ""}:\n${codes.join("\n")}\n\nOpen https://app.liveloveplanners.com and sign in with this email address.\n\nChristina x`,
       }),
     });
   }

@@ -2,7 +2,7 @@
 
 **Read this first at the start of every task on this project.** Update it at the end of every task: tick off what was finished, add anything new to the to-do list, and note any decision Christina made.
 
-Last updated: 27 Nov 2026
+Last updated: 28 Nov 2026
 Launch date: **Monday 30 November 2026**
 
 ---
@@ -11,15 +11,15 @@ Launch date: **Monday 30 November 2026**
 
 | What | Where |
 |---|---|
-| Live planner | https://llp-planner-app.vercel.app (moving to https://app.liveloveplanners.com) |
-| Try-it preview (no login, saves in the browser only) | https://llp-planner-app.vercel.app/?demo#builder-1 |
-| Code | GitHub `LLHW-glitch/llp-planner`. The app is one file, `app/index.html`. Vercel deploys `main` automatically. |
+| Live planner | https://app.liveloveplanners.com (live 28 Nov). https://llp-planner-app.vercel.app still works too. |
+| Try-it preview (no login, saves in the browser only) | https://app.liveloveplanners.com/?demo#builder-1 |
+| Code | GitHub `LLHW-glitch/llp-planner`. The app is one file, `app/index.html`, plus `app/api/ics.js` (Apple Calendar event file). Vercel deploys `main` automatically. |
 | Working copy of the app | `dash-app/index.html` in the Claude scratchpad, versioned `index-vNN.html`. Deploy = first 4 lines of `vercel-app/index.html` (Supabase config) + `dash-app/index.html` + `</body></html>`, copied to `app/index.html` and `tests/app-source.html`. |
 | Vercel | Team "Live Love Planners", project `llp-planner-app` (the Vercel connector can't see this project, so use the dashboard in Chrome) |
 | Database and sign in | Supabase project "LLP Planner", ref `hanqpldjcegadyrrxzvw` (London, free plan). Only touch this project. |
 | Shop | Shopify store "Live Love Planners", admin `admin.shopify.com/store/uxu71y-mr`. Reach it in Chrome via liveloveplanners.com/admin. The Shopify connector here is linked to Her Sunday Society, not this store. |
 | Email sending | Resend account `liveloveplanners21`, sending domain `updates.liveloveplanners.com` (verified) |
-| Domain DNS | Hostinger (nameservers dns-parking.com). Christina logs in herself. |
+| Domain DNS | Hostinger (nameservers dns-parking.com). Christina logs in herself. CNAME `app` → `01597a70a22763d5.vercel-dns-017.com` added 28 Nov. |
 | Business email | hello@liveloveplanners.com forwards to liveloveplanners21@gmail.com through ImprovMX. Replies to planner emails go here, which is what she wants. |
 | PDF planner (separate product, parked) | `pdf/` folder, see `pdf/STATUS.md` |
 
@@ -45,6 +45,17 @@ Tested end to end on 27 Nov with a £0 test order (#1010, archived). That test u
 - Preview mode with `?demo`.
 - No green flash on refresh (colour remembered on the device).
 
+### Mobile pass (v56, 28 Nov)
+- Apple Calendar buttons now open an event file (`/api/ics`) that iPhone, iPad and Mac offer to add to Calendar. No Shortcut and no Goodnotes involved.
+- Setup builder page previews no longer jumble on phones.
+- Month, budget, vision board and reflection headers: icons sit on the title line. Day names are 3 letters on phones.
+- Year page: two neat mini calendars per row on phones; "December 2026 ›" button on the title line.
+- Vision boards (year and month) are one big board. "+ Add photos" (several at once) and "Stickers and words" put movable images on it. The dashboard collage uses these photos. Old photo tiles are no longer shown.
+- Add-ons menu is two columns: Add-ons, and that month's pages.
+- Manifestation "It happened!" sets off confetti.
+- Content planner stacks on phones, recipes are centred, book review redesigned for phones (and its progress bar fixed on desktop), routines lost "Clear ticks for next time".
+- Wide tables (habits, measurements, subscriptions, wellness) scroll sideways on phones instead of spilling off the page.
+
 ### Behind the scenes
 - Supabase: tables, row level security, `apply_patch`, `redeem_code`, history table, storage for images, PDF job queue (for the parked PDF product).
 - Resend set up (API key `LLP Planner`, sending only). Supabase auth emails use custom SMTP through Resend, 30 emails an hour.
@@ -55,7 +66,8 @@ Tested end to end on 27 Nov with a £0 test order (#1010, archived). That test u
 ## To do before launch (30 Nov)
 
 - [ ] **Online Planner product listing**: "2027 Online Planner" saved as a **draft** in Shopify (27 Nov): £19.99, not a physical product, inventory not tracked, type Digital Planner, full description. Christina is dragging in the 6 images (`/mnt/user-data/outputs/online-planner-listing/`, also sent in chat). Then set it to Active. The description's "Have a play with it first" link points to app.liveloveplanners.com/?demo, so it only works once the domain is live.
-- [ ] **app.liveloveplanners.com**: added to the Vercel project (27 Nov) and added to the Supabase redirect URLs. Still to do: the CNAME `app` → `01597a70a22763d5.vercel-dns-017.com.` at Hostinger (waiting on Christina to sign in), then once it shows Valid in Vercel, switch the Supabase Site URL, the "Open my planner" link in the Shopify planner email and the `APP_URL` default in `shopify-order`. Keep llp-planner-app.vercel.app working as well.
+- [x] **app.liveloveplanners.com** live (28 Nov): DNS added, Vercel valid, Supabase Site URL switched, "Open my planner" in the Shopify email switched. (`shopify-order` only mentions the URL in its switched-off email; repo updated, not redeployed.)
+- [ ] Christina to check the v56 mobile fixes on her phone, including an Apple Calendar button (set Apple Calendar in settings first).
 - [ ] **Christina: upgrade Supabase to Pro** ($25/month) for daily backups. She said she'll do it before launch.
 - [ ] Final test: real checkout of the listing (with a 100% discount code), check the one email arrives with a working code, sign up as a new customer, then archive the order and delete the test discount.
 - [ ] Remove the unused `app_config` table in Supabase (needs Christina to approve).
@@ -75,6 +87,9 @@ Tested end to end on 27 Nov with a £0 test order (#1010, archived). That test u
 - Replies go to hello@liveloveplanners.com (forwards to her Gmail).
 - Online planner price £19.99.
 - Use app.liveloveplanners.com.
+- Mobile has to look as good as desktop: it's a main selling point.
+- Vision boards are one big board you add photos to, not fixed photo boxes.
+- Apple Calendar must not go through the Live Love Planners Shortcut (that opens Goodnotes).
 - Launch 30 Nov 2026. She'll upgrade Supabase herself before then.
 - Rainbow: white background, colour in the tabs and sections, headers stay black.
 - The setup builder only asks the few things that matter. Everything else is preset and lives in settings.
