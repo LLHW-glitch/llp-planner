@@ -56,6 +56,10 @@ Tested end to end on 27 Nov with a £0 test order (#1010, archived). That test u
 - Content planner stacks on phones, recipes are centred, book review redesigned for phones (and its progress bar fixed on desktop), routines lost "Clear ticks for next time".
 - Wide tables (habits, measurements, subscriptions, wellness) scroll sideways on phones instead of spilling off the page.
 
+### v58 (28 Nov)
+- Notes box on the Week list layout.
+- Add-ons menu no longer lists Journal, Custom sections, Meal planner or Recipes. Meal planner and My recipes are in Bonus templates under Health & fitness. Journal and Custom sections already have their own cards on the Bonus templates page, and are reachable from day and week pages.
+
 ### Behind the scenes
 - Supabase: tables, row level security, `apply_patch`, `redeem_code`, history table, storage for images, PDF job queue (for the parked PDF product).
 - Resend set up (API key `LLP Planner`, sending only). Supabase auth emails use custom SMTP through Resend, 30 emails an hour.
@@ -90,6 +94,7 @@ Tested end to end on 27 Nov with a £0 test order (#1010, archived). That test u
 - Use app.liveloveplanners.com.
 - Mobile has to look as good as desktop: it's a main selling point.
 - Vision boards are one big board you add photos to, not fixed photo boxes.
+- The add-ons menu stays short: things reachable elsewhere (journal, sections, meals, recipes) live in Bonus templates instead.
 - Apple Calendar uses its own shortcut that opens Calendar at the date and time (not the Live Love Planners one, which opens Goodnotes).
 - Launch 30 Nov 2026. She'll upgrade Supabase herself before then.
 - Rainbow: white background, colour in the tabs and sections, headers stay black.
